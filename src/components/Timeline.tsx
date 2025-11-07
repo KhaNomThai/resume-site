@@ -2,41 +2,26 @@ import { motion, type Variants } from "framer-motion";
 import type { TimelineItem } from "../data";
 import { container, item } from "./Section";
 
-// อนิเมชันของ จุดแต่ละรายการ
 const dotV: Variants = {
-  hidden: {
-    opacity: 0,
-    scale: 0.6,
-    x: -6,
-    filter: "blur(2px)",
-  },
+  hidden: { opacity: 0, scale: 0.6, x: 0, filter: "blur(2px)" },
   show: {
     opacity: 1,
     scale: 1,
     x: 0,
     filter: "blur(0px)",
-    transition: {
-      type: "spring",
-      stiffness: 200,
-      damping: 18,
-      mass: 0.35,
-    },
+    transition: { type: "spring", stiffness: 200, damping: 18, mass: 0.35 },
   },
   hover: {
     scale: 1.25,
     boxShadow: "0 0 0 4px rgba(159,183,255,0.15)",
-    transition: {
-      type: "spring",
-      stiffness: 500,
-      damping: 20,
-    },
+    transition: { type: "spring", stiffness: 500, damping: 20 },
   },
 };
 
 export default function Timeline({ items }: { items: TimelineItem[] }) {
   return (
     <motion.ol
-      className="relative ps-5 border-s border-[#1f2a44]"
+      className="relative ps-8 border-s border-[#1f2a44]" // ps-8 ให้เว้นจากเส้นมากขึ้น
       variants={container(0.06)}
       initial="hidden"
       whileInView="show"
@@ -45,35 +30,28 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
       {items.map((it, i) => (
         <motion.li
           key={i}
-          className="mb-6 ms-2 transform-gpu will-change-transform"
+          className="relative mb-6 transform-gpu will-change-transform"
           variants={item(10)}
           layout
-          whileHover="hover" // ทำให้จุดเด้งเมื่อ hover
+          whileHover="hover"
         >
-          {/* วงแหวน pulse */}
+          {/* วงแหวน pulse อยู่กลางเส้นซ้าย */}
           <motion.span
             aria-hidden
-            className="absolute -start-1.5 mt-1.5 w-3 h-3 rounded-full"
+            className="absolute start-0 mt-1.5 w-3 h-3 -translate-x-1/2 rounded-full"
             style={{
               background:
                 "radial-gradient(circle, rgba(159,183,255,0.35) 0%, rgba(159,183,255,0.0) 70%)",
             }}
             initial={{ opacity: 0, scale: 0.6 }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0.6, 1.6, 2.2],
-            }}
-            transition={{
-              duration: 1.8,
-              repeat: Infinity,
-              ease: "easeOut",
-            }}
+            animate={{ opacity: [0, 1, 0], scale: [0.6, 1.6, 2.2] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
           />
 
-          {/* จุดหลัก */}
+          {/* จุดหลัก: ชิดเส้นพอดี และดึงครึ่งเม็ดออกนอกด้วย -translate-x-1/2 */}
           <motion.span
             variants={dotV}
-            className="absolute -start-1.5 mt-1.5 w-3 h-3 rounded-full bg-white/90 shadow-[0_0_0_2px_rgba(31,42,68,0.8)]"
+            className="absolute start-0 mt-1.5 w-3 h-3 -translate-x-1/2 rounded-full bg-white/90 shadow-[0_0_0_2px_rgba(31,42,68,0.8)]"
           />
 
           {/* เนื้อหา */}
@@ -81,7 +59,6 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
             {it.title} — {it.org}
           </h3>
           <p className="text-sm text-gray-400">{it.period}</p>
-
           {!!it.bullets?.length && (
             <ul className="list-disc ms-5 mt-2 space-y-1 text-sm text-gray-300">
               {it.bullets.map((b, idx) => (

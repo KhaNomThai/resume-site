@@ -1,10 +1,12 @@
+// src/pages/Home.tsx
 import { motion } from "framer-motion";
+import Page from "../components/Page.tsx";
 import { profile } from "../data";
 import profileImg from "../assets/profile.jpg";
 
 export default function Home() {
   return (
-    <div>
+    <Page>
       <header className="max-w-5xl mx-auto px-6 pt-12 pb-10">
         <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">
           {/* รูปโปรไฟล์ */}
@@ -32,7 +34,6 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* คำอธิบายตัวเอง */}
         <motion.p
           className="mt-8 text-base leading-relaxed text-gray-200 max-w-3xl"
           initial={{ opacity: 0, y: 8 }}
@@ -42,8 +43,14 @@ export default function Home() {
           {profile.summary}
         </motion.p>
 
-        {/* ลิงก์ติดต่อ */}
         <ul className="mt-6 flex flex-wrap gap-4 text-sm text-gray-300">
+          {profile.phone && (
+            <li>
+              <a className="underline" href={`tel:${profile.phone.replace(/\s+/g, "")}`}>
+                {profile.phone}
+              </a>
+            </li>
+          )}
           <li>
             <a className="underline" href={`mailto:${profile.email}`}>
               {profile.email}
@@ -71,6 +78,6 @@ export default function Home() {
           </li>
         </ul>
       </header>
-    </div>
+    </Page>
   );
 }

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { profile } from "../data";
+import profileImg from "./assets/profile.jpg";
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">
           {/* รูปโปรไฟล์ */}
           <motion.img
-            src="/profile.jpg"
+            src={profileImg}
             alt={`Portrait of ${profile.name}`}
             className="size-32 md:size-40 rounded-full ring-2 ring-[#1f2a44] object-cover"
             initial={{ opacity: 0, scale: 0.9 }}

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Page from "../components/Page.tsx";
+import Page from "../components/Page";
 import Section, { container, item } from "../components/Section";
 import { profile } from "../data";
 
@@ -8,10 +8,10 @@ export default function Projects() {
         <Page>
             <Section id="projects" title="Projects">
                 <motion.div
-                    variants={container()}
+                    variants={container(0.07)}
                     initial="hidden"
                     whileInView="show"
-                    viewport={{ once: true, margin: "-80px" }}
+                    viewport={{ once: true, amount: 0.55 }}
                     className="grid gap-4"
                 >
                     {profile.projects.map((p) => (
@@ -20,7 +20,7 @@ export default function Projects() {
                             href={p.link}
                             target="_blank"
                             rel="noreferrer"
-                            className="block rounded-2xl border border-[#1f2a44] bg-[#111a2c] p-5"
+                            className="block rounded-2xl border border-[#1f2a44] bg-[#111a2c] p-5 transform-gpu will-change-transform"
                             variants={item(10)}
                             whileHover={{ y: -2, scale: 1.01 }}
                             whileTap={{ scale: 0.995 }}

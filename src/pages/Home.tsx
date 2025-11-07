@@ -1,4 +1,3 @@
-// src/pages/Home.tsx
 import { motion } from "framer-motion";
 import Page from "../components/Page.tsx";
 import { profile } from "../data";
@@ -44,18 +43,6 @@ export default function Home() {
         </motion.p>
 
         <ul className="mt-6 flex flex-wrap gap-4 text-sm text-gray-300">
-          {profile.phone && (
-            <li>
-              <a className="underline" href={`tel:${profile.phone.replace(/\s+/g, "")}`}>
-                {profile.phone}
-              </a>
-            </li>
-          )}
-          <li>
-            <a className="underline" href={`mailto:${profile.email}`}>
-              {profile.email}
-            </a>
-          </li>
           <li>
             <a
               className="underline"

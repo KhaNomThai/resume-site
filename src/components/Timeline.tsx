@@ -5,10 +5,7 @@ import { container, item } from "./Section";
 const dotV: Variants = {
   hidden: { opacity: 0, scale: 0.6, x: 0, filter: "blur(2px)" },
   show: {
-    opacity: 1,
-    scale: 1,
-    x: 0,
-    filter: "blur(0px)",
+    opacity: 1, scale: 1, x: 0, filter: "blur(0px)",
     transition: { type: "spring", stiffness: 200, damping: 18, mass: 0.35 },
   },
   hover: {
@@ -21,7 +18,7 @@ const dotV: Variants = {
 export default function Timeline({ items }: { items: TimelineItem[] }) {
   return (
     <motion.ol
-      className="relative ps-10 border-s border-[#1f2a44]"
+      className="relative ps-8 border-s border-[#1f2a44]"
       variants={container(0.06)}
       initial="hidden"
       whileInView="show"
@@ -35,10 +32,10 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
           layout
           whileHover="hover"
         >
-          {/* วงแหวน pulse อยู่กลางเส้นซ้าย */}
+          {/* วงแหวน pulse: จัดกึ่งกลางเส้นด้วย left-[-2.375rem] */}
           <motion.span
             aria-hidden
-            className="absolute start-0 mt-1.5 w-3 h-3 -translate-x-1/2 rounded-full"
+            className="absolute mt-1.5 w-3 h-3 rounded-full left-[-2.375rem]"
             style={{
               background:
                 "radial-gradient(circle, rgba(159,183,255,0.35) 0%, rgba(159,183,255,0.0) 70%)",
@@ -48,13 +45,12 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
           />
 
-          {/* จุดหลัก: ชิดเส้นพอดี และดึงครึ่งเม็ดออกนอกด้วย -translate-x-1/2 */}
+          {/* จุดหลัก: ตรงเส้นเป๊ะ */}
           <motion.span
             variants={dotV}
-            className="absolute start-0 mt-1.5 w-3 h-3 -translate-x-1/2 rounded-full bg-white/90 shadow-[0_0_0_2px_rgba(31,42,68,0.8)]"
+            className="absolute mt-1.5 w-3 h-3 rounded-full bg-white/90 shadow-[0_0_0_2px_rgba(31,42,68,0.8)] left-[-2.375rem]"
           />
 
-          {/* เนื้อหา */}
           <h3 className="font-medium text-white">
             {it.title} — {it.org}
           </h3>

@@ -21,7 +21,7 @@ const dotV: Variants = {
 export default function Timeline({ items }: { items: TimelineItem[] }) {
   return (
     <motion.ol
-      className="relative ps-8 border-s border-[#1f2a44]" // ps-8 ให้เว้นจากเส้นมากขึ้น
+      className="relative ps-10 border-s border-[#1f2a44]"
       variants={container(0.06)}
       initial="hidden"
       whileInView="show"

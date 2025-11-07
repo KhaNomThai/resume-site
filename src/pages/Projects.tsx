@@ -1,0 +1,33 @@
+import Section, { container } from "../components/Section";
+import { motion } from "framer-motion";
+import { profile } from "../data";
+
+export default function Projects() {
+    return (
+        <Section id="projects" title="Projects">
+            <motion.div variants={container()} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4">
+                {profile.projects.map((p) => (
+                    <motion.a
+                        key={p.title}
+                        href={p.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block rounded-2xl border border-[#1f2a44] bg-[#111a2c] p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                    >
+                        <div className="flex items-start justify-between gap-4">
+                            <h3 className="font-medium text-white text-lg">{p.title}</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {p.tags?.map((t) => (
+                                    <span key={t} className="text-xs rounded-full border border-[#1f2a44] px-2 py-0.5 text-gray-300">
+                                        {t}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-300">{p.desc}</p>
+                    </motion.a>
+                ))}
+            </motion.div>
+        </Section>
+    );
+}

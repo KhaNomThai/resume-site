@@ -8,7 +8,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">
           {/* รูปโปรไฟล์ */}
           <motion.img
-            src="/src/assets/profile.jpg" // ใส่รูปไว้ที่ public/me.jpg
+            src="/public/profile.jpg"
             alt={`Portrait of ${profile.name}`}
             className="size-32 md:size-40 rounded-full ring-2 ring-[#1f2a44] object-cover"
             initial={{ opacity: 0, scale: 0.9 }}

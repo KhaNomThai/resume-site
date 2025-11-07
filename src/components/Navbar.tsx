@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <div className="sticky top-0 z-40">
-      {/* แถบ progress ตอนสกรอลล์ */}
+      {/* แถบ progress ตอนเลื่อน */}
       <motion.div
         className="h-0.5 origin-left bg-gradient-to-r from-indigo-300 via-indigo-400 to-indigo-500"
         style={{ scaleX: progress }}
@@ -31,7 +31,7 @@ export default function Navbar() {
               <span className="font-semibold text-lg text-white select-none">Kulachart Parnduangkeaw</span>
             </div>
 
-            {/* เมนู: แคปซูลครอบข้อความพอดี + ไม่มีสกรอลล์บาร์ */}
+            {/* เมนู: */}
             <nav className="relative">
               <ul className="flex items-center gap-2 overflow-x-auto no-scrollbar max-w-[80vw] md:max-w-none">
                 {links.map((l) => (

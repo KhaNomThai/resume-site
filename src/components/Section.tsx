@@ -18,9 +18,8 @@ export default function Section({ id, title, children }: { id: string; title: st
   );
 }
 
-/** เดิม: container/item → เปลี่ยนเป็น Soft เวอร์ชันเนียนกว่า */
 export const container = (stagger = 0.08): Variants => ({
-  hidden: { opacity: 1 }, // คง opacity ไว้ ลดการกระพริบ
+  hidden: { opacity: 1 },
   show: { transition: { staggerChildren: stagger } },
 });
 

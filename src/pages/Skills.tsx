@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Page from "../components/Page";
 import Section, { container, item } from "../components/Section";
-import SkillChip from "../components/SkillChip";
+import SkillChip from "../components/SkillChip.tsx";
 import { profile, type Skill } from "../data";
 
 export default function Skills() {

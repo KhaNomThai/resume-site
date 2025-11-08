@@ -1,6 +1,6 @@
 export type Skill = {
     name: string;
-    category?: "Core" | "Frontend" | "Backend" | "Mobile" | "Data/AI" | "Tools";
+    category?: "Core" | "Frontend" | "Backend" | "Data/AI" | "Tools";
 };
 export type Project = { title: string; link?: string; desc: string; tags?: string[] };
 export type TimelineItem = { title: string; org: string; period: string; bullets?: string[] };
@@ -20,12 +20,16 @@ export const profile = {
         { name: "Python", category: "Data/AI" },
         { name: "Java", category: "Core" },
         { name: "C/C++", category: "Core" },
+        { name: "HTML", category: "Frontend" },
+        { name: "CSS", category: "Frontend" },
+        { name: "JavaScript", category: "Frontend" },
         { name: "React", category: "Frontend" },
         { name: "TypeScript", category: "Frontend" },
-        { name: "JavaScript", category: "Frontend" },
         { name: "Tailwind", category: "Frontend" },
+        { name: "MySQL", category: "Backend" },
         { name: "Firebase", category: "Backend" },
         { name: "Node.js", category: "Backend" },
+        { name: "VS Code", category: "Tools" },
         { name: "Git", category: "Tools" },
         { name: "Figma", category: "Tools" },
     ] as Skill[],

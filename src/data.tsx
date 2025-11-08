@@ -1,10 +1,5 @@
-export type SkillLevel = 1 | 2 | 3 | 4 | 5;
 export type Skill = {
     name: string;
-    level: SkillLevel;                 // ระดับ 1–5 (แทนเปอร์เซ็นต์)
-    years?: number;
-    lastUsed?: string;                 // "Present" หรือปีล่าสุดที่ใช้
-    projects?: number;
     category?: "Core" | "Frontend" | "Backend" | "Mobile" | "Data/AI" | "Tools";
 };
 export type Project = { title: string; link?: string; desc: string; tags?: string[] };
@@ -22,14 +17,17 @@ export const profile = {
     summary:
         "กระผมเป็นนิสิตในหลักสูตรวิศวกรรมคอมพิวเตอร์ ที่หลงใหลในการพัฒนาโปรแกรม และเทคโนโลยีใหม่ ๆ สนใจงานด้าน Software Development และชอบสร้างสิ่งที่ช่วยให้ผู้คนใช้ชีวิตสะดวกขึ้น ผ่านการออกแบบ และเขียนโค้ดด้วยความใส่ใจในรายละเอียด มีความสนใจในทางฝั่ง Frontend และกำลังศึกษาเพิ่มเติมในระบบ Backend ชอบทำโปรเจกต์จริง และมักจะออกแบบระบบให้เรียบง่าย แต่มีประสิทธิภาพ",
     skills: [
-        { name: "Python", level: 4, category: "Data/AI", lastUsed: "2025" },
-        { name: "Java", level: 4, category: "Core", lastUsed: "2025" },
-        { name: "C/C++", level: 3, category: "Core", lastUsed: "2024" },
-        { name: "React", level: 5, category: "Frontend", lastUsed: "Present" },
-        { name: "TypeScript", level: 4, category: "Frontend", lastUsed: "Present" },
-        { name: "JavaScript", level: 4, category: "Core", lastUsed: "Present" },
-        { name: "Tailwind", level: 4, category: "Frontend", lastUsed: "Present" },
-        { name: "Firebase", level: 3, category: "Backend", lastUsed: "2025" },
+        { name: "Python", category: "Data/AI" },
+        { name: "Java", category: "Core" },
+        { name: "C/C++", category: "Core" },
+        { name: "React", category: "Frontend" },
+        { name: "TypeScript", category: "Frontend" },
+        { name: "JavaScript", category: "Frontend" },
+        { name: "Tailwind", category: "Frontend" },
+        { name: "Firebase", category: "Backend" },
+        { name: "Node.js", category: "Backend" },
+        { name: "Git", category: "Tools" },
+        { name: "Figma", category: "Tools" },
     ] as Skill[],
     projects: [
         {

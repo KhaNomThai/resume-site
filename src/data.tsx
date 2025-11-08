@@ -1,7 +1,14 @@
-export type Skill = { name: string; level: number };
+export type SkillLevel = 1 | 2 | 3 | 4 | 5;
+export type Skill = {
+    name: string;
+    level: SkillLevel;                 // ระดับ 1–5 (แทนเปอร์เซ็นต์)
+    years?: number;
+    lastUsed?: string;                 // "Present" หรือปีล่าสุดที่ใช้
+    projects?: number;
+    category?: "Core" | "Frontend" | "Backend" | "Mobile" | "Data/AI" | "Tools";
+};
 export type Project = { title: string; link?: string; desc: string; tags?: string[] };
 export type TimelineItem = { title: string; org: string; period: string; bullets?: string[] };
-
 
 export const profile = {
     name: "Kulachart Parnduangkeaw",
@@ -15,14 +22,14 @@ export const profile = {
     summary:
         "กระผมเป็นนิสิตในหลักสูตรวิศวกรรมคอมพิวเตอร์ ที่หลงใหลในการพัฒนาโปรแกรม และเทคโนโลยีใหม่ ๆ สนใจงานด้าน Software Development และชอบสร้างสิ่งที่ช่วยให้ผู้คนใช้ชีวิตสะดวกขึ้น ผ่านการออกแบบ และเขียนโค้ดด้วยความใส่ใจในรายละเอียด มีความสนใจในทางฝั่ง Frontend และกำลังศึกษาเพิ่มเติมในระบบ Backend ชอบทำโปรเจกต์จริง และมักจะออกแบบระบบให้เรียบง่าย แต่มีประสิทธิภาพ",
     skills: [
-        { name: "Python", level: 80 },
-        { name: "Java", level: 80 },
-        { name: "C/C++", level: 70 },
-        { name: "React", level: 90 },
-        { name: "TypeScript", level: 75 },
-        { name: "JavaScript", level: 85 },
-        { name: "Tailwind", level: 70 },
-        { name: "Firebase", level: 70 },
+        { name: "Python", level: 4, category: "Data/AI", lastUsed: "2025" },
+        { name: "Java", level: 4, category: "Core", lastUsed: "2025" },
+        { name: "C/C++", level: 3, category: "Core", lastUsed: "2024" },
+        { name: "React", level: 5, category: "Frontend", lastUsed: "Present" },
+        { name: "TypeScript", level: 4, category: "Frontend", lastUsed: "Present" },
+        { name: "JavaScript", level: 4, category: "Core", lastUsed: "Present" },
+        { name: "Tailwind", level: 4, category: "Frontend", lastUsed: "Present" },
+        { name: "Firebase", level: 3, category: "Backend", lastUsed: "2025" },
     ] as Skill[],
     projects: [
         {
@@ -56,7 +63,7 @@ export const profile = {
                 "สนับสนุนการบริหารจัดการด้านวิชาการ และกิจกรรมของนิสิตในภาควิชา",
                 "ส่งเสริมความร่วมมือ และสร้างความสามัคคีระหว่างนิสิตภาควิศวกรรมคอมพิวเตอร์",
             ],
-            
+
         },
         {
             title: "Metaverse Presentation Assistant",
@@ -68,7 +75,7 @@ export const profile = {
                 "ถ่ายทอดความรู้ และประสบการณ์เพื่อส่งเสริมความเข้าใจด้านเทคโนโลยีสมัยใหม่ให้กับนักศึกษา",
                 "สร้างสื่อการนำเสนอ และตัวอย่างเชิงโต้ตอบเพื่อให้ผู้เข้าร่วมเข้าใจเนื้อหาได้ง่ายและมีส่วนร่วมมากขึ้น",
             ],
-            
+
         },
     ] as TimelineItem[],
     education: [

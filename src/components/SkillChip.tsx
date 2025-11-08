@@ -1,22 +1,33 @@
-import { motion, useReducedMotion } from "framer-motion";
-export default function SkillBar({ name, level }: { name: string; level: number }) {
-    const prefersReduced = useReducedMotion();
-    return (
-        <div>
-            <div className="flex justify-between text-sm mb-1">
-                <span>{name}</span>
-                <span className="tabular-nums text-gray-400 dark:text-gray-400">{level}%</span>
-            </div>
-            <div className="h-2 rounded bg-[#1f2a44] overflow-hidden">
-                <motion.div
-                    className="h-2 rounded"
-                    style={{ background: "linear-gradient(90deg,#9fb7ff,#6a83ff)" }}
-                    initial={{ width: prefersReduced ? level + "%" : 0 }}
-                    whileInView={{ width: level + "%" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: "easeOut" as const }}
-                />
-            </div>
+import { motion } from "framer-motion";
+import type { Skill } from "../data";
+
+export default function SkillChip({ s }: { s: Skill }) {
+  return (
+    <motion.div
+      className="rounded-xl border border-[#1f2a44] bg-[#111a2c] px-4 py-3 flex items-center justify-between gap-4"
+      whileHover={{ y: -1, scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 380, damping: 26 }}
+    >
+      <div className="min-w-0">
+        <div className="font-medium text-white">{s.name}</div>
+        <div className="text-xs text-gray-400">
+          {s.years ? `${s.years}+ yrs` : ""}{s.years && (s.lastUsed || s.projects) ? " • " : ""}
+          {s.lastUsed ? `last: ${s.lastUsed}` : ""}{s.lastUsed && s.projects ? " • " : ""}
+          {s.projects ? `${s.projects} proj` : ""}
         </div>
-    );
+      </div>
+      <DotMeter value={s.level} />
+    </motion.div>
+  );
+}
+
+function DotMeter({ value }: { value: 1 | 2 | 3 | 4 | 5 }) {
+  return (
+    <div className="flex items-center gap-1">
+      {Array.from({ length: 5 }).map((_, i) => {
+        const active = i < value;
+        return <div key={i} className={`size-2.5 rounded-full ${active ? "bg-indigo-400" : "bg-[#1f2a44]"}`} />;
+      })}
+    </div>
+  );
 }

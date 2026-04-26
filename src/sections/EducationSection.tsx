@@ -9,9 +9,6 @@ export default function EducationSection() {
     target: ref,
     offset: ["start end", "start 0.2"],
   });
-  const titleY = useTransform(scrollYProgress, [0, 1], [80, 0]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [0, 0.5, 1]);
-  const titleScale = useTransform(scrollYProgress, [0, 1], [0.85, 1]);
   const lineWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (

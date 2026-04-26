@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring, useTransform, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useSpring, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
 import profileImg from "../assets/profile.jpg";
 

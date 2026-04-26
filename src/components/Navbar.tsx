@@ -1,69 +1,89 @@
-import { NavLink } from "react-router-dom";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, useMotionValueEvent } from "framer-motion";
+import { useState } from "react";
+import profileImg from "../assets/profile.jpg";
 
 const links = [
-  { to: "/", label: "Home", exact: true },
-  { to: "/skills", label: "Skills" },
-  { to: "/projects", label: "Projects" },
-  { to: "/experience", label: "Experience" },
-  { to: "/education", label: "Education" },
-  { to: "/contact", label: "Contact" },
+  { to: "hero", label: "Home" },
+  { to: "skills", label: "Skills" },
+  { to: "projects", label: "Projects" },
+  { to: "experience", label: "Experience" },
+  { to: "education", label: "Education" },
+  { to: "contact", label: "Contact" },
 ];
 
 export default function Navbar() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 22, mass: 0.25 });
+  const [scrolled, setScrolled] = useState(false);
+
+  /* Track if user has scrolled past hero */
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 60));
+
+  const handleClick = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <div className="sticky top-0 z-40">
-      {/* แถบ progress ตอนเลื่อน */}
+    <motion.div
+      className="fixed top-0 left-0 right-0 z-50"
+      initial={{ y: -80 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.3 }}
+    >
+      {/* แถบ progress */}
       <motion.div
-        className="h-0.5 origin-left bg-gradient-to-r from-indigo-300 via-indigo-400 to-indigo-500"
+        className="h-[2px] origin-left bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-500"
         style={{ scaleX: progress }}
       />
 
-      <div className="backdrop-blur supports-[backdrop-filter]:bg-[rgba(11,18,32,0.75)] bg-[rgba(11,18,32,0.9)] border-b border-[#1f2a44] shadow-[0_1px_0_0_rgba(31,42,68,0.6)]">
+      <motion.div
+        className="border-b transition-all duration-300"
+        animate={{
+          backgroundColor: scrolled ? "rgba(11,18,32,0.85)" : "rgba(11,18,32,0.4)",
+          borderColor: scrolled ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0)",
+          backdropFilter: scrolled ? "blur(20px)" : "blur(8px)",
+        }}
+      >
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="h-16 flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <div className="size-7 rounded-md bg-gradient-to-br from-indigo-400/80 to-indigo-600/80 shadow-inner" />
-              <span className="font-semibold text-lg text-white select-none">Kulachart Parnduangkeaw</span>
-            </div>
+          <div className="h-14 flex items-center justify-between">
+            {/* Logo — profile photo + name */}
+            <button
+              onClick={() => handleClick("hero")}
+              className="flex items-center gap-2.5 group"
+            >
+              <motion.img
+                src={profileImg}
+                alt="Profile"
+                className="size-8 rounded-full object-cover ring-2 ring-white/10 group-hover:ring-indigo-500/40 transition-all"
+                whileHover={{ scale: 1.1 }}
+              />
+              <span className="font-semibold text-base text-white select-none hidden sm:inline group-hover:text-indigo-300 transition-colors">
+                Kulachart
+              </span>
+            </button>
 
-            {/* เมนู: */}
-            <nav className="relative">
-              <ul className="flex items-center gap-2 overflow-x-auto no-scrollbar max-w-[80vw] md:max-w-none">
+            {/* เมนู with active indicator */}
+            <nav>
+              <ul className="flex items-center gap-0.5">
                 {links.map((l) => (
-                  <li key={l.to} className="relative">
-                    <NavLink to={l.to} end={l.exact}>
-                      {({ isActive }) => (
-                        <span
-                          className={[
-                            "relative inline-flex items-center rounded-full",
-                            "px-4 py-2 text-base md:text-lg leading-none select-none transition-colors",
-                            isActive ? "text-white" : "text-gray-300 hover:text-white/90",
-                          ].join(" ")}
-                        >
-                          {/* Active pill ติดแนบพอดีกับตัวหนังสือ */}
-                          {isActive && (
-                            <motion.span
-                              layoutId="nav-active-pill"
-                              className="absolute inset-0 -z-10 rounded-full bg-white/10 ring-1 ring-inset ring-white/10"
-                              transition={{ type: "spring", stiffness: 420, damping: 30, mass: 0.3 }}
-                            />
-                          )}
-                          {l.label}
-                        </span>
-                      )}
-                    </NavLink>
+                  <li key={l.to}>
+                    <button
+                      onClick={() => handleClick(l.to)}
+                      className="relative inline-flex items-center rounded-full outline-none px-3 py-1.5 text-sm leading-none select-none cursor-pointer text-gray-400 hover:text-white transition-colors duration-200 group"
+                    >
+                      {/* Hover glow */}
+                      <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/5 transition-colors duration-200" />
+                      <span className="relative">{l.label}</span>
+                    </button>
                   </li>
                 ))}
               </ul>
             </nav>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

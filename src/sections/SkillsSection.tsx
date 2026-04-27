@@ -108,8 +108,11 @@ export default function SkillsSection() {
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                   {list.map((s, i) => (
-                    <motion.div
+                    <motion.a
                       key={s.name}
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       variants={cardReveal(i)}
                       whileHover={{
                         scale: 1.06,
@@ -118,17 +121,17 @@ export default function SkillsSection() {
                         borderColor: "rgba(99,102,241,0.4)",
                       }}
                       whileTap={{ scale: 0.97 }}
-                      className="group flex items-center gap-3 h-14 px-4
+                      className={`group flex items-center gap-3 h-14 px-4
                         rounded-xl border border-white/[0.06] bg-white/[0.03]
                         text-gray-100 text-sm font-medium
-                        transform-gpu will-change-transform hover:bg-white/[0.07] transition-all duration-300 cursor-default relative overflow-hidden"
+                        transform-gpu will-change-transform hover:bg-white/[0.07] transition-all duration-300 relative overflow-hidden ${s.url ? "cursor-pointer" : "cursor-default"}`}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                       <div className="relative z-10 flex items-center gap-3">
                         <SkillIcon name={s.name} />
                         <span className="truncate">{s.name}</span>
                       </div>
-                    </motion.div>
+                    </motion.a>
                   ))}
                 </div>
               </motion.div>

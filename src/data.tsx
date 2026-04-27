@@ -1,9 +1,10 @@
 export type Skill = {
     name: string;
     category?: "Core" | "Frontend" | "Backend" | "Data/AI" | "Tools";
+    url?: string;
 };
-export type Project = { title: string; link?: string; desc: string; tags?: string[] };
-export type TimelineItem = { title: string; org: string; period: string; bullets?: string[] };
+type Project = { title: string; link?: string; desc: string; tags?: string[] };
+type TimelineItem = { title: string; org: string; period: string; bullets?: string[] };
 
 export const profile = {
     name: "Kulachart Parnduangkeaw",
@@ -17,21 +18,25 @@ export const profile = {
     summary:
         "กระผมเป็นนิสิตในหลักสูตรวิศวกรรมคอมพิวเตอร์ ที่หลงใหลในการพัฒนาโปรแกรม และเทคโนโลยีใหม่ ๆ สนใจงานด้าน Software Development และชอบสร้างสิ่งที่ช่วยให้ผู้คนใช้ชีวิตสะดวกขึ้น ผ่านการออกแบบ และเขียนโค้ดด้วยความใส่ใจในรายละเอียด มีความสนใจในทางฝั่ง Frontend และกำลังศึกษาเพิ่มเติมในระบบ Backend ชอบทำโปรเจกต์จริง และมักจะออกแบบระบบให้เรียบง่าย แต่มีประสิทธิภาพ",
     skills: [
-        { name: "Python", category: "Data/AI" },
-        { name: "Java", category: "Core" },
-        { name: "C/C++", category: "Core" },
-        { name: "HTML", category: "Frontend" },
-        { name: "CSS", category: "Frontend" },
-        { name: "JavaScript", category: "Frontend" },
-        { name: "React", category: "Frontend" },
-        { name: "TypeScript", category: "Frontend" },
-        { name: "Tailwind", category: "Frontend" },
-        { name: "MySQL", category: "Backend" },
-        { name: "Firebase", category: "Backend" },
-        { name: "Node.js", category: "Backend" },
-        { name: "VS Code", category: "Tools" },
-        { name: "Git", category: "Tools" },
-        { name: "Figma", category: "Tools" },
+        { name: "Python", category: "Data/AI", url: "https://www.python.org/" },
+        { name: "Java", category: "Core", url: "https://dev.java/" },
+        { name: "C/C++", category: "Core", url: "https://isocpp.org/" },
+        { name: "HTML", category: "Frontend", url: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
+        { name: "CSS", category: "Frontend", url: "https://developer.mozilla.org/en-US/docs/Web/CSS" },
+        { name: "JavaScript", category: "Frontend", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
+        { name: "React", category: "Frontend", url: "https://react.dev/" },
+        { name: "TypeScript", category: "Frontend", url: "https://www.typescriptlang.org/" },
+        { name: "Tailwind", category: "Frontend", url: "https://tailwindcss.com/" },
+        { name: "MySQL", category: "Backend", url: "https://www.mysql.com/" },
+        { name: "Firebase", category: "Backend", url: "https://firebase.google.com/" },
+        { name: "Node.js", category: "Backend", url: "https://nodejs.org/" },
+        { name: "VS Code", category: "Tools", url: "https://code.visualstudio.com/" },
+        { name: "Git", category: "Tools", url: "https://git-scm.com/" },
+        { name: "Figma", category: "Tools", url: "https://www.figma.com/" },
+        { name: "Pandas", category: "Data/AI", url: "https://pandas.pydata.org/" },
+        { name: "NumPy", category: "Data/AI", url: "https://numpy.org/" },
+        { name: "OpenCV", category: "Data/AI", url: "https://opencv.org/" },
+        { name: "PyTorch", category: "Data/AI", url: "https://pytorch.org/" },
     ] as Skill[],
     projects: [
         {
@@ -51,6 +56,18 @@ export const profile = {
             link: "https://github.com/KhaNomThai/resume-site",
             desc: "เว็บไซต์แสดงประวัติส่วนตัว และผลงานต่าง ๆ",
             tags: ["React", "TypeScript", "Tailwind"],
+        },
+        {
+            title: "Employment Data Gap Analysis",
+            link: "https://colab.research.google.com/drive/1ujTiV7eldCGr3nbqe19WRiARRDcbeWFs?usp=sharing",
+            desc: "โปรเจกต์วิจัยขนาดเล็กเกี่ยวกับการวิเคราะห์ช่องว่างข้อมูลการได้งานของสายวิศวกรรมคอมพิวเตอร์ โดยใช้ Machine Learning",
+            tags: ["Python", "Machine Learning", "Data Analysis"],
+        },
+        {
+            title: "Water Level Detection (DOH Hackathon)",
+            link: "https://github.com/Panupong-xD/DOH_Hackathon",
+            desc: "ผลงานจากการแข่งขัน Hackathon ของกรมทางหลวง เป็นระบบที่ใช้ AI ตรวจจับระดับความสูงของน้ำโดยประเมินจากล้อรถยนต์",
+            tags: ["Python", "AI", "Computer Vision"],
         },
     ] as Project[],
     experience: [
@@ -78,6 +95,17 @@ export const profile = {
                 "สร้างสื่อการนำเสนอ และตัวอย่างเชิงโต้ตอบเพื่อให้ผู้เข้าร่วมเข้าใจเนื้อหาได้ง่ายและมีส่วนร่วมมากขึ้น",
             ],
 
+        },
+        {
+            title: "Robotics Teaching Assistant",
+            org: "SWU",
+            period: "2026",
+            bullets: [
+                "ปฏิบัติหน้าที่เป็นผู้ช่วยสอน (Teaching Assistant) แนะนำ และให้ความรู้พื้นฐานด้านวิทยาการหุ่นยนต์ (Robotics) แก่นักเรียนระดับมัธยมศึกษาตอนปลาย",
+                "จัดเตรียม ตั้งค่า และดูแลรักษาอุปกรณ์หุ่นยนต์ เพื่อใช้เป็นสื่อการเรียนการสอนเชิงปฏิบัติการให้พร้อมใช้งานอย่างมีประสิทธิภาพ",
+                "ช่วยเหลืออาจารย์ผู้สอนในการดูแลและให้คำปรึกษานักเรียนระหว่างการทำกิจกรรมชมรม เพื่อส่งเสริมทักษะการแก้ปัญหาและการลงมือปฏิบัติจริง",
+                "สาธิตการทำงาน และแนวทางการเขียนโปรแกรมควบคุมหุ่นยนต์ เพื่อสร้างความเข้าใจและกระตุ้นความสนใจให้กับผู้เรียน",
+            ],
         },
     ] as TimelineItem[],
     education: [

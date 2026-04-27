@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { profile } from "../data";
 import profileImg from "../assets/profile.jpg";
+import SkillIcon from "../components/SkillIcon";
 
 /* ── Typewriter effect ── */
 function Typewriter({ text, delay = 1000 }: { text: string; delay?: number }) {
@@ -39,41 +40,29 @@ function Typewriter({ text, delay = 1000 }: { text: string; delay?: number }) {
 }
 
 /* ── Tech stack marquee ── */
-const TECH_ICONS = [
-  { name: "React", folder: "react", file: "react-original" },
-  { name: "TypeScript", folder: "typescript", file: "typescript-original" },
-  { name: "JavaScript", folder: "javascript", file: "javascript-original" },
-  { name: "Python", folder: "python", file: "python-original" },
-  { name: "Java", folder: "java", file: "java-original" },
-  { name: "Tailwind", folder: "tailwindcss", file: "tailwindcss-original" },
-  { name: "Node.js", folder: "nodejs", file: "nodejs-original" },
-  { name: "Firebase", folder: "firebase", file: "firebase-original" },
-  { name: "Git", folder: "git", file: "git-original" },
-  { name: "Figma", folder: "figma", file: "figma-original" },
-];
-
 function TechMarquee() {
-  const icons = [...TECH_ICONS, ...TECH_ICONS]; // duplicate for seamless loop
+  const icons = [...profile.skills, ...profile.skills]; // duplicate for seamless loop
   return (
-    <div className="w-full max-w-lg overflow-hidden relative py-4">
+    <div 
+      className="w-full max-w-lg overflow-hidden relative py-4"
+      style={{ maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)" }}
+    >
       <motion.div
-        className="flex items-center gap-8"
-        animate={{ x: [0, -(TECH_ICONS.length * 56)] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="flex w-max items-center"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: profile.skills.length * 2.5, repeat: Infinity, ease: "linear" }}
       >
-        {icons.map((t, i) => (
-          <div key={i} className="flex-shrink-0 flex items-center gap-2 opacity-40 hover:opacity-80 transition-opacity">
-            <img
-              src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${t.folder}/${t.file}.svg`}
-              alt={t.name}
-              width={24}
-              height={24}
-              loading="lazy"
-              className="border-0 outline-none"
-              style={{ border: "none" }}
-            />
-            <span className="text-xs text-gray-400 whitespace-nowrap">{t.name}</span>
-          </div>
+        {icons.map((s, i) => (
+          <a
+            key={i}
+            href={s.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex-shrink-0 flex items-center gap-2 mr-8 opacity-40 hover:opacity-100 transition-opacity ${s.url ? "cursor-pointer" : "cursor-default"}`}
+          >
+            <SkillIcon name={s.name} size={24} />
+            <span className="text-xs text-gray-400 whitespace-nowrap">{s.name}</span>
+          </a>
         ))}
       </motion.div>
     </div>

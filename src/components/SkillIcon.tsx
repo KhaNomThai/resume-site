@@ -23,6 +23,11 @@ const DEVICON_MAP: Record<string, [string, string]> = {
   figma:      ["figma",       "figma-original"],
   mysql:      ["mysql",       "mysql-original"],
   vscode:     ["vscode",      "vscode-original"],
+  opencv:     ["opencv",      "opencv-original"],
+  pandas:     ["pandas",      "pandas-original"],
+  numpy:      ["numpy",       "numpy-original"],
+  scikitlearn:["scikitlearn", "scikitlearn-original"],
+  pytorch:    ["pytorch",     "pytorch-original"],
 };
 
 function normalize(raw: string) {

@@ -69,6 +69,24 @@ export const profile = {
             desc: "A hackathon project for the Department of Highways. Uses AI and computer vision to estimate water levels by analyzing how much a vehicle's wheels are submerged.",
             tags: ["Python", "AI", "Computer Vision"],
         },
+        {
+            title: "SWU Run Register",
+            desc: "A full-stack runner registration web platform built for the SWU Run Together 2026 event — handling participant sign-ups, bib number assignment, and race-day data management.",
+            link: "https://github.com/Panupong-xD/SwuRun_Register",
+            tags: ["Full-Stack", "Web App"],
+        },
+        {
+            title: "WELLYNC (True Innovation)",
+            desc: "A chronic care management platform featuring predictive AI health analytics to help patients and caregivers monitor conditions, track vital signs, and receive early-warning insights.",
+            link: "https://github.com/Panupong-xD/True-innovation-mock",
+            tags: ["AI", "Healthcare", "Full-Stack"],
+        },
+        {
+            title: "Skin Cancer Screening & Classification",
+            desc: "A Deep Learning system powered by ResNet-50 that classifies skin lesion images to assist in early skin cancer detection and screening.",
+            link: "https://github.com/KhaNomThai/CPE310-Healthcare-AI-System",
+            tags: ["Python", "Deep Learning", "Computer Vision"],
+        },
     ] as Project[],
     experience: [
         {
@@ -106,7 +124,29 @@ export const profile = {
                 "Guided students through club activities, helping them develop problem-solving skills.",
                 "Ran live demos of robot programming to spark student curiosity and understanding.",
             ],
+            
         },
+        {
+            title: "Data Science Intern",
+            org: "Botnoi Group",
+            period: "2026",
+            bullets: [
+                "Developed, trained, and evaluated Machine Learning models for real-world business applications.",
+                "Preprocessed complex datasets and engineered meaningful features to boost model accuracy and performance.",
+                "Collaborated cross-functionally with engineering and product teams to deliver AI-powered solutions and actionable data-driven insights.",
+                "Applied best practices in data pipeline design and model deployment workflows.",
+            ],
+        },
+        {
+            title: "Google Cloud, Big Data & GenAI Training",
+            org: "Google Cloud",
+            period: "2026",
+            bullets: [
+                "Completed certified training in Google Cloud Platform fundamentals, Big Data technologies, and Generative AI.",
+                "Gained hands-on experience with cloud-based data processing, storage, and machine learning services.",
+                "Learned to leverage GenAI tools and APIs for building intelligent applications.",
+            ],
+        }
     ] as TimelineItem[],
     education: [
         {

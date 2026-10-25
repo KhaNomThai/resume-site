@@ -12,7 +12,7 @@ export const profile = {
     location: "Pathum Thani, Thailand",
     address: "61/6, Moo 7, Lamlukka, Pathum Thani, 12150, Thailand",
     phone: "080-091-2939",
-    email: "kulachart2014@gmail.com",
+    email: "kulachart.parn@gmail.com",
     github: "KhaNomThai",
     linkedin: "kulachart-parnduangkeaw-247b47395",
     summary:

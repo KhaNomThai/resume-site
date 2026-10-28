@@ -1,80 +1,36 @@
-/**
- * SkillIcon – renders real multi-color logos from the devicon CDN.
- * Falls back to react-icons single-color for those not covered by devicon.
- */
+/** Pin เวอร์ชันเสมอ — @latest เปลี่ยนได้ทุกเมื่อ ถ้า devicon rename ไฟล์ icon จะพังเงียบ ๆ */
+const DEVICON_BASE = "https://cdn.jsdelivr.net/npm/devicon@2.18.0/icons";
 
-const DEVICON_BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
+type Props = { name: string; icon?: string; size?: number };
 
-/** Maps normalised skill name → [devicon folder, filename, devicon color icon] */
-const DEVICON_MAP: Record<string, [string, string]> = {
-  html:       ["html5",       "html5-original"],
-  css:        ["css3",        "css3-original"],
-  javascript: ["javascript",  "javascript-original"],
-  react:      ["react",       "react-original"],
-  typescript: ["typescript",  "typescript-original"],
-  tailwind:   ["tailwindcss", "tailwindcss-original"],
-  firebase:   ["firebase",    "firebase-original"],
-  nodejs:     ["nodejs",      "nodejs-original"],
-  python:     ["python",      "python-original"],
-  java:       ["java",        "java-original"],
-  cpp:        ["cplusplus",   "cplusplus-original"],
-  c:          ["c",           "c-original"],
-  git:        ["git",         "git-original"],
-  figma:      ["figma",       "figma-original"],
-  mysql:      ["mysql",       "mysql-original"],
-  vscode:     ["vscode",      "vscode-original"],
-  opencv:     ["opencv",      "opencv-original"],
-  pandas:     ["pandas",      "pandas-original"],
-  numpy:      ["numpy",       "numpy-original"],
-  scikitlearn:["scikitlearn", "scikitlearn-original"],
-  pytorch:    ["pytorch",     "pytorch-original"],
-};
-
-function normalize(raw: string) {
-  let key = raw.trim().toLowerCase();
-  key = key.replace(/[.\-/\s]+/g, "");
-
-  if (key.includes("c++") || key === "c/c++") key = "cpp";
-  if (key === "node" || key === "nodejs" || key === "node.js") key = "nodejs";
-  if (key === "visualstudiocode" || key === "vscode") key = "vscode";
-  if (key === "html5") key = "html";
-  if (key === "css3") key = "css";
-  if (key === "tailwindcss") key = "tailwind";
-  if (key === "firebase") key = "firebase";
-  if (key === "figma") key = "figma";
-  if (key === "mysql") key = "mysql";
-
-  return key;
-}
-
-export default function SkillIcon({ name, size = 22 }: { name: string; size?: number }) {
-  const key = normalize(name);
-  const entry = DEVICON_MAP[key];
-
-  if (entry) {
-    const [folder, file] = entry;
-    const url = `${DEVICON_BASE}/${folder}/${file}.svg`;
+/** Icon เป็น decoration — ชื่อ skill แสดงเป็นข้อความข้าง ๆ อยู่แล้ว จึงใช้ alt="" */
+export default function SkillIcon({ name, icon, size = 22 }: Props) {
+  if (icon) {
     return (
       <img
-        src={url}
-        alt={name}
+        src={`${DEVICON_BASE}/${icon}.svg`}
+        alt=""
         width={size}
         height={size}
-        className="flex-shrink-0 border-0 outline-none"
         loading="lazy"
-        style={{ width: size, height: size, border: "none" }}
+        decoding="async"
+        className="shrink-0"
       />
     );
   }
 
-  // Fallback: initials badge
-  const initials = name.split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
+  const initials = name
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <span
-      aria-label={name}
-      className="inline-flex items-center justify-center rounded-full bg-[#1f2a44] text-[10px] font-semibold text-gray-200 flex-shrink-0"
+      aria-hidden="true"
+      className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#1f2a44] text-[10px] font-semibold text-gray-200"
       style={{ width: size, height: size }}
-      title={name}
     >
       {initials}
     </span>

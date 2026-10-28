@@ -1,89 +1,66 @@
-import { motion, useScroll, useSpring, useMotionValueEvent } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll, useSpring } from "framer-motion";
 import { useState } from "react";
-import profileImg from "../assets/profile.jpg";
-
-const links = [
-  { to: "hero", label: "Home" },
-  { to: "skills", label: "Skills" },
-  { to: "projects", label: "Projects" },
-  { to: "experience", label: "Experience" },
-  { to: "education", label: "Education" },
-  { to: "contact", label: "Contact" },
-];
+import avatarImg from "../assets/profile-320.webp";
+import { SECTIONS } from "../config/sections";
+import { profile } from "../data";
 
 export default function Navbar() {
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 22, mass: 0.25 });
   const [scrolled, setScrolled] = useState(false);
-
-  /* Track if user has scrolled past hero */
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 60));
-
-  const handleClick = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
+  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 60));
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 right-0 z-50"
+    <motion.header
+      className="fixed inset-x-0 top-0 z-50 print:hidden"
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.3 }}
     >
-      {/* แถบ progress */}
       <motion.div
+        aria-hidden="true"
         className="h-[2px] origin-left bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-500"
         style={{ scaleX: progress }}
       />
 
-      <motion.div
-        className="border-b transition-all duration-300"
-        animate={{
-          backgroundColor: scrolled ? "rgba(11,18,32,0.85)" : "rgba(11,18,32,0.4)",
-          borderColor: scrolled ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0)",
-          backdropFilter: scrolled ? "blur(20px)" : "blur(8px)",
-        }}
+      <div
+        className={`border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
+          scrolled ? "bg-[#0b1220]/85 border-white/5 backdrop-blur-xl" : "bg-[#0b1220]/40 border-transparent backdrop-blur-sm"
+        }`}
       >
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="h-14 flex items-center justify-between">
-            {/* Logo — profile photo + name */}
-            <button
-              onClick={() => handleClick("hero")}
-              className="flex items-center gap-2.5 group"
-            >
-              <motion.img
-                src={profileImg}
-                alt="Profile"
-                className="size-8 rounded-full object-cover ring-2 ring-white/10 group-hover:ring-indigo-500/40 transition-all"
-                whileHover={{ scale: 1.1 }}
-              />
-              <span className="font-semibold text-base text-white select-none hidden sm:inline group-hover:text-indigo-300 transition-colors">
-                Kulachart
-              </span>
-            </button>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+          {/* <a href="#..."> แทน <button onClick={scrollIntoView}>: smooth scroll มาจาก CSS,
+              URL มี #hash แชร์ได้, ทำงานได้แม้ JS ยังไม่โหลด */}
+          <a href="#hero" className="group flex shrink-0 items-center gap-2.5 rounded-full">
+            <img
+              src={avatarImg}
+              alt=""
+              width={32}
+              height={32}
+              className="size-8 shrink-0 rounded-full object-cover ring-2 ring-white/10 group-hover:ring-indigo-500/40 group-hover:scale-110 transition"
+            />
+            <span className="sr-only sm:not-sr-only font-semibold text-white group-hover:text-indigo-300 transition-colors">
+              {profile.shortName}
+            </span>
+          </a>
 
-            {/* เมนู with active indicator */}
-            <nav>
-              <ul className="flex items-center gap-0.5">
-                {links.map((l) => (
-                  <li key={l.to}>
-                    <button
-                      onClick={() => handleClick(l.to)}
-                      className="relative inline-flex items-center rounded-full outline-none px-3 py-1.5 text-sm leading-none select-none cursor-pointer text-gray-400 hover:text-white transition-colors duration-200 group"
-                    >
-                      {/* Hover glow */}
-                      <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/5 transition-colors duration-200" />
-                      <span className="relative">{l.label}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </div>
+          {/* min-w-0 + overflow-x-auto: จอแคบเลื่อนเมนูได้ แทนที่จะโดนตัดหาย */}
+          <nav aria-label="Main" className="min-w-0 overflow-x-auto [scrollbar-width:none]">
+            <ul className="flex items-center gap-0.5">
+              {SECTIONS.map(({ id, label }) => (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    className="block whitespace-nowrap rounded-full px-2.5 sm:px-3 py-1.5 text-sm leading-none text-gray-400 hover:text-white hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-indigo-400 transition-colors"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </motion.header>
   );
 }

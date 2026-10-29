@@ -142,7 +142,7 @@ export const projects: Project[] = [
     desc: "8-class skin-lesion classifier trained on ISIC 2019 (25,331 images). Benchmarked ResNet50, EfficientNet-B3, and DenseNet121 with class-weighted loss; the best model reaches 0.91 AUC-ROC for cancer screening and 89.6% top-2 accuracy, served through a Gradio clinical UI.",
     metric: { value: "0.91", label: "AUC-ROC on 3,800 unseen test images" },
     tags: ["Python", "PyTorch", "scikit-learn", "Pandas", "Deep Learning", "Computer Vision", "Gradio"],
-    links: [{ kind: "code", href: "https://github.com/KhaNomThai/CPE310-Healthcare-AI-System" }],
+    links: [{ kind: "code", href: "https://github.com/KhaNomThai/Healthcare-AI-System" }],
   },
   {
     id: "smart-flood-ai",

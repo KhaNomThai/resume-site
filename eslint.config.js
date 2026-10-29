@@ -16,8 +16,15 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
       globals: globals.browser,
+    },
+  },
+  {
+    // สคริปต์ generate CV / og:image รันด้วย Node
+    files: ['scripts/**/*.ts', 'vite.config.ts'],
+    languageOptions: {
+      globals: globals.node,
     },
   },
 ])

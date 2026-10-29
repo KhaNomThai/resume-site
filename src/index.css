@@ -1,40 +1,59 @@
 @import "tailwindcss";
 
-/* Tailwind v4: ประกาศ animation ใน @theme → ได้ utility `animate-*` และถูก tree-shake ถ้าไม่ใช้ */
+/* Tailwind v4: ประกาศ token/animation ใน @theme → ได้ utility (`bg-ink`, `font-mono`, `animate-*`) และถูก tree-shake ถ้าไม่ใช้ */
 @theme {
-  --animate-drift-1: drift-1 18s ease-in-out infinite;
-  --animate-drift-2: drift-2 22s ease-in-out infinite;
-  --animate-drift-3: drift-3 25s ease-in-out infinite;
-  --animate-marquee: marquee 45s linear infinite;
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-ink: #0b1220;
+
+  --animate-drift-1: drift-1 22s ease-in-out infinite;
+  --animate-drift-2: drift-2 26s ease-in-out infinite;
+  --animate-drift-3: drift-3 30s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 14s linear infinite;
+
+  @keyframes spin-slow {
+    to { transform: rotate(1turn); }
+  }
 
   @keyframes drift-1 {
     0%, 100% { transform: translate(-5%, -8%) scale(1); }
-    20%  { transform: translate(10%, 5%) scale(1.08); }
-    40%  { transform: translate(-3%, 15%) scale(0.95); }
-    60%  { transform: translate(15%, -5%) scale(1.12); }
-    80%  { transform: translate(5%, 10%) scale(0.98); }
+    33% { transform: translate(10%, 5%) scale(1.08); }
+    66% { transform: translate(-3%, 15%) scale(0.95); }
   }
   @keyframes drift-2 {
     0%, 100% { transform: translate(70%, 10%) scale(1); }
-    25%  { transform: translate(55%, 25%) scale(1.1); }
-    50%  { transform: translate(75%, 40%) scale(0.92); }
-    75%  { transform: translate(60%, 15%) scale(1.05); }
+    50% { transform: translate(55%, 30%) scale(1.1); }
   }
   @keyframes drift-3 {
     0%, 100% { transform: translate(15%, 60%) scale(1); }
-    20%  { transform: translate(30%, 50%) scale(1.06); }
-    40%  { transform: translate(10%, 70%) scale(0.94); }
-    60%  { transform: translate(40%, 55%) scale(1.1); }
-    80%  { transform: translate(20%, 65%) scale(1.02); }
-  }
-  @keyframes marquee {
-    to { transform: translateX(-50%); }
+    50% { transform: translate(35%, 50%) scale(1.08); }
   }
 }
 
 @layer base {
   html {
+    color-scheme: dark;
     scroll-behavior: smooth;
+    /* ลิงก์ #section จะหยุดใต้ navbar (fixed สูง 3.5rem) ไม่โดนบังหัวข้อ */
+    scroll-padding-top: 4.5rem;
+    /* framer-motion useScroll({ target }) ต้องการ scroll container ที่ไม่ใช่ position: static (ไม่งั้นเตือนใน dev) */
+    position: relative;
+  }
+  body {
+    background-color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background-color: rgb(99 102 241 / 0.4);
+  }
+  /* focus ring เดียวกันทั้งเว็บ — เห็นชัดเฉพาะตอนใช้คีย์บอร์ด */
+  :focus-visible {
+    outline: 2px solid var(--color-indigo-400);
+    outline-offset: 2px;
+  }
+  kbd {
+    font-family: var(--font-mono);
   }
 }
 
@@ -48,20 +67,18 @@
 
 @media print {
   @page { margin: 12mm; }
-  /* framer-motion ใส่ inline style opacity:0 / transform / filter ไว้กับ element ที่ยังไม่เคย scroll ถึง
+  /* framer-motion ใส่ inline style opacity:0 / transform ไว้กับ element ที่ยังไม่เคย scroll ถึง
      ถ้าไม่ override ตอนสั่งพิมพ์ เนื้อหาส่วนนั้นจะหายไปจากกระดาษ */
   [style*="opacity"] { opacity: 1 !important; }
   [style*="transform"] { transform: none !important; }
-  [style*="filter"] { filter: none !important; }
-  /* overflow-x: hidden ทำให้ root div เป็น scroll container → Chrome ตัดเนื้อหาท้ายหน้าทิ้งตอนพิมพ์ */
-  #root > div { overflow: visible !important; }
   #root * {
     color: #000 !important;
     background: transparent !important;
     box-shadow: none !important;
+    border-color: #ccc !important;
   }
-  section { padding-block: 1.5rem !important; min-height: 0 !important; }
+  section { padding-block: 1.25rem !important; min-height: 0 !important; }
   article, li { break-inside: avoid; }
-  /* หัวข้อ section (eyebrow + h2) ต้องไม่ถูกทิ้งไว้ท้ายหน้าโดยไม่มีเนื้อหาตาม */
+  /* หัวข้อ section ต้องไม่ถูกทิ้งไว้ท้ายหน้าโดยไม่มีเนื้อหาตาม */
   header, h2, h3 { break-inside: avoid; break-after: avoid; }
 }

@@ -1,66 +1,56 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, type ReactNode } from "react";
-import ScrollReveal from "./ScrollReveal";
-import type { SectionId } from "../config/sections";
+import { m } from "framer-motion";
+import type { ReactNode } from "react";
+import { SECTIONS, type SectionId } from "../config/sections";
+import { EASE_OUT } from "../lib/motion";
 
-/** เขียน class เต็ม ๆ เท่านั้น — Tailwind scan หา string ตรง ๆ, `via-${color}-500` จะไม่ถูก generate */
-const ACCENTS = {
-  indigo: { line: "via-indigo-500/40", eyebrow: "text-indigo-400" },
-  purple: { line: "via-purple-500/40", eyebrow: "text-purple-400" },
-  blue: { line: "via-blue-500/40", eyebrow: "text-blue-400" },
-  emerald: { line: "via-emerald-500/40", eyebrow: "text-emerald-400" },
-} as const;
+const WIDTHS = { narrow: "max-w-3xl", default: "max-w-5xl", wide: "max-w-6xl" } as const;
 
 type Props = {
   id: SectionId;
+  /** ป้ายเล็กเหนือหัวข้อ — ใช้ชื่อเดียวกับเมนู */
   eyebrow: string;
   title: string;
   subtitle?: string;
-  accent?: keyof typeof ACCENTS;
-  narrow?: boolean;
+  width?: keyof typeof WIDTHS;
   children: ReactNode;
 };
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 16 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { delay, type: "spring" as const },
-});
-
-export default function Section({ id, eyebrow, title, subtitle, accent = "indigo", narrow, children }: Props) {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "start 0.2"] });
-  const lineWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+export default function Section({ id, eyebrow, title, subtitle, width = "default", children }: Props) {
   const headingId = `${id}-heading`;
-  const colors = ACCENTS[accent];
+  const number = String(SECTIONS.findIndex((s) => s.id === id) + 1).padStart(2, "0");
 
   return (
-    <section id={id} ref={ref} aria-labelledby={headingId} className="relative py-32 scroll-mt-14">
-      <motion.div
-        aria-hidden="true"
-        className={`absolute top-0 left-1/2 -translate-x-1/2 h-px bg-gradient-to-r from-transparent ${colors.line} to-transparent`}
-        style={{ width: lineWidth }}
-      />
-
-      <ScrollReveal>
-        <div className={`${narrow ? "max-w-3xl" : "max-w-5xl"} mx-auto px-6`}>
-          <header className="text-center mb-16">
-            <motion.p className={`text-xs tracking-[0.3em] uppercase mb-3 ${colors.eyebrow}`} {...fadeUp(0.1)}>
-              {eyebrow}
-            </motion.p>
-            <motion.h2 id={headingId} className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight" {...fadeUp(0.15)}>
-              {title}
-            </motion.h2>
-            {subtitle && (
-              <motion.p className="mt-3 text-lg text-gray-400" {...fadeUp(0.2)}>
-                {subtitle}
-              </motion.p>
-            )}
-          </header>
-          {children}
-        </div>
-      </ScrollReveal>
+    <section id={id} aria-labelledby={headingId} className="relative py-20 md:py-28">
+      <div className={`${WIDTHS[width]} mx-auto px-6`}>
+        <m.header
+          className="mb-10 md:mb-14"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.5, ease: EASE_OUT }}
+        >
+          {/* เส้นวาดออกจากซ้าย: scaleX (compositor) แทนการอนิเมต width ที่ต้องคำนวณ layout ทุกเฟรม */}
+          <m.div
+            aria-hidden="true"
+            className="mb-6 h-px origin-left bg-gradient-to-r from-indigo-400/70 via-white/10 to-transparent"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease: EASE_OUT }}
+          />
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-indigo-300">
+            <span aria-hidden="true" className="text-gray-500">
+              {number} /{" "}
+            </span>
+            {eyebrow}
+          </p>
+          <h2 id={headingId} className="mt-3 text-3xl font-semibold tracking-tight text-white outline-none md:text-4xl">
+            {title}
+          </h2>
+          {subtitle && <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-400">{subtitle}</p>}
+        </m.header>
+        {children}
+      </div>
     </section>
   );
 }

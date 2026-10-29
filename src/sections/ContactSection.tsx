@@ -1,82 +1,100 @@
-import { motion, type Variants } from "framer-motion";
+import { m } from "framer-motion";
 import type { ComponentType, SVGProps } from "react";
 import NewTabHint from "../components/NewTabHint";
 import Section from "../components/Section";
-import { ChevronRightIcon, GitHubIcon, LinkedInIcon, MailIcon, MapPinIcon, PhoneIcon } from "../components/icons";
-import { contacts, type ContactKind } from "../data";
+import { CopyIcon, GitHubIcon, LinkedInIcon, MailIcon, MapPinIcon, PhoneIcon } from "../components/icons";
+import { contacts, profile, type ContactKind } from "../data";
 import { linkProps } from "../lib/links";
+import { revealOnView } from "../lib/motion";
+import { trackSpotlight } from "../lib/spotlight";
+import { useCopyEmail } from "../lib/useCopyEmail";
 
-type ContactStyle = {
-  Icon: ComponentType<SVGProps<SVGSVGElement>>;
-  gradient: string;
-  icon: string;
-  border: string;
+/** Presentation (icon) แยกจาก data — data.ts เก็บแค่ข้อมูลจริง */
+const ICONS: Record<ContactKind, ComponentType<SVGProps<SVGSVGElement>>> = {
+  email: MailIcon,
+  linkedin: LinkedInIcon,
+  github: GitHubIcon,
+  phone: PhoneIcon,
 };
 
-/** Presentation (icon/สี) แยกจาก data — data.ts เก็บแค่ข้อมูลจริง */
-const STYLES: Record<ContactKind, ContactStyle> = {
-  location: { Icon: MapPinIcon, gradient: "from-rose-500/20 to-orange-500/20", icon: "text-rose-400", border: "hover:border-rose-500/30" },
-  phone: { Icon: PhoneIcon, gradient: "from-emerald-500/20 to-teal-500/20", icon: "text-emerald-400", border: "hover:border-emerald-500/30" },
-  email: { Icon: MailIcon, gradient: "from-blue-500/20 to-cyan-500/20", icon: "text-blue-400", border: "hover:border-blue-500/30" },
-  github: { Icon: GitHubIcon, gradient: "from-gray-500/20 to-gray-400/20", icon: "text-gray-300", border: "hover:border-gray-400/30" },
-  linkedin: { Icon: LinkedInIcon, gradient: "from-blue-600/20 to-blue-500/20", icon: "text-blue-500", border: "hover:border-blue-500/30" },
-};
-
-const list: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
-const item: Variants = {
-  hidden: (i: number) => ({ opacity: 0, x: 40 + i * 10, y: 10 }),
-  show: { opacity: 1, x: 0, y: 0, transition: { type: "spring", stiffness: 100, damping: 16, mass: 0.5 } },
-};
+/** อีเมลมีปุ่มใหญ่ของตัวเองแล้ว รายการด้านล่างจึงไม่ต้องซ้ำ */
+const OTHER_CONTACTS = contacts.filter((c) => c.kind !== "email");
 
 export default function ContactSection() {
+  const copyEmail = useCopyEmail();
+
   return (
     <Section
       id="contact"
-      eyebrow="Let's Connect"
-      title="Get in Touch"
-      subtitle="Feel free to reach out anytime."
-      accent="emerald"
-      narrow
+      eyebrow="Contact"
+      title="Let's work together"
+      subtitle="I'm open to Data/AI and full-stack internship opportunities. Email is the fastest way to reach me."
+      width="narrow"
     >
-      <address className="not-italic">
-        <motion.ul
-          variants={list}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid gap-3"
-        >
-          {contacts.map((c, i) => {
-            const { Icon, gradient, icon, border } = STYLES[c.kind];
-            return (
-              <motion.li key={c.kind} custom={i} variants={item}>
-                <motion.a
-                  {...linkProps(c.href)}
-                  whileHover={{ x: 6 }}
-                  className={`group relative isolate flex items-center gap-4 overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 hover:bg-white/[0.05] hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${border} transition-[background-color,border-color,box-shadow] duration-300`}
-                >
-                  <div
-                    aria-hidden="true"
-                    className={`absolute inset-0 -z-10 bg-gradient-to-r ${gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                  />
+      <m.address
+        {...revealOnView()}
+        onPointerMove={trackSpotlight}
+        className="group relative isolate block overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] p-6 text-center not-italic md:p-10"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(480px_circle_at_var(--x,50%)_var(--y,0%),rgb(129_140_248/0.12),transparent_50%)]"
+        />
 
-                  <div
-                    className={`flex size-11 shrink-0 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.04] ${icon} group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <Icon className="size-5" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-medium uppercase tracking-wider text-gray-400">{c.label}</p>
-                    <p className="truncate text-white">{c.value}</p>
-                  </div>
-                  <ChevronRightIcon className="size-4 shrink-0 text-gray-500 group-hover:text-white/60 transition-colors" />
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-400">Email</p>
+        <a
+          href={`mailto:${profile.email}`}
+          className="mt-2 inline-block break-all text-2xl font-semibold tracking-tight text-white decoration-indigo-400/60 underline-offset-8 hover:underline md:text-3xl"
+        >
+          {profile.email}
+        </a>
+
+        <div className="mt-6 flex flex-wrap justify-center gap-3 print:hidden">
+          <a
+            href={`mailto:${profile.email}`}
+            className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-ink transition-colors hover:bg-indigo-100"
+          >
+            <MailIcon className="size-4" />
+            Send an email
+          </a>
+          <button
+            type="button"
+            onClick={copyEmail}
+            className="inline-flex h-11 items-center gap-2 rounded-full border border-white/15 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/[0.06]"
+          >
+            <CopyIcon className="size-4" />
+            Copy email
+          </button>
+        </div>
+
+        <ul className="mt-8 grid gap-3 text-left sm:grid-cols-3">
+          {OTHER_CONTACTS.map((c) => {
+            const Icon = ICONS[c.kind];
+            return (
+              <li key={c.kind}>
+                <a
+                  {...linkProps(c.href)}
+                  className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.02] p-3 transition-colors hover:border-white/[0.16] hover:bg-white/[0.05]"
+                >
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-gray-200">
+                    <Icon className="size-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-xs text-gray-400">{c.label}</span>
+                    <span className="block truncate text-sm text-white">{c.value}</span>
+                  </span>
                   <NewTabHint href={c.href} />
-                </motion.a>
-              </motion.li>
+                </a>
+              </li>
             );
           })}
-        </motion.ul>
-      </address>
+        </ul>
+
+        <p className="mt-6 flex items-center justify-center gap-1.5 text-sm text-gray-400">
+          <MapPinIcon className="size-4" />
+          {profile.location}
+        </p>
+      </m.address>
     </Section>
   );
 }

@@ -1,65 +1,72 @@
-import { motion, type Variants } from "framer-motion";
-import NewTabHint from "../components/NewTabHint";
+import { m } from "framer-motion";
 import Section from "../components/Section";
 import SkillIcon from "../components/SkillIcon";
-import { skillsByCategory } from "../data";
-import { linkProps } from "../lib/links";
-
-// Variants เป็นค่าคงที่ระดับ module; stagger มาจาก parent อย่างเดียว ไม่ซ้อน delay ที่ child
-const group: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
-const heading: Variants = {
-  hidden: { opacity: 0, x: -20 },
-  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100, damping: 16 } },
-};
-const card: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.9 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 120, damping: 16, mass: 0.4 } },
-};
+import { skillGroups, type Skill } from "../data";
+import { revealOnView } from "../lib/motion";
+import { projectCountByTag, useProjectFilter } from "../lib/projectFilter";
 
 export default function SkillsSection() {
-  return (
-    <Section id="skills" eyebrow="What I Work With" title="Skills & Technologies">
-      <div className="space-y-12">
-        {skillsByCategory.map(({ category, items }) => (
-          <motion.div
-            key={category}
-            variants={group}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <motion.h3
-              variants={heading}
-              className="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-400"
-            >
-              <span aria-hidden="true" className="h-px max-w-8 flex-1 bg-indigo-500/30" />
-              {category}
-            </motion.h3>
+  const { setTag } = useProjectFilter();
 
-            <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {items.map((s) => (
-                <motion.li key={s.name} variants={card}>
-                  {/* CSS transition เฉพาะสี/เงา; transform ให้ framer-motion คุมคนเดียว */}
-                  <motion.a
-                    {...linkProps(s.url)}
-                    whileHover={{ scale: 1.06, y: -4 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="group relative isolate flex h-14 items-center gap-3 overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 text-sm font-medium text-gray-100 hover:border-indigo-500/40 hover:bg-white/[0.07] hover:shadow-[0_10px_30px_rgba(99,102,241,0.15)] transition-[background-color,border-color,box-shadow] duration-300"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-0 -z-10 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
-                    />
-                    <SkillIcon name={s.name} icon={s.icon} />
-                    <span className="truncate">{s.name}</span>
-                    <NewTabHint href={s.url} />
-                  </motion.a>
-                </motion.li>
+  const showProjects = (skill: string) => {
+    setTag(skill);
+    document.getElementById("projects")?.scrollIntoView();
+    // ย้าย focus ไปที่สรุปผลการกรอง → ผู้ใช้คีย์บอร์ด/screen reader รู้ว่ากดแล้วเกิดอะไรขึ้น
+    document.getElementById("projects-status")?.focus({ preventScroll: true });
+  };
+
+  return (
+    <Section
+      id="skills"
+      eyebrow="Skills"
+      title="Tools I work with"
+      subtitle="Skills with a number are used in my projects — select one to see them."
+    >
+      <div className="grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+        {skillGroups.map((group, i) => (
+          // กลุ่มแรกกว้าง 2 ช่อง → grid เต็มพอดีทั้งจอ 2 และ 3 คอลัมน์
+          <m.div key={group.title} {...revealOnView(i * 0.05)} className={i === 0 ? "md:col-span-2" : undefined}>
+            <h3 className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-gray-400">{group.title}</h3>
+            <ul className="flex flex-wrap gap-2">
+              {group.skills.map((skill) => (
+                <li key={skill.name}>
+                  <SkillChip skill={skill} onSelect={showProjects} />
+                </li>
               ))}
             </ul>
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </Section>
+  );
+}
+
+function SkillChip({ skill, onSelect }: { skill: Skill; onSelect: (name: string) => void }) {
+  const count = projectCountByTag.get(skill.name) ?? 0;
+
+  if (count === 0) {
+    return (
+      <span className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 text-sm text-gray-300">
+        <SkillIcon icon={skill.icon} />
+        {skill.name}
+      </span>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(skill.name)}
+      className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.045] px-3 text-sm text-white transition-colors hover:border-indigo-400/50 hover:bg-indigo-500/10"
+    >
+      <SkillIcon icon={skill.icon} />
+      {skill.name}
+      <span aria-hidden="true" className="rounded-md bg-indigo-400/15 px-1.5 py-px font-mono text-[11px] text-indigo-200">
+        {count}
+      </span>
+      <span className="sr-only">
+        : show {count} {count === 1 ? "project" : "projects"}
+      </span>
+    </button>
   );
 }

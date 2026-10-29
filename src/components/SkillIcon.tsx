@@ -1,38 +1,21 @@
-/** Pin เวอร์ชันเสมอ — @latest เปลี่ยนได้ทุกเมื่อ ถ้า devicon rename ไฟล์ icon จะพังเงียบ ๆ */
-const DEVICON_BASE = "https://cdn.jsdelivr.net/npm/devicon@2.18.0/icons";
+/**
+ * ไอคอนเก็บในโปรเจกต์เอง (src/assets/skills, ที่มา: devicon) แทนการโหลดจาก CDN ทีละไฟล์
+ * ไฟล์เล็กกว่า 4 KB ถูก Vite inline เข้า bundle → ไม่มี request เพิ่ม และไม่พังถ้า CDN ล่ม
+ * บางไฟล์ปรับสีให้สว่างขึ้นเพื่อให้เห็นบนพื้นมืด (mysql, pandas, java, unity, scikitlearn)
+ */
+const ICONS = import.meta.glob<string>("../assets/skills/*.svg", { eager: true, import: "default" });
 
-type Props = { name: string; icon?: string; size?: number };
+type Props = { icon?: string; size?: number };
 
 /** Icon เป็น decoration — ชื่อ skill แสดงเป็นข้อความข้าง ๆ อยู่แล้ว จึงใช้ alt="" */
-export default function SkillIcon({ name, icon, size = 22 }: Props) {
-  if (icon) {
-    return (
-      <img
-        src={`${DEVICON_BASE}/${icon}.svg`}
-        alt=""
-        width={size}
-        height={size}
-        loading="lazy"
-        decoding="async"
-        className="shrink-0"
-      />
-    );
+export default function SkillIcon({ icon, size = 18 }: Props) {
+  const src = icon ? ICONS[`../assets/skills/${icon}.svg`] : undefined;
+
+  if (!src) {
+    if (import.meta.env.DEV && icon) console.warn(`SkillIcon: ไม่พบไฟล์ src/assets/skills/${icon}.svg`);
+    // chip ที่ไม่มีโลโก้ (เช่น "Machine Learning") ใช้จุดสีแทน ให้แนวเดียวกับตัวอื่น
+    return <span aria-hidden="true" className="mx-[5px] size-2 shrink-0 rounded-full bg-indigo-400/80" />;
   }
 
-  const initials = name
-    .split(/\s+/)
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-
-  return (
-    <span
-      aria-hidden="true"
-      className="inline-flex shrink-0 items-center justify-center rounded-full bg-[#1f2a44] text-[10px] font-semibold text-gray-200"
-      style={{ width: size, height: size }}
-    >
-      {initials}
-    </span>
-  );
+  return <img src={src} alt="" width={size} height={size} decoding="async" className="shrink-0" />;
 }

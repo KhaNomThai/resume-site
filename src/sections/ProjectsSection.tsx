@@ -1,99 +1,203 @@
-import { motion, type Variants } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
+import { useId, useState, type ComponentType, type ReactNode, type SVGProps } from "react";
 import NewTabHint from "../components/NewTabHint";
 import Section from "../components/Section";
-import { ArrowUpRightIcon } from "../components/icons";
-import { projects, type Project } from "../data";
+import { ArrowUpRightIcon, CodeIcon, GlobeIcon, NotebookIcon } from "../components/icons";
+import { projects, type Project, type ProjectLinkKind } from "../data";
 import { linkProps } from "../lib/links";
+import { revealOnView } from "../lib/motion";
+import { projectCountByTag, useProjectFilter } from "../lib/projectFilter";
+import { trackSpotlight } from "../lib/spotlight";
 
-// Variants เป็นค่าคงที่ระดับ module → ไม่ถูกสร้าง object ใหม่ทุก render
-const list: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.18 } } };
-const card: Variants = {
-  hidden: { opacity: 0, y: 60, scale: 0.85 },
-  show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 80, damping: 18, mass: 0.6 } },
+const LINKS: Record<ProjectLinkKind, { label: string; Icon: ComponentType<SVGProps<SVGSVGElement>> }> = {
+  code: { label: "Code", Icon: CodeIcon },
+  demo: { label: "Live demo", Icon: GlobeIcon },
+  notebook: { label: "Notebook", Icon: NotebookIcon },
 };
-const tagList: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.05, delayChildren: 0.2 } } };
-const tag: Variants = {
-  hidden: { opacity: 0, scale: 0.6 },
-  show: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 200, damping: 14 } },
-};
+
+/** ตัวกรองหลัก = tag ที่มีอย่างน้อย 2 โปรเจกต์ (เรียงตามจำนวน) — ข้อมูล static คำนวณครั้งเดียว */
+const FILTER_TAGS = [...projectCountByTag]
+  .filter(([, count]) => count >= 2)
+  .sort((a, b) => b[1] - a[1])
+  .map(([tag]) => tag);
+
+/** มือถือแสดงก่อนแค่นี้ (การ์ดเรียงคอลัมน์เดียว หน้าจะยาวมาก) — จอ md ขึ้นไปแสดงครบเสมอ */
+const MOBILE_PREVIEW = 4;
 
 export default function ProjectsSection() {
+  const { tag, setTag } = useProjectFilter();
+  const [showAll, setShowAll] = useState(false);
+  const listId = useId();
+  const visible = tag ? projects.filter((p) => p.tags.includes(tag)) : projects;
+  const collapsible = tag === null && visible.length > MOBILE_PREVIEW;
+  // tag ที่เลือกมาจากปุ่มใน Skills อาจไม่อยู่ในแถบหลัก → ต่อท้ายให้เห็นว่ากำลังกรองอะไร
+  const filterTags = tag && !FILTER_TAGS.includes(tag) ? [...FILTER_TAGS, tag] : FILTER_TAGS;
+
   return (
-    <Section id="projects" eyebrow="What I've Built" title="Projects" accent="purple">
-      <motion.ul
-        variants={list}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.1 }}
-        className="grid gap-6"
-      >
-        {projects.map((project, i) => (
-          <motion.li key={project.title} variants={card}>
-            <ProjectCard project={project} index={i} />
-          </motion.li>
-        ))}
-      </motion.ul>
+    <Section
+      id="projects"
+      eyebrow="Projects"
+      title="Things I've built"
+      subtitle="Deep learning, computer vision, and full-stack work — from course projects to hackathons and real events."
+      width="wide"
+    >
+      <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between print:hidden">
+        {/* มือถือ: เลื่อนแนวนอน (ขอบขวาจางบอกว่ายังมีต่อ) / จอใหญ่: ตัดบรรทัดปกติ */}
+        <div
+          role="group"
+          aria-label="Filter projects by technology"
+          className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-1 [mask-image:linear-gradient(to_right,black_85%,transparent)] [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:[mask-image:none]"
+        >
+          <FilterChip pressed={tag === null} onClick={() => setTag(null)}>
+            All
+          </FilterChip>
+          {filterTags.map((t) => (
+            <FilterChip key={t} pressed={tag === t} onClick={() => setTag(tag === t ? null : t)}>
+              {t}
+              <span aria-hidden="true" className="font-mono text-[11px] opacity-60">
+                {projectCountByTag.get(t)}
+              </span>
+            </FilterChip>
+          ))}
+        </div>
+        <p id="projects-status" tabIndex={-1} aria-live="polite" className="shrink-0 font-mono text-xs text-gray-400 outline-none">
+          {tag ? `${visible.length} of ${projects.length} projects use ${tag}` : `${projects.length} projects`}
+        </p>
+      </div>
+
+      <AnimatePresence mode="wait" initial={false}>
+        <m.ul
+          key={tag ?? "all"}
+          id={listId}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
+        >
+          {visible.map((project, i) => {
+            // ใบแรกกว้าง 2 ช่องบนจอ 3 คอลัมน์ → 8 ใบเต็ม 3 แถวพอดี ไม่มีช่องโหว่
+            const featured = i === 0 && tag === null;
+            const collapsed = collapsible && !showAll && i >= MOBILE_PREVIEW;
+            return (
+              <li
+                key={project.id}
+                className={`${featured ? "lg:col-span-2" : ""} ${collapsed ? "max-md:hidden print:block!" : ""}`}
+              >
+                <ProjectCard project={project} featured={featured} delay={(i % 3) * 0.06} />
+              </li>
+            );
+          })}
+        </m.ul>
+      </AnimatePresence>
+
+      {collapsible && (
+        <div className="mt-6 flex justify-center md:hidden print:hidden">
+          <button
+            type="button"
+            aria-expanded={showAll}
+            aria-controls={listId}
+            onClick={() => setShowAll((v) => !v)}
+            className="h-11 rounded-full border border-white/15 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/[0.06]"
+          >
+            {showAll ? "Show fewer projects" : `Show all ${projects.length} projects`}
+          </button>
+        </div>
+      )}
     </Section>
   );
 }
 
-function ProjectCard({ project: { title, desc, link, tags }, index }: { project: Project; index: number }) {
+function FilterChip({ pressed, onClick, children }: { pressed: boolean; onClick: () => void; children: ReactNode }) {
   return (
-    // CSS transition เฉพาะ border/shadow; transform ให้ framer-motion คุมคนเดียว
-    <motion.article
-      whileHover={{ y: -6, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className="group relative isolate overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 md:p-8 transition-[border-color,box-shadow] duration-500 hover:border-purple-500/30 hover:shadow-[0_25px_50px_rgba(99,102,241,0.12),0_0_0_1px_rgba(168,85,247,0.2)]"
+    <button
+      type="button"
+      aria-pressed={pressed}
+      onClick={onClick}
+      className={`flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm transition-colors ${
+        pressed
+          ? "border-indigo-300/60 bg-indigo-400/15 text-white"
+          : "border-white/10 text-gray-300 hover:border-white/25 hover:text-white"
+      }`}
     >
-      {/* Decorations: อยู่หลังเนื้อหา (-z-10 ภายใน isolate) และซ่อนจาก screen reader */}
+      {children}
+    </button>
+  );
+}
+
+function ProjectCard({ project, featured, delay }: { project: Project; featured: boolean; delay: number }) {
+  const { title, category, year, context, desc, metric, tags, links } = project;
+  const [primary] = links;
+
+  return (
+    <m.article
+      {...revealOnView(delay, 24)}
+      onPointerMove={trackSpotlight}
+      className="group relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.025] p-6 transition-colors duration-300 hover:border-white/[0.15] md:p-7"
+    >
+      {/* แสงตามเมาส์: ตำแหน่งมาจาก --x/--y ที่ trackSpotlight ตั้งให้ (แทนการขยายการ์ดที่ทำให้ตัวหนังสือเบลอ) */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-500/0 via-purple-500/0 to-blue-500/0 group-hover:from-indigo-500/5 group-hover:via-purple-500/5 group-hover:to-blue-500/5 transition-colors duration-700"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(420px_circle_at_var(--x,50%)_var(--y,0%),rgb(129_140_248/0.14),transparent_45%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       />
-      <div
-        aria-hidden="true"
-        className="absolute -z-10 top-0 right-0 size-24 rounded-bl-full bg-gradient-to-bl from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute -z-10 top-4 right-6 select-none text-6xl font-bold text-white/[0.03] group-hover:text-indigo-500/[0.06] transition-colors duration-500 print:hidden"
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
 
-      <div className="mb-3 flex items-start justify-between gap-4">
-        <h3 className="text-xl font-semibold text-white group-hover:text-indigo-300 transition-colors duration-300">
-          {link ? (
-            // "Stretched link": ::after คลุมทั้งการ์ด → คลิกได้ทั้งใบ แต่ accessible name = ชื่อโปรเจกต์อย่างเดียว
-            <a
-              {...linkProps(link)}
-              className="outline-none after:absolute after:inset-0 after:rounded-2xl focus-visible:after:ring-2 focus-visible:after:ring-indigo-400"
-            >
-              {title}
-              <NewTabHint href={link} />
-            </a>
-          ) : (
-            title
-          )}
-        </h3>
-        {link && (
-          <ArrowUpRightIcon className="mt-1 size-5 shrink-0 text-gray-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
-        )}
-      </div>
+      <p className="flex items-center justify-between gap-3 font-mono text-xs">
+        <span className="text-indigo-300">{category}</span>
+        {year && <span className="text-gray-500">{year}</span>}
+      </p>
 
-      <p className="mb-5 text-sm md:text-base leading-relaxed text-gray-400">{desc}</p>
+      <h3 className={`mt-3 font-semibold tracking-tight text-white ${featured ? "text-2xl md:text-3xl" : "text-lg"}`}>
+        {/* "Stretched link": ::after คลุมทั้งการ์ด → คลิกได้ทั้งใบ แต่ accessible name = ชื่อโปรเจกต์อย่างเดียว */}
+        <a
+          {...linkProps(primary.href)}
+          className="outline-none after:absolute after:inset-0 after:rounded-2xl focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-indigo-400"
+        >
+          {title}
+          <NewTabHint href={primary.href} />
+        </a>
+      </h3>
+      {context && <p className="mt-1 text-sm text-gray-400">{context}</p>}
 
-      <motion.ul variants={tagList} aria-label="Tech stack" className="flex flex-wrap gap-2">
+      {metric && (
+        <p className="mt-5 flex items-baseline gap-3">
+          <span className="text-4xl font-semibold tracking-tight text-white">{metric.value}</span>
+          <span className="text-sm text-gray-400">{metric.label}</span>
+        </p>
+      )}
+
+      <p className={`mt-4 leading-relaxed text-gray-400 ${featured ? "max-w-3xl text-base" : "text-sm"}`}>{desc}</p>
+
+      <ul aria-label="Tech stack" className="mt-5 flex flex-wrap gap-1.5">
         {tags.map((t) => (
-          <motion.li
+          <li
             key={t}
-            variants={tag}
-            className="rounded-full border border-white/[0.08] bg-white/[0.05] px-3 py-1 text-xs text-gray-300 group-hover:border-indigo-500/20 group-hover:text-indigo-200 transition-colors"
+            className="rounded-md border border-white/[0.06] bg-white/[0.04] px-2 py-0.5 font-mono text-[11px] text-gray-300"
           >
             {t}
-          </motion.li>
+          </li>
         ))}
-      </motion.ul>
-    </motion.article>
+      </ul>
+
+      {/* z-10 ให้อยู่เหนือ ::after ของ stretched link → ลิงก์รองยังกดได้ */}
+      <div className="relative z-10 mt-auto pt-5">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-white/[0.06] pt-4">
+          {links.map(({ kind, href }) => {
+            const { label, Icon } = LINKS[kind];
+            return (
+              <a
+                key={href}
+                {...linkProps(href)}
+                className="inline-flex items-center gap-1.5 text-sm text-gray-300 transition-colors hover:text-white"
+              >
+                <Icon className="size-4" />
+                {label}
+                <ArrowUpRightIcon className="size-3 opacity-60" />
+                <NewTabHint href={href} />
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </m.article>
   );
 }

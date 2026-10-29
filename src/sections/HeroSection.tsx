@@ -1,242 +1,186 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, type ReactNode } from "react";
-import avatarImg from "../assets/profile-320.webp";
-// import ผ่าน Vite → ได้ URL ที่มี hash + base path (/resume-site/) ถูกต้องอัตโนมัติ
-import cvPdf from "../assets/Kulachart-Parnduangkeaw-CV.pdf";
-import NewTabHint from "../components/NewTabHint";
-import SkillIcon from "../components/SkillIcon";
-import Typewriter from "../components/Typewriter";
-import { ArrowUpRightIcon, DownloadIcon, GitHubIcon, LinkedInIcon, MapPinIcon } from "../components/icons";
-import { githubUrl, linkedinUrl, profile, skills } from "../data";
-import { linkProps } from "../lib/links";
+import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import type { ReactNode } from "react";
+import avatar320 from "../assets/profile-320.webp";
+import avatar640 from "../assets/profile-640.webp";
+import { ArrowDownIcon, ArrowRightIcon, DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon, MapPinIcon } from "../components/icons";
+import { TOP_ID } from "../config/sections";
+import { githubUrl, highlights, linkedinUrl, profile } from "../data";
+import { CV_FILENAME, CV_URL } from "../lib/cv";
+import { isExternal, linkProps } from "../lib/links";
+import { EASE_OUT } from "../lib/motion";
 
-const fadeIn = (delay: number, y = 0, duration = 0.5) => ({
-  initial: { opacity: 0, y },
+/** ทุกอย่างขึ้นครบภายใน ~0.8 วินาที — คนเปิดเว็บเห็นปุ่มหลักทันที */
+const enter = (delay: number) => ({
+  initial: { opacity: 0, y: 14 },
   animate: { opacity: 1, y: 0 },
-  transition: { delay, duration, ease: "easeOut" as const },
+  transition: { duration: 0.55, ease: EASE_OUT, delay },
 });
 
-const MARQUEE_MASK = "linear-gradient(to right, transparent, black 15%, black 85%, transparent)";
-
-/**
- * CSS animation แทน framer-motion loop → หยุดได้ตอน hover/focus (WCAG 2.2.2)
- * และหยุดเองเมื่อ prefers-reduced-motion
- * ชุดที่ 2 มีไว้ทำ seamless loop เท่านั้น → aria-hidden + tabIndex=-1
- */
-function TechMarquee() {
+function Backdrop() {
   return (
     <div
-      className="group relative w-full max-w-lg overflow-hidden py-4"
-      style={{ maskImage: MARQUEE_MASK, WebkitMaskImage: MARQUEE_MASK }}
-    >
-      <div
-        className="flex w-max animate-marquee group-hover:[animation-play-state:paused] group-focus-within:[animation-play-state:paused] motion-reduce:animate-none"
-        style={{ animationDuration: `${skills.length * 2.5}s` }}
-      >
-        {[0, 1].map((copy) => (
-          <ul key={copy} aria-hidden={copy === 1 || undefined} className="flex items-center">
-            {skills.map((s) => (
-              <li key={s.name} className="mr-8 shrink-0">
-                <a
-                  {...linkProps(s.url)}
-                  tabIndex={copy === 1 ? -1 : undefined}
-                  className="flex items-center gap-2 opacity-60 hover:opacity-100 focus-visible:opacity-100 transition-opacity"
-                >
-                  <SkillIcon name={s.name} icon={s.icon} size={24} />
-                  <span className="text-xs text-gray-300 whitespace-nowrap">{s.name}</span>
-                  <NewTabHint href={s.url} />
-                </a>
-              </li>
-            ))}
-          </ul>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Shapes() {
-  return (
-    <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none print:hidden">
-      <motion.div
-        className="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-20"
-        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.4), transparent 70%)" }}
-        animate={{ scale: [1, 1.15, 1], x: [0, 15, 0], y: [0, -10, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute -bottom-32 -left-20 w-96 h-96 rounded-full opacity-15"
-        style={{ background: "radial-gradient(circle, rgba(168,85,247,0.3), transparent 70%)" }}
-        animate={{ scale: [1, 1.1, 1], x: [0, -10, 0], y: [0, 15, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
-      <motion.div
-        className="absolute top-1/4 left-0 w-32 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent"
-        animate={{ x: [-50, 50, -50], opacity: [0, 0.5, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-1/3 right-0 w-24 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"
-        animate={{ x: [30, -30, 30], opacity: [0, 0.4, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      />
-    </div>
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 [background-image:linear-gradient(to_right,rgb(255_255_255/0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgb(255_255_255/0.035)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black,transparent)] print:hidden"
+    />
   );
 }
 
 function Avatar() {
   return (
-    <motion.div
-      className="relative"
-      initial={{ opacity: 0, scale: 0.85 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: "spring", stiffness: 100, damping: 16, delay: 0.2 }}
-    >
+    <div className="relative size-28 sm:size-32 lg:size-60">
+      <div aria-hidden="true" className="absolute -inset-10 rounded-full bg-indigo-500/20 blur-3xl print:hidden" />
+      {/* วงแหวนไล่สีหมุนช้า ๆ: CSS rotate บน compositor, หยุดเองเมื่อ prefers-reduced-motion */}
       <div
         aria-hidden="true"
-        className="absolute -inset-3 rounded-full opacity-40"
-        style={{
-          background:
-            "conic-gradient(from 180deg, rgba(99,102,241,0.5), rgba(168,85,247,0.35), rgba(59,130,246,0.4), rgba(99,102,241,0.5))",
-        }}
+        className="absolute -inset-[3px] animate-spin-slow rounded-full bg-[conic-gradient(from_0deg,#818cf8,#c084fc,#38bdf8,#818cf8)] print:hidden"
       />
-      <div aria-hidden="true" className="absolute -inset-3 rounded-full bg-[#0b1220]/80" />
-      <motion.div
-        aria-hidden="true"
-        className="absolute -inset-5 rounded-full"
-        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.12), transparent 65%)" }}
-        animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
-      {/* LCP image: ระบุขนาด (กัน layout shift) + fetchPriority="high" */}
-      <motion.img
-        src={avatarImg}
+      {/* LCP image: ระบุขนาด (กัน layout shift) + fetchPriority="high" + srcSet ให้คมบนจอ Retina */}
+      <img
+        src={avatar320}
+        srcSet={`${avatar320} 320w, ${avatar640} 640w`}
+        sizes="(min-width: 1024px) 240px, 128px"
         alt={`Portrait of ${profile.name}`}
-        width={160}
-        height={160}
+        width={240}
+        height={240}
         fetchPriority="high"
-        className="relative size-32 md:size-40 rounded-full ring-2 ring-white/15 object-cover shadow-2xl"
-        whileHover={{ scale: 1.06, boxShadow: "0 0 40px rgba(99,102,241,0.35)" }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+        className="relative size-full rounded-full object-cover ring-4 ring-ink"
       />
-    </motion.div>
+    </div>
   );
 }
 
-type SocialButtonProps = { href: string; icon: ReactNode; label: string; primary?: boolean };
-
-function SocialButton({ href, icon, label, primary }: SocialButtonProps) {
+function IconLink({ href, label, children }: { href: string; label: string; children: ReactNode }) {
   return (
-    <motion.a
+    <a
       {...linkProps(href)}
-      whileHover={{ scale: 1.05, y: -2 }}
-      whileTap={{ scale: 0.97 }}
-      className={`group flex items-center gap-2 rounded-full px-7 py-3.5 font-medium text-white ${
-        primary
-          ? "bg-gradient-to-r from-indigo-500 to-indigo-600 shadow-lg shadow-indigo-500/25 hover:shadow-[0_16px_32px_rgba(99,102,241,0.3)] transition-shadow"
-          : "border border-white/15 hover:bg-white/[0.06] transition-colors"
-      }`}
+      aria-label={isExternal(href) ? `${label} (opens in a new tab)` : label}
+      title={label}
+      className="flex size-11 items-center justify-center rounded-full border border-white/10 text-gray-300 transition-colors hover:border-white/25 hover:bg-white/[0.06] hover:text-white"
     >
-      {icon}
-      {label}
-      <ArrowUpRightIcon className="size-3.5 opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition" />
-      <NewTabHint href={href} />
-    </motion.a>
+      {children}
+    </a>
   );
 }
 
 export default function HeroSection() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const reduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+  // จางลงตอนเลื่อนผ่าน — ไม่ขยับตำแหน่ง (เดิม parallax ดันเนื้อหาลงไปโดนขอบ section ตัด)
+  const fade = useTransform(scrollY, [0, 600], [1, 0.2]);
 
   return (
     <section
-      id="hero"
-      ref={ref}
+      id={TOP_ID}
       aria-labelledby="hero-heading"
-      className="relative min-h-dvh flex items-center justify-center overflow-hidden"
+      className="relative flex min-h-dvh flex-col justify-center overflow-hidden pb-14 pt-24"
     >
-      <Shapes />
+      <Backdrop />
 
-      <motion.div style={{ y, opacity, scale }} className="max-w-5xl mx-auto px-6 w-full">
-        <div className="flex flex-col items-center text-center gap-6 py-16">
-          <Avatar />
-
-          <motion.h1
-            id="hero-heading"
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-500"
-          >
-            {profile.name}
-          </motion.h1>
-
-          <motion.div {...fadeIn(0.8)} className="flex items-center justify-center gap-3">
-            <span aria-hidden="true" className="h-px w-8 bg-gradient-to-r from-transparent to-indigo-400/50" />
-            <p className="text-lg md:text-2xl text-indigo-300 font-medium">
-              <Typewriter key={profile.role} text={profile.role} delay={900} />
-            </p>
-            <span aria-hidden="true" className="h-px w-8 bg-gradient-to-l from-transparent to-indigo-400/50" />
-          </motion.div>
-
-          <motion.p {...fadeIn(1.1)} className="-mt-2 flex items-center justify-center gap-1.5 text-sm text-gray-400">
-            <MapPinIcon className="size-3.5" />
-            {profile.location}
-          </motion.p>
-
-          <motion.p
-            {...fadeIn(1.3, 15, 0.6)}
-            className="max-w-2xl text-base md:text-lg leading-relaxed text-gray-300 font-light"
-          >
-            {profile.summary}
-          </motion.p>
-
-          <motion.div {...fadeIn(1.5, 0, 0.8)} className="mt-2 flex w-full justify-center print:hidden">
-            <TechMarquee />
-          </motion.div>
-
-          <motion.div {...fadeIn(1.7, 20)} className="mt-2 flex flex-wrap justify-center gap-4 print:hidden">
-            <SocialButton href={githubUrl} icon={<GitHubIcon className="size-4" />} label="GitHub" primary />
-            <SocialButton href={linkedinUrl} icon={<LinkedInIcon className="size-4" />} label="LinkedIn" />
-            <motion.a
-              href={cvPdf}
-              download="Kulachart-Parnduangkeaw-CV.pdf"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className="flex items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 font-medium text-white hover:bg-white/[0.06] transition-colors"
+      <m.div style={reduceMotion ? undefined : { opacity: fade }} className="relative mx-auto w-full max-w-6xl px-6">
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-16">
+          <div className="text-center lg:text-left">
+            <m.p
+              {...enter(0)}
+              className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.07] px-3 py-1 text-xs font-medium text-emerald-300"
             >
-              <DownloadIcon className="size-4" />
-              Download CV
-              <span className="sr-only">(PDF)</span>
-            </motion.a>
-          </motion.div>
+              <span aria-hidden="true" className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
+                <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+              </span>
+              {profile.availability}
+            </m.p>
 
-          {/* Scroll indicator (decorative) */}
-          <motion.div
-            aria-hidden="true"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.2 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 print:hidden"
-          >
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="flex h-8 w-5 justify-center rounded-full border border-gray-600/30 pt-1.5"
+            <m.h1
+              {...enter(0.05)}
+              id="hero-heading"
+              // มือถือ 40px: "Parnduangkeaw" เป็นคำเดียวตัดบรรทัดไม่ได้ — 48px จะล้นจอกว้าง 375px
+              className="mt-5 text-[2.5rem] font-semibold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl"
             >
-              <motion.div
-                className="h-1.5 w-0.5 rounded-full bg-gray-400/50"
-                animate={{ y: [0, 5, 0], opacity: [0.8, 0.2, 0.8] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              />
-            </motion.div>
-          </motion.div>
+              {/* แยกบรรทัดชัดเจน → gradient ไล่สีในแต่ละบรรทัด ไม่จางทั้งบรรทัดตอนตัดคำ */}
+              <span className="block text-white">{profile.firstName}</span>
+              <span className="block bg-gradient-to-r from-indigo-300 via-violet-300 to-sky-300 bg-clip-text pb-1 text-transparent">
+                {profile.lastName}
+              </span>
+            </m.h1>
+
+            <m.div {...enter(0.1)} className="mt-4 space-y-1.5">
+              <p className="font-mono text-sm text-indigo-200/90">
+                {profile.role} · {profile.school}
+              </p>
+              <p className="flex items-center justify-center gap-1.5 text-sm text-gray-400 lg:justify-start">
+                <MapPinIcon className="size-4" />
+                {profile.location}
+              </p>
+            </m.div>
+
+            <m.p
+              {...enter(0.15)}
+              className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-gray-300 md:text-lg lg:mx-0"
+            >
+              {profile.summary}
+            </m.p>
+
+            <m.div
+              {...enter(0.2)}
+              className="mt-7 flex flex-wrap items-center justify-center gap-3 print:hidden lg:justify-start"
+            >
+              <a
+                href="#projects"
+                className="group inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-ink transition-colors hover:bg-indigo-100"
+              >
+                View projects
+                <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href={CV_URL}
+                download={CV_FILENAME}
+                className="inline-flex h-11 items-center gap-2 rounded-full border border-white/15 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/[0.06]"
+              >
+                <DownloadIcon className="size-4" />
+                Download CV
+                <span className="sr-only">(PDF)</span>
+              </a>
+              <div className="flex gap-2">
+                <IconLink href={githubUrl} label="GitHub">
+                  <GitHubIcon className="size-[18px]" />
+                </IconLink>
+                <IconLink href={linkedinUrl} label="LinkedIn">
+                  <LinkedInIcon className="size-[18px]" />
+                </IconLink>
+                <IconLink href={`mailto:${profile.email}`} label="Email">
+                  <MailIcon className="size-5" />
+                </IconLink>
+              </div>
+            </m.div>
+          </div>
+
+          <m.div {...enter(0.1)} className="order-first mx-auto lg:order-none">
+            <Avatar />
+          </m.div>
         </div>
-      </motion.div>
+
+        <m.dl
+          {...enter(0.3)}
+          className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.07] lg:mt-14 lg:grid-cols-4"
+        >
+          {highlights.map((h) => (
+            // dt/dd ตามลำดับความหมาย แต่สลับลำดับที่ตาเห็น → ตัวเลขเด่นอยู่บน
+            <div key={h.label} className="flex flex-col-reverse justify-end gap-1 bg-ink/90 p-4 sm:p-5">
+              <dt className="text-xs text-gray-400">{h.label}</dt>
+              <dd className="text-base font-semibold tracking-tight text-white sm:text-lg">{h.value}</dd>
+            </div>
+          ))}
+        </m.dl>
+      </m.div>
+
+      {/* อยู่นอก wrapper ที่มี transform → ตำแหน่งไม่กระโดด และซ่อนบนจอเตี้ยที่ไม่มีที่ว่าง */}
+      <a
+        href="#projects"
+        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 items-center justify-center rounded-full p-2 text-gray-500 transition-colors hover:text-white [@media(min-height:860px)]:flex print:hidden"
+      >
+        <ArrowDownIcon className="size-5 animate-bounce motion-reduce:animate-none" />
+        <span className="sr-only">Scroll to projects</span>
+      </a>
     </section>
   );
 }

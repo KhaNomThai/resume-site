@@ -1,105 +1,82 @@
-import { motion, useScroll, useTransform, type Variants } from "framer-motion";
+import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Section from "../components/Section";
-import { experience } from "../data";
+import { leadership, work, type TimelineItem } from "../data";
+import { revealOnView } from "../lib/motion";
 
-const list: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.2 } } };
-const itemShow: Variants["show"] = {
-  opacity: 1,
-  x: 0,
-  y: 0,
-  transition: { type: "spring", stiffness: 80, damping: 18, mass: 0.5 },
-};
-const itemFromRight: Variants = { hidden: { opacity: 0, x: 40, y: 20 }, show: itemShow };
-const itemFromLeft: Variants = { hidden: { opacity: 0, x: -40, y: 20 }, show: itemShow };
-const bulletList: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
-const bullet: Variants = {
-  hidden: { opacity: 0, x: -10 },
-  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 120, damping: 14 } },
-};
+/**
+ * Timeline คอลัมน์เดียว ข้อความชิดซ้ายเสมอ (เดิมสลับซ้าย-ขวาและจัดชิดขวา อ่านยาก)
+ * ตำแหน่งเส้น/จุด: มือถือ 7px จากซ้าย, จอ md อยู่กลางช่องว่างระหว่างคอลัมน์วันที่ (10rem) กับเนื้อหา
+ */
+const LINE_X = "left-[7px] md:left-[11.5rem]";
 
 export default function ExperienceSection() {
   const timelineRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ["start 0.6", "end 0.8"] });
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ["start 0.75", "end 0.6"] });
+  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <Section id="experience" eyebrow="My Journey" title="Experience">
+    <Section id="experience" eyebrow="Experience" title="Work & leadership">
       <div ref={timelineRef} className="relative">
-        <div
-          aria-hidden="true"
-          className="absolute left-[1.2rem] md:left-1/2 md:-translate-x-px top-0 bottom-0 w-px bg-white/[0.04]"
-        >
-          <motion.div
-            className="w-full bg-gradient-to-b from-indigo-500/60 via-purple-500/40 to-indigo-500/20"
-            style={{ height: lineHeight }}
+        <div aria-hidden="true" className={`absolute bottom-4 top-9 w-px bg-white/[0.08] ${LINE_X}`}>
+          {/* เส้นเติมตามการเลื่อน: scaleY แทน height → ไม่ต้องคำนวณ layout ใหม่ทุกเฟรม */}
+          <m.div
+            className="size-full origin-top bg-gradient-to-b from-indigo-400 via-violet-400 to-sky-400/40"
+            style={{ scaleY: reduceMotion ? 1 : lineScale }}
           />
         </div>
 
-        <motion.ol
-          variants={list}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.1 }}
-          className="space-y-12"
-        >
-          {experience.map((it, i) => {
-            const isEven = i % 2 === 0;
-            return (
-              <motion.li
-                key={it.id}
-                variants={isEven ? itemFromRight : itemFromLeft}
-                className={`relative flex items-start gap-6 md:gap-0 ${isEven ? "md:flex-row" : "md:flex-row-reverse"}`}
-              >
-                {/* Timeline dot */}
-                <div
-                  aria-hidden="true"
-                  className="absolute left-[1.2rem] md:left-1/2 md:-translate-x-1/2 z-10 flex items-center justify-center"
-                >
-                  <motion.div
-                    className="absolute size-6 rounded-full"
-                    style={{ background: "radial-gradient(circle, rgba(129,140,248,0.3) 0%, transparent 70%)" }}
-                    animate={{ scale: [1, 2, 2.5], opacity: [0.5, 0.2, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
-                  />
-                  <div className="size-3.5 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 shadow-[0_0_12px_rgba(129,140,248,0.4)]" />
-                </div>
-
-                <div className={`flex-1 ml-12 md:ml-0 ${isEven ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                  <motion.article
-                    whileHover={{ y: -3 }}
-                    className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 md:p-6 hover:bg-white/[0.04] hover:border-indigo-500/20 hover:shadow-[0_15px_30px_rgba(99,102,241,0.08)] transition-[background-color,border-color,box-shadow] duration-500"
-                  >
-                    <p className="mb-3 inline-block rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-400">
-                      {it.period}
-                    </p>
-                    <h3 className="mb-1 text-lg font-semibold text-white">{it.title}</h3>
-                    <p className="mb-3 text-sm font-medium text-indigo-300/80">{it.org}</p>
-
-                    {it.bullets.length > 0 && (
-                      <motion.ul variants={bulletList} className="space-y-2 text-sm leading-relaxed text-gray-300">
-                        {it.bullets.map((b) => (
-                          <motion.li
-                            key={b}
-                            variants={bullet}
-                            className={`flex items-start gap-2 ${isEven ? "md:flex-row-reverse" : ""}`}
-                          >
-                            <span aria-hidden="true" className="mt-1.5 shrink-0 text-indigo-400/60">▸</span>
-                            <span>{b}</span>
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                    )}
-                  </motion.article>
-                </div>
-
-                {/* Spacer for the other side on desktop */}
-                <div aria-hidden="true" className="hidden md:block flex-1" />
-              </motion.li>
-            );
-          })}
-        </motion.ol>
+        <TimelineGroup title="Work" items={work} />
+        <TimelineGroup title="Leadership & Teaching" items={leadership} className="mt-14" />
       </div>
     </Section>
+  );
+}
+
+function TimelineGroup({ title, items, className }: { title: string; items: TimelineItem[]; className?: string }) {
+  return (
+    <div className={className}>
+      <h3 className="mb-6 pl-8 font-mono text-xs uppercase tracking-[0.2em] text-gray-400 md:pl-[13rem]">{title}</h3>
+      <ol className="space-y-6">
+        {items.map((item) => (
+          <TimelineEntry key={item.id} item={item} />
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function TimelineEntry({ item }: { item: TimelineItem }) {
+  const current = item.period.includes("Present");
+
+  return (
+    <m.li {...revealOnView()} className="relative pl-8 md:grid md:grid-cols-[10rem_1fr] md:gap-12 md:pl-0">
+      {/* -translate-x-1/2 ทุกขนาดจอ → จุดอยู่กึ่งกลางเส้นพอดี (เดิมใส่แค่ md: บนมือถือเลยเยื้อง) */}
+      <span aria-hidden="true" className={`absolute top-[5px] flex size-3.5 -translate-x-1/2 items-center justify-center ${LINE_X}`}>
+        {current && (
+          <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400/50 motion-reduce:animate-none" />
+        )}
+        <span className={`relative size-2.5 rounded-full ring-4 ring-ink ${current ? "bg-emerald-400" : "bg-indigo-400"}`} />
+      </span>
+
+      <p className="font-mono text-xs leading-6 text-gray-400 md:text-right">
+        {item.period}
+        {current && <span className="ml-2 text-emerald-300 md:ml-0 md:block">Current</span>}
+      </p>
+
+      <article className="mt-2 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5 transition-colors duration-300 hover:border-white/[0.14] md:mt-0 md:p-6">
+        <h4 className="text-lg font-semibold tracking-tight text-white">{item.title}</h4>
+        <p className="mt-0.5 text-sm text-indigo-300">{item.org}</p>
+        <ul className="mt-4 space-y-2 text-sm leading-relaxed text-gray-300">
+          {item.bullets.map((bullet) => (
+            <li key={bullet} className="flex gap-3">
+              <span aria-hidden="true" className="mt-[9px] size-1 shrink-0 rounded-full bg-indigo-400/80" />
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      </article>
+    </m.li>
   );
 }

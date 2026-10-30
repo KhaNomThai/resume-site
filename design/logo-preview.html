@@ -79,6 +79,18 @@
     .lockup .links { margin-left: auto; font: 400 14px/20px var(--sans); color: var(--ink-muted); display: flex; gap: 16px; }
     .lockup.dark .links { color: var(--dark-muted); }
 
+    .overview { margin-top: 24px; }
+    .overview h2 { font: 500 36px/44px var(--serif); letter-spacing: -0.01em; }
+    .ov-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    .ov { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--surface); color: var(--ink); text-decoration: none; }
+    .ov:hover, .ov:focus-visible { border-color: var(--pen); }
+    .ov:focus-visible { outline: 2px solid var(--pen); outline-offset: 2px; }
+    .ov-l, .ov-d { display: grid; place-items: center; padding: 10px 4px; }
+    .ov-l { background: var(--paper); }
+    .ov-d { background: var(--dark-paper); }
+    .ov-l img, .ov-d img { width: 100%; max-width: 64px; height: auto; }
+    .ov-f { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; padding: 8px 10px 0; }
+    .ov-n { grid-column: 1 / -1; padding: 4px 10px 10px; font: 600 14px/20px var(--sans); }
     .compare { margin-top: 56px; }
     .compare h2 { font: 500 36px/44px var(--serif); letter-spacing: -0.01em; }
     table { width: 100%; margin-top: 20px; border-collapse: collapse; font-size: 15px; line-height: 22px; }
@@ -90,7 +102,7 @@
     code { font: 500 13px/20px ui-monospace, Menlo, monospace; }
 
     .table-wrap { overflow-x: auto; margin-top: 20px; }
-    .table-wrap table { margin-top: 0; min-width: 640px; }
+    .table-wrap table { margin-top: 0; min-width: 980px; }
 
     @media (max-width: 860px) {
       .page { padding: 0 16px 64px 40px; }
@@ -99,6 +111,7 @@
       .concept { padding: 20px; }
       .stage, .context, .notes { grid-template-columns: 1fr; }
       .tabbar .other, .lockup .links { display: none; }
+      .ov-grid { grid-template-columns: repeat(2, 1fr); }
       h1 { font-size: 36px; line-height: 40px; }
     }
   </style>
@@ -106,10 +119,16 @@
 <body>
   <div class="page">
     <header>
-      <h1>Logo ตัว K: 3 concept</h1>
+      <h1>Logo ตัว K: 7 concept</h1>
       <p class="lead">ทุก concept ใช้สีจาก design system เท่านั้น คือหมึก ปากกาน้ำเงิน เส้น margin สีแดง และปากกาเน้นสีเหลือง และมี 4 ไฟล์: <mark>สีเต็ม, ขาวดำ, พื้นมืด และ favicon</mark></p>
       <p class="meta">favicon ไม่ได้ย่อจากตัวใหญ่ แต่วาดใหม่บนตาราง 16×16 ให้เส้นตรงพิกเซล วิธีนี้เรียกว่า optical sizing ซึ่ง logo ของแบรนด์ใหญ่ก็ใช้ ช่อง "16px จริง" วาดลงพิกเซลจริงแล้วขยายให้ดู เพื่อให้เห็นสิ่งที่จะอยู่บนแถบ tab จริงๆ หน้านี้ดูได้ถูกต้องที่สุดใน Chrome</p>
     </header>
+
+    <section class="overview">
+      <h2>ทั้ง 7 แบบในหน้าเดียว</h2>
+      <p class="meta">แบบ 1–3 คือรอบแรก แบบ 4–7 คือรอบสองที่ลองสไตล์ต่างกันออกไป: ตัวอักษรในวงเล็บ, จุดข้อมูล, serif แบบคลาสสิก และลายมือ กดที่แบบไหนเพื่อดูรายละเอียด</p>
+      <div class="ov-grid"><a class="ov" href="#curves"><span class="ov-l"><img src="logo/k-curves.svg" width="88" height="88" alt="" /></span><span class="ov-d"><img src="logo/k-curves-dark.svg" width="88" height="88" alt="" /></span><span class="ov-f"><img src="logo/k-curves-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><img src="logo/k-curves-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /></span><span class="ov-n">1 · Learning curves</span></a><a class="ov" href="#split"><span class="ov-l"><img src="logo/k-split.svg" width="88" height="88" alt="" /></span><span class="ov-d"><img src="logo/k-split-dark.svg" width="88" height="88" alt="" /></span><span class="ov-f"><img src="logo/k-split-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><img src="logo/k-split-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /></span><span class="ov-n">2 · Decision split</span></a><a class="ov" href="#marker"><span class="ov-l"><img src="logo/k-marker.svg" width="88" height="88" alt="" /></span><span class="ov-d"><img src="logo/k-marker-dark.svg" width="88" height="88" alt="" /></span><span class="ov-f"><img src="logo/k-marker-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><img src="logo/k-marker-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /></span><span class="ov-n">3 · Highlighted K</span></a><a class="ov" href="#cell"><span class="ov-l"><img src="logo/k-cell.svg" width="88" height="88" alt="" /></span><span class="ov-d"><img src="logo/k-cell-dark.svg" width="88" height="88" alt="" /></span><span class="ov-f"><img src="logo/k-cell-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><img src="logo/k-cell-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /></span><span class="ov-n">4 · Notebook cell</span></a><a class="ov" href="#scatter"><span class="ov-l"><img src="logo/k-scatter.svg" width="88" height="88" alt="" /></span><span class="ov-d"><img src="logo/k-scatter-dark.svg" width="88" height="88" alt="" /></span><span class="ov-f"><img src="logo/k-scatter-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><img src="logo/k-scatter-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /></span><span class="ov-n">5 · Scatter</span></a><a class="ov" href="#serif"><span class="ov-l"><img src="logo/k-serif.svg" width="88" height="88" alt="" /></span><span class="ov-d"><img src="logo/k-serif-dark.svg" width="88" height="88" alt="" /></span><span class="ov-f"><img src="logo/k-serif-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><img src="logo/k-serif-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /></span><span class="ov-n">6 · Serif K.</span></a><a class="ov" href="#sign"><span class="ov-l"><img src="logo/k-sign.svg" width="88" height="88" alt="" /></span><span class="ov-d"><img src="logo/k-sign-dark.svg" width="88" height="88" alt="" /></span><span class="ov-f"><img src="logo/k-sign-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><img src="logo/k-sign-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /></span><span class="ov-n">7 · Signature</span></a></div>
+    </section>
 
     <section class="concept" id="curves">
       <h2>1 · Learning curves</h2>
@@ -197,6 +216,178 @@
       </div>
     </section>
 
+    <section class="concept" id="cell">
+      <h2>4 · Notebook cell</h2>
+      <p class="what">K อยู่ในวงเล็บเหลี่ยมแบบเลขรันของ Jupyter (<code>In [K]:</code>) วงเล็บเป็นสีปากกาน้ำเงิน ตัว K เป็นหมึก</p>
+      <div class="stage">
+        <div class="tile light"><img src="logo/k-cell.svg" width="240" height="240" alt="Notebook cell logo on light paper" /></div>
+        <div class="tile dark"><img src="logo/k-cell-dark.svg" width="240" height="240" alt="Notebook cell logo on a dark background" /></div>
+      </div>
+      <div class="notes">
+        <div><h3>ความหมายชั้นที่สอง</h3><ul><li>notebook ที่งาน data เกิดขึ้นจริง และเป็นชื่อแนว Lab Notebook ของเว็บเอง</li><li>วงเล็บเป็นสัญลักษณ์ของโค้ด จึงสื่อด้าน full-stack ด้วย</li></ul></div>
+        <div><h3>จุดแข็ง</h3><ul><li>เรียบ อ่านเป็นตัว K ชัดทุกขนาด รวมทั้ง favicon</li><li>คนสาย DS เห็นแล้วเข้าใจทันทีว่าหมายถึงอะไร</li></ul></div>
+        <div><h3>ข้อควรระวัง</h3><ul><li>รูปทรงกว้างเกือบเป็นสี่เหลี่ยม ต้องเว้นที่รอบโลโก้มากกว่าแบบอื่น</li><li>ถ้าวางตัวเล็กติดกับข้อความ วงเล็บอาจถูกอ่านเป็นเครื่องหมายวรรคตอน</li></ul></div>
+      </div>
+      <p class="row-title">ไฟล์ทั้ง 4 แบบ และขนาดเล็ก</p>
+      <div class="strip light">
+        <figure><img src="logo/k-cell.svg" width="96" height="96" alt="" /><figcaption>สีเต็ม</figcaption></figure>
+        <figure><img src="logo/k-cell-mono.svg" width="96" height="96" alt="" /><figcaption>ขาวดำ</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-cell.svg" width="48" height="48" alt="" /><figcaption>48</figcaption></figure>
+        <figure><img src="logo/k-cell.svg" width="32" height="32" alt="" /><figcaption>32</figcaption></figure>
+        <figure><img src="logo/k-cell.svg" width="24" height="24" alt="" /><figcaption>24</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-cell-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /><figcaption>favicon 32</figcaption></figure>
+        <figure><img src="logo/k-cell-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><figcaption>favicon 16</figcaption></figure>
+        <figure><canvas class="px" width="16" height="16" data-src="logo/k-cell-favicon.svg" data-scheme="light"></canvas><figcaption>16px จริง</figcaption></figure>
+      </div>
+      <div class="strip dark">
+        <figure><img src="logo/k-cell-dark.svg" width="96" height="96" alt="" /><figcaption>พื้นมืด</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-cell-dark.svg" width="48" height="48" alt="" /><figcaption>48</figcaption></figure>
+        <figure><img src="logo/k-cell-dark.svg" width="32" height="32" alt="" /><figcaption>32</figcaption></figure>
+        <figure><img src="logo/k-cell-dark.svg" width="24" height="24" alt="" /><figcaption>24</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-cell-favicon.svg" width="32" height="32" alt="" style="color-scheme: dark" /><figcaption>favicon 32</figcaption></figure>
+        <figure><img src="logo/k-cell-favicon.svg" width="16" height="16" alt="" style="color-scheme: dark" /><figcaption>favicon 16</figcaption></figure>
+        <figure><canvas class="px" width="16" height="16" data-src="logo/k-cell-favicon.svg" data-scheme="dark"></canvas><figcaption>16px จริง</figcaption></figure>
+      </div>
+      <p class="row-title">ในบริบทจริง: แถบ tab ของ browser และ navbar</p>
+      <div class="context">
+        <div><div class="tabbar light"><span class="tab"><img src="logo/k-cell-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" />Kulachart Parnduangkeaw</span><span class="other">LinkedIn</span></div><div class="lockup light"><img src="logo/k-cell.svg" width="32" height="32" alt="" /><span class="name">Kulachart</span><span class="links"><span>Projects</span><span>Experience</span><span>Skills</span></span></div></div>
+        <div><div class="tabbar dark"><span class="tab"><img src="logo/k-cell-favicon.svg" width="16" height="16" alt="" style="color-scheme: dark" />Kulachart Parnduangkeaw</span><span class="other">LinkedIn</span></div><div class="lockup dark"><img src="logo/k-cell-dark.svg" width="32" height="32" alt="" /><span class="name">Kulachart</span><span class="links"><span>Projects</span><span>Experience</span><span>Skills</span></span></div></div>
+      </div>
+    </section>
+
+    <section class="concept" id="scatter">
+      <h2>5 · Scatter</h2>
+      <p class="what">K คือ scatter plot: จุดข้อมูล 11 จุดเรียงเป็นก้านและแขน จุดมุมขวาบนสีปากกาน้ำเงินถูกขีดด้วยปากกาเน้น หมายถึง insight ที่เจอในข้อมูล</p>
+      <div class="stage">
+        <div class="tile light"><img src="logo/k-scatter.svg" width="240" height="240" alt="Scatter logo on light paper" /></div>
+        <div class="tile dark"><img src="logo/k-scatter-dark.svg" width="240" height="240" alt="Scatter logo on a dark background" /></div>
+      </div>
+      <div class="notes">
+        <div><h3>ความหมายชั้นที่สอง</h3><ul><li>งาน data คือการมองหารูปแบบในจุดข้อมูลจำนวนมาก</li><li>จุดที่ถูกเน้นคือ insight ตรงกับที่ปากกาเน้นถูกใช้ในเว็บ</li></ul></div>
+        <div><h3>จุดแข็ง</h3><ul><li>หน้าตาต่างจากโลโก้ตัวอักษรทั่วไปมากที่สุด</li><li>ตัวใหญ่ดูเป็นงาน data viz ชัดเจน</li></ul></div>
+        <div><h3>ข้อควรระวัง</h3><ul><li>ต่ำกว่า 32px จุดเริ่มเบลอรวมกัน</li><li>favicon ต้องตัดเหลือ 7 จุด และไม่มีวงปากกาเน้น</li></ul></div>
+      </div>
+      <p class="row-title">ไฟล์ทั้ง 4 แบบ และขนาดเล็ก</p>
+      <div class="strip light">
+        <figure><img src="logo/k-scatter.svg" width="96" height="96" alt="" /><figcaption>สีเต็ม</figcaption></figure>
+        <figure><img src="logo/k-scatter-mono.svg" width="96" height="96" alt="" /><figcaption>ขาวดำ</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-scatter.svg" width="48" height="48" alt="" /><figcaption>48</figcaption></figure>
+        <figure><img src="logo/k-scatter.svg" width="32" height="32" alt="" /><figcaption>32</figcaption></figure>
+        <figure><img src="logo/k-scatter.svg" width="24" height="24" alt="" /><figcaption>24</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-scatter-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /><figcaption>favicon 32</figcaption></figure>
+        <figure><img src="logo/k-scatter-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><figcaption>favicon 16</figcaption></figure>
+        <figure><canvas class="px" width="16" height="16" data-src="logo/k-scatter-favicon.svg" data-scheme="light"></canvas><figcaption>16px จริง</figcaption></figure>
+      </div>
+      <div class="strip dark">
+        <figure><img src="logo/k-scatter-dark.svg" width="96" height="96" alt="" /><figcaption>พื้นมืด</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-scatter-dark.svg" width="48" height="48" alt="" /><figcaption>48</figcaption></figure>
+        <figure><img src="logo/k-scatter-dark.svg" width="32" height="32" alt="" /><figcaption>32</figcaption></figure>
+        <figure><img src="logo/k-scatter-dark.svg" width="24" height="24" alt="" /><figcaption>24</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-scatter-favicon.svg" width="32" height="32" alt="" style="color-scheme: dark" /><figcaption>favicon 32</figcaption></figure>
+        <figure><img src="logo/k-scatter-favicon.svg" width="16" height="16" alt="" style="color-scheme: dark" /><figcaption>favicon 16</figcaption></figure>
+        <figure><canvas class="px" width="16" height="16" data-src="logo/k-scatter-favicon.svg" data-scheme="dark"></canvas><figcaption>16px จริง</figcaption></figure>
+      </div>
+      <p class="row-title">ในบริบทจริง: แถบ tab ของ browser และ navbar</p>
+      <div class="context">
+        <div><div class="tabbar light"><span class="tab"><img src="logo/k-scatter-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" />Kulachart Parnduangkeaw</span><span class="other">LinkedIn</span></div><div class="lockup light"><img src="logo/k-scatter.svg" width="32" height="32" alt="" /><span class="name">Kulachart</span><span class="links"><span>Projects</span><span>Experience</span><span>Skills</span></span></div></div>
+        <div><div class="tabbar dark"><span class="tab"><img src="logo/k-scatter-favicon.svg" width="16" height="16" alt="" style="color-scheme: dark" />Kulachart Parnduangkeaw</span><span class="other">LinkedIn</span></div><div class="lockup dark"><img src="logo/k-scatter-dark.svg" width="32" height="32" alt="" /><span class="name">Kulachart</span><span class="links"><span>Projects</span><span>Experience</span><span>Skills</span></span></div></div>
+      </div>
+    </section>
+
+    <section class="concept" id="serif">
+      <h2>6 · Serif K.</h2>
+      <p class="what">ตัว K จากฟอนต์ Newsreader ซึ่งเป็นฟอนต์หัวข้อของเว็บ ตามด้วยจุดสีปากกาน้ำเงิน ที่เป็นทั้งจุดจบประโยค ("K.") และจุดข้อมูลบนกราฟ</p>
+      <div class="stage">
+        <div class="tile light"><img src="logo/k-serif.svg" width="240" height="240" alt="Serif K. logo on light paper" /></div>
+        <div class="tile dark"><img src="logo/k-serif-dark.svg" width="240" height="240" alt="Serif K. logo on a dark background" /></div>
+      </div>
+      <div class="notes">
+        <div><h3>ความหมายชั้นที่สอง</h3><ul><li>จุดเดียวเล่าได้สองเรื่อง: ความมั่นใจของประโยคที่จบแล้ว และจุดข้อมูล</li><li>ใช้ฟอนต์เดียวกับชื่อใน navbar ทั้งระบบจึงกลมกลืนกัน</li></ul></div>
+        <div><h3>จุดแข็ง</h3><ul><li>ดูเป็นมืออาชีพและอยู่ได้นานที่สุด ไม่ตกยุค</li><li>เข้ากับบรรยากาศเอกสารที่เรียบเรียงแล้วของแนว Lab Notebook</li></ul></div>
+        <div><h3>ข้อควรระวัง</h3><ul><li>ความหมายเรื่อง ML อยู่ที่จุดเดียว จึงอ่อนกว่าแบบกราฟ</li><li>favicon ใช้ glyph ตัวหนาและตัดจุดทิ้ง จึงเหลือแค่ตัว K</li></ul></div>
+      </div>
+      <p class="row-title">ไฟล์ทั้ง 4 แบบ และขนาดเล็ก</p>
+      <div class="strip light">
+        <figure><img src="logo/k-serif.svg" width="96" height="96" alt="" /><figcaption>สีเต็ม</figcaption></figure>
+        <figure><img src="logo/k-serif-mono.svg" width="96" height="96" alt="" /><figcaption>ขาวดำ</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-serif.svg" width="48" height="48" alt="" /><figcaption>48</figcaption></figure>
+        <figure><img src="logo/k-serif.svg" width="32" height="32" alt="" /><figcaption>32</figcaption></figure>
+        <figure><img src="logo/k-serif.svg" width="24" height="24" alt="" /><figcaption>24</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-serif-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /><figcaption>favicon 32</figcaption></figure>
+        <figure><img src="logo/k-serif-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><figcaption>favicon 16</figcaption></figure>
+        <figure><canvas class="px" width="16" height="16" data-src="logo/k-serif-favicon.svg" data-scheme="light"></canvas><figcaption>16px จริง</figcaption></figure>
+      </div>
+      <div class="strip dark">
+        <figure><img src="logo/k-serif-dark.svg" width="96" height="96" alt="" /><figcaption>พื้นมืด</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-serif-dark.svg" width="48" height="48" alt="" /><figcaption>48</figcaption></figure>
+        <figure><img src="logo/k-serif-dark.svg" width="32" height="32" alt="" /><figcaption>32</figcaption></figure>
+        <figure><img src="logo/k-serif-dark.svg" width="24" height="24" alt="" /><figcaption>24</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-serif-favicon.svg" width="32" height="32" alt="" style="color-scheme: dark" /><figcaption>favicon 32</figcaption></figure>
+        <figure><img src="logo/k-serif-favicon.svg" width="16" height="16" alt="" style="color-scheme: dark" /><figcaption>favicon 16</figcaption></figure>
+        <figure><canvas class="px" width="16" height="16" data-src="logo/k-serif-favicon.svg" data-scheme="dark"></canvas><figcaption>16px จริง</figcaption></figure>
+      </div>
+      <p class="row-title">ในบริบทจริง: แถบ tab ของ browser และ navbar</p>
+      <div class="context">
+        <div><div class="tabbar light"><span class="tab"><img src="logo/k-serif-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" />Kulachart Parnduangkeaw</span><span class="other">LinkedIn</span></div><div class="lockup light"><img src="logo/k-serif.svg" width="32" height="32" alt="" /><span class="name">Kulachart</span><span class="links"><span>Projects</span><span>Experience</span><span>Skills</span></span></div></div>
+        <div><div class="tabbar dark"><span class="tab"><img src="logo/k-serif-favicon.svg" width="16" height="16" alt="" style="color-scheme: dark" />Kulachart Parnduangkeaw</span><span class="other">LinkedIn</span></div><div class="lockup dark"><img src="logo/k-serif-dark.svg" width="32" height="32" alt="" /><span class="name">Kulachart</span><span class="links"><span>Projects</span><span>Experience</span><span>Skills</span></span></div></div>
+      </div>
+    </section>
+
+    <section class="concept" id="sign">
+      <h2>7 · Signature</h2>
+      <p class="what">K เขียนมือด้วยปากกาลูกลื่นสีน้ำเงิน มีห่วงเล็กที่ข้อต่อแบบลายมือจริง และขีดเส้นใต้ด้วยปากกาแดง เหมือนลงชื่อท้ายหน้าสมุด</p>
+      <div class="stage">
+        <div class="tile light"><img src="logo/k-sign.svg" width="240" height="240" alt="Signature logo on light paper" /></div>
+        <div class="tile dark"><img src="logo/k-sign-dark.svg" width="240" height="240" alt="Signature logo on a dark background" /></div>
+      </div>
+      <div class="notes">
+        <div><h3>ความหมายชั้นที่สอง</h3><ul><li>งานในสมุดเล่มนี้เป็นของคุณ ลายมือคือสิ่งที่ไม่มีใครเหมือน</li><li>เส้นแดงคือเส้น margin ของสมุดที่กลายเป็นเส้นใต้ลายเซ็น</li></ul></div>
+        <div><h3>จุดแข็ง</h3><ul><li>เป็นส่วนตัวที่สุดและอบอุ่นที่สุดในทั้ง 7 แบบ</li><li>อ่านเป็นตัว K ได้ชัดถึง favicon</li></ul></div>
+        <div><h3>ข้อควรระวัง</h3><ul><li>ไม่บอกเรื่อง data หรือ ML ในตัวรูป ต้องพึ่งบริบทของเว็บ</li><li>ลายมือที่ผมวาดเป็นแค่ตัวตั้งต้น ถ้าเลือกแบบนี้ ลายเซ็นจริงของคุณจะดีกว่า</li></ul></div>
+      </div>
+      <p class="row-title">ไฟล์ทั้ง 4 แบบ และขนาดเล็ก</p>
+      <div class="strip light">
+        <figure><img src="logo/k-sign.svg" width="96" height="96" alt="" /><figcaption>สีเต็ม</figcaption></figure>
+        <figure><img src="logo/k-sign-mono.svg" width="96" height="96" alt="" /><figcaption>ขาวดำ</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-sign.svg" width="48" height="48" alt="" /><figcaption>48</figcaption></figure>
+        <figure><img src="logo/k-sign.svg" width="32" height="32" alt="" /><figcaption>32</figcaption></figure>
+        <figure><img src="logo/k-sign.svg" width="24" height="24" alt="" /><figcaption>24</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-sign-favicon.svg" width="32" height="32" alt="" style="color-scheme: light" /><figcaption>favicon 32</figcaption></figure>
+        <figure><img src="logo/k-sign-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" /><figcaption>favicon 16</figcaption></figure>
+        <figure><canvas class="px" width="16" height="16" data-src="logo/k-sign-favicon.svg" data-scheme="light"></canvas><figcaption>16px จริง</figcaption></figure>
+      </div>
+      <div class="strip dark">
+        <figure><img src="logo/k-sign-dark.svg" width="96" height="96" alt="" /><figcaption>พื้นมืด</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-sign-dark.svg" width="48" height="48" alt="" /><figcaption>48</figcaption></figure>
+        <figure><img src="logo/k-sign-dark.svg" width="32" height="32" alt="" /><figcaption>32</figcaption></figure>
+        <figure><img src="logo/k-sign-dark.svg" width="24" height="24" alt="" /><figcaption>24</figcaption></figure>
+        <span class="sep"></span>
+        <figure><img src="logo/k-sign-favicon.svg" width="32" height="32" alt="" style="color-scheme: dark" /><figcaption>favicon 32</figcaption></figure>
+        <figure><img src="logo/k-sign-favicon.svg" width="16" height="16" alt="" style="color-scheme: dark" /><figcaption>favicon 16</figcaption></figure>
+        <figure><canvas class="px" width="16" height="16" data-src="logo/k-sign-favicon.svg" data-scheme="dark"></canvas><figcaption>16px จริง</figcaption></figure>
+      </div>
+      <p class="row-title">ในบริบทจริง: แถบ tab ของ browser และ navbar</p>
+      <div class="context">
+        <div><div class="tabbar light"><span class="tab"><img src="logo/k-sign-favicon.svg" width="16" height="16" alt="" style="color-scheme: light" />Kulachart Parnduangkeaw</span><span class="other">LinkedIn</span></div><div class="lockup light"><img src="logo/k-sign.svg" width="32" height="32" alt="" /><span class="name">Kulachart</span><span class="links"><span>Projects</span><span>Experience</span><span>Skills</span></span></div></div>
+        <div><div class="tabbar dark"><span class="tab"><img src="logo/k-sign-favicon.svg" width="16" height="16" alt="" style="color-scheme: dark" />Kulachart Parnduangkeaw</span><span class="other">LinkedIn</span></div><div class="lockup dark"><img src="logo/k-sign-dark.svg" width="32" height="32" alt="" /><span class="name">Kulachart</span><span class="links"><span>Projects</span><span>Experience</span><span>Skills</span></span></div></div>
+      </div>
+    </section>
+
     <section class="concept" id="marker">
       <h2>3 · Highlighted K</h2>
       <p class="what">K เขียนด้วยหมึกน้ำเงินดำ แล้วถูกขีดด้วยปากกาเน้นข้อความ ซึ่งเป็นเครื่องมือหลักของ design system แถบเหลืองเอียงและปลายเฉียงเหมือนรอยปากกาเน้นหัวตัด</p>
@@ -241,19 +432,13 @@
     </section>
 
     <section class="compare">
-      <h2>เทียบกัน</h2>
+      <h2>เทียบทั้ง 7 แบบ</h2>
       <div class="table-wrap"><table>
-        <thead><tr><th></th><th>1 · Learning curves</th><th>2 · Decision split</th><th>3 · Highlighted K</th></tr></thead>
-        <tbody>
-          <tr><th>สื่อสาย ML / DS</th><td>สูง: กราฟ train ที่คนในสายเห็นทุกวัน</td><td>สูง: decision tree</td><td>กลาง: การหา insight</td></tr>
-          <tr><th>อ่านเป็นตัว K ที่ 16px</th><td>ดี</td><td>ดีที่สุด</td><td>ดีที่สุด (แบบแผ่นสี่เหลี่ยม)</td></tr>
-          <tr><th>ความแปลกใหม่</th><td>สูง</td><td>กลาง: node + เส้นเชื่อมพบบ่อย</td><td>สูง</td></tr>
-          <tr><th>เข้ากับระบบ Lab Notebook</th><td>สูง: ปากกาน้ำเงินกับแดงบนกระดาษกราฟ</td><td>กลาง: ใช้ ● ■ ของระบบ</td><td>สูงที่สุด: ปากกาเน้น</td></tr>
-          <tr><th>แบบขาวดำ</th><td>อ่านได้ แต่เสียความหมายของสีขึ้นลง</td><td>ดี</td><td>ดี (แถบเป็นสีเทา)</td></tr>
-        </tbody>
+        <thead><tr><th></th><th>1 · Learning curves</th><th>2 · Decision split</th><th>3 · Highlighted K</th><th>4 · Notebook cell</th><th>5 · Scatter</th><th>6 · Serif K.</th><th>7 · Signature</th></tr></thead>
+        <tbody><tr><th>สื่อสาย ML / DS</th><td>สูง: กราฟ train</td><td>สูง: decision tree</td><td>กลาง: การหา insight</td><td>สูง: Jupyter notebook</td><td>สูง: scatter plot</td><td>กลาง: จุดข้อมูลจุดเดียว</td><td>ต่ำ</td></tr><tr><th>อ่านเป็นตัว K ที่ 16px</th><td>ดี</td><td>ดีที่สุด</td><td>ดีที่สุด (แผ่นเหลือง)</td><td>ดีที่สุด</td><td>พอใช้</td><td>ดี</td><td>ดี</td></tr><tr><th>ความแปลกใหม่</th><td>สูง</td><td>กลาง</td><td>สูง</td><td>กลาง</td><td>สูง</td><td>กลาง (คลาสสิก)</td><td>สูง</td></tr><tr><th>บุคลิก</th><td>ช่างคิด เชิงวิทยาศาสตร์</td><td>เรขาคณิต เป็นระบบ</td><td>สดใส เป็นมิตร</td><td>เทคนิค ตรงไปตรงมา</td><td>data viz ชัด</td><td>สุขุม มืออาชีพ</td><td>ส่วนตัว อบอุ่น</td></tr><tr><th>แบบขาวดำ</th><td>อ่านได้ แต่เสียความหมายของสี</td><td>ดี</td><td>ดี</td><td>ดีมาก</td><td>ดี</td><td>ดีมาก</td><td>ดี</td></tr></tbody>
       </table></div>
-      <p class="pick">ผมแนะนำ <mark>1 · Learning curves</mark> เพราะเล่าได้ทั้งสองเรื่องในรูปเดียว คือสาย ML (กราฟตอน train) และบรรยากาศสมุด (ปากกาสองสีบนกระดาษกราฟ) และไม่ซ้ำกับโลโก้ AI ทั่วไป ถ้าชอบ favicon สีเหลืองของแบบ 3 ก็ผสมได้ใน Phase 3 โดยวาง K แบบ 1 บนแผ่นสีเหลือง</p>
-      <p class="files">ไฟล์อยู่ที่ <code>design/logo/</code>: <code>k-curves</code>, <code>k-split</code>, <code>k-marker</code> แต่ละตัวมี <code>.svg</code> (สีเต็ม), <code>-mono.svg</code>, <code>-dark.svg</code> และ <code>-favicon.svg</code> ทุกไฟล์เขียน SVG เอง ไม่มีรูปฝัง และมีคอมเมนต์อธิบายโครงสร้างในไฟล์</p>
+      <p class="pick">ถ้ารอบแรกดู "ฉลาด" เกินไป ผมแนะนำ <mark>6 · Serif K.</mark> เพราะเรียบที่สุด อยู่ได้นาน และใช้ฟอนต์เดียวกับหัวข้อของเว็บ ส่วนถ้าอยากให้บอกสาย data ชัดแต่ยังเรียบ <mark>4 · Notebook cell</mark> คือทางกลาง และถ้าอยากได้ความเป็นตัวเองที่สุด แบบ 7 ใช้ลายเซ็นจริงของคุณแทนลายมือที่ผมวาดได้</p>
+      <p class="files">ไฟล์อยู่ที่ <code>design/logo/</code>: <code>k-curves</code>, <code>k-split</code>, <code>k-marker</code>, <code>k-cell</code>, <code>k-scatter</code>, <code>k-serif</code>, <code>k-sign</code> แต่ละตัวมี <code>.svg</code> (สีเต็ม), <code>-mono.svg</code>, <code>-dark.svg</code> และ <code>-favicon.svg</code> ทุกไฟล์มีคอมเมนต์อธิบายโครงสร้าง ตัว K ของแบบ 6 แปลงจาก glyph ของ Newsreader ซึ่งใช้สัญญาอนุญาต OFL จึงใช้ทำโลโก้ได้</p>
     </section>
   </div>
   <script>

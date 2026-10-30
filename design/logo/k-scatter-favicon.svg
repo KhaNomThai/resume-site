@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <!--
+    Concept 5 · Scatter · favicon: วาดใหม่บนตาราง 16×16 ไม่ได้ย่อจากตัว 64
+    เหลือ 7 จุด รัศมี 1.5 ตัดวงปากกาเน้นทิ้งเพราะที่ 16px จะกลายเป็นก้อนสี
+    media query ในไฟล์เปลี่ยนสีตามโหมดมืดของ browser ได้เอง (Chrome, Firefox)
+  -->
+  <style>
+    .tile { fill: #ffffff; } .ink { stroke: #141b2b; } .inkf { fill: #141b2b; } .pen { stroke: #2343c4; } .penf { fill: #2343c4; } .red { stroke: #d9464e; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #1b1f26; } .ink { stroke: #e8ecf3; } .inkf { fill: #e8ecf3; } .pen { stroke: #8ca6ff; } .penf { fill: #8ca6ff; } .red { stroke: #e36c72; }
+    }
+  </style>
+  <rect class="tile" width="16" height="16" rx="3.5"/>
+  <g class="inkf">
+    <circle cx="4.5" cy="3.5" r="1.5"/><circle cx="4.5" cy="8" r="1.5"/><circle cx="4.5" cy="12.5" r="1.5"/>
+    <circle cx="8" cy="5.8" r="1.5"/><circle cx="8" cy="10.2" r="1.5"/><circle cx="11.5" cy="12.5" r="1.5"/>
+  </g>
+  <circle class="penf" cx="11.5" cy="3.5" r="1.9"/>
+</svg>

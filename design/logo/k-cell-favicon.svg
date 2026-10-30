@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <!--
+    Concept 4 · Notebook cell · favicon: วาดใหม่บนตาราง 16×16 ไม่ได้ย่อจากตัว 64
+    ย่อวงเล็บเป็นเส้น 1.5 ชิดขอบ ให้ตัว K ได้พื้นที่มากที่สุด
+    media query ในไฟล์เปลี่ยนสีตามโหมดมืดของ browser ได้เอง (Chrome, Firefox)
+  -->
+  <style>
+    .tile { fill: #ffffff; } .ink { stroke: #141b2b; } .inkf { fill: #141b2b; } .pen { stroke: #2343c4; } .penf { fill: #2343c4; } .red { stroke: #d9464e; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #1b1f26; } .ink { stroke: #e8ecf3; } .inkf { fill: #e8ecf3; } .pen { stroke: #8ca6ff; } .penf { fill: #8ca6ff; } .red { stroke: #e36c72; }
+    }
+  </style>
+  <rect class="tile" width="16" height="16" rx="3.5"/>
+  <g class="pen" fill="none" stroke-width="1.5" stroke-linecap="square">
+    <path d="M3.5 2.75H1.75V13.25H3.5"/>
+    <path d="M12.5 2.75H14.25V13.25H12.5"/>
+  </g>
+  <g class="ink" fill="none" stroke-width="1.75" stroke-linecap="round">
+    <path d="M6 4V12"/>
+    <path d="M6 9L10 4"/>
+    <path d="M7.6 7L10.3 12"/>
+  </g>
+</svg>

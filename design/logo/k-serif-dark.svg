@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="title">
+  <title id="title">Kulachart logo: a serif K with a plotted point</title>
+  <!--
+    Concept 6 · Serif K. (สำหรับพื้นมืด: ค่าโหมดมืดจาก tokens.css)
+    ตัว K จากฟอนต์ Newsreader (น้ำหนัก 560, optical size 72) ซึ่งเป็นฟอนต์หัวข้อของเว็บ จึงเข้ากับชื่อใน navbar พอดี
+    จุดสีปากกาน้ำเงินเป็นทั้งจุดจบประโยค ("K.") และจุดข้อมูลบนกราฟ path ของตัว K แปลงมาจาก glyph ของฟอนต์ (OFL อนุญาต)
+  -->
+  <path fill="#e8ecf3" d="M44.36 49.92 48.24 51.11V52H28.99V51.1L33.52 50L18 31.93H14.77V29.87H18.02L36.98 14.12L31.85 12.9V12H44.65V12.9L39.75 14.12L20.21 30.21L24.45 26.53ZM17.26 14.1V49.87L21.93 51.1V52H4V51.1L8.67 49.87V14.1L4 12.91V12H21.93V12.9Z"/>
+  <circle cx="55" cy="49" r="4" fill="#8ca6ff"/>
+</svg>

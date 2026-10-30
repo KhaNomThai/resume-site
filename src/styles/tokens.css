@@ -1,0 +1,216 @@
+/*
+ * Design tokens — แนว C · "Legend" (Phase 1, รอเลือก direction)
+ * ที่เดียวที่เก็บค่าสี ตัวอักษร ระยะห่าง มุม เงา และ motion ของเว็บ
+ * ความหมายและวิธีใช้ของทุก token อยู่ใน DESIGN_SYSTEM.md
+ *
+ * ยังไม่ได้ import: Phase 3 จะเพิ่ม `@import "./styles/tokens.css";` ใน index.css
+ * พร้อมเปลี่ยน component ให้ใช้ token ชุดนี้ (ถ้า import ตอนนี้ class เดิมอย่าง bg-indigo-500 จะหายทันที)
+ */
+
+/* Tailwind v4: ทุกตัวแปรใน @theme กลายเป็น utility (`--color-ink` → `text-ink`, `bg-ink`, `border-ink`)
+   `static` = ส่งตัวแปรออกไปที่ :root เสมอแม้ไม่มี class ไหนใช้ → เรียก var(--color-ml) จาก style หรือ SVG ได้ */
+@theme static {
+  /* ล้างค่า default ของ Tailwind ใน namespace ที่ระบบคุมเอง
+     ผลคือ bg-indigo-500, text-sm, rounded-xl, shadow-lg จะไม่มีให้ใช้ → บังคับให้ทุกจุดผ่าน token */
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --ease-*: initial;
+
+  /* ── สี (โหมดสว่าง) ── โหมดมืดอยู่ในบล็อก [data-theme="dark"] ด้านล่าง ชื่อเดียวกันทุกตัว */
+  --color-paper: #ffffff; /* พื้นหน้า: กระดาษขาว สลับเป็นดำในโหมดมืด */
+  --color-surface: #f3f3f3; /* พื้นการ์ดและ panel */
+  --color-rule: #e0e0e0; /* เส้นแบ่งแถวข้อมูล: ตกแต่งเท่านั้น ห้ามเป็นขอบเดียวของ control */
+  --color-stroke: #858585; /* ขอบ control: 3.7:1 บน paper, 3.3:1 บน surface (WCAG ขอ 3:1) */
+  --color-ink: #000000; /* ข้อความทุกชนิด + พื้นปุ่มหลัก: 21:1 */
+  --color-ink-muted: #595959; /* ข้อความรอง: 7.0:1 บน paper, 6.3:1 บน surface */
+  --color-ink-hover: #333333; /* พื้นปุ่มหลักตอน hover */
+  --color-on-ink: #ffffff; /* ข้อความบนพื้น ink */
+  --color-focus: #000000; /* วงแหวน focus = สีหมึก */
+  --color-highlight: #f0e442; /* ::selection เท่านั้น (เหลือง Okabe–Ito สีเดียวที่ไม่แทนหมวด) */
+  --color-on-highlight: #000000;
+
+  /* สีหมวด skill จากชุด Okabe–Ito (คนตาบอดสียังแยกได้) — เป็น "ข้อมูล" ไม่ใช่ของตกแต่ง:
+     ใช้เป็นพื้นของ mark (legend key, หน่วยในแถบ, ช่อง matrix) เท่านั้น ห้ามใช้กับตัวอักษร */
+  --color-ml: #d55e00; /* ML / DL: vermillion */
+  --color-data: #00619a; /* Data: น้ำเงิน Okabe–Ito ที่เข้มขึ้น ให้คนตาบอดสีแดงยังแยกจาก lang ได้ */
+  --color-stack: #009e73; /* Full-stack: bluish green */
+  --color-lang: #c66ba2; /* Languages: reddish purple ที่เข้มขึ้นให้ได้ 3:1 บน surface */
+
+  /* ── ตัวอักษร ── Archivo ครอบครัวเดียว แยกลำดับชั้นด้วยแกนความกว้าง (font-stretch) แทนการเพิ่มฟอนต์ */
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+
+  /* ขนาดจาก classic scale ใน The Elements of Typographic Style (Bringhurst) — ชื่อ = px
+     ปกติไม่เรียกตรงๆ ให้ใช้ type-* ด้านล่างซึ่งรวมขนาด ระยะบรรทัด น้ำหนัก และความกว้างไว้แล้ว */
+  --text-12: 0.75rem;
+  --text-14: 0.875rem;
+  --text-16: 1rem;
+  --text-18: 1.125rem;
+  --text-21: 1.3125rem;
+  --text-24: 1.5rem;
+  --text-36: 2.25rem;
+  --text-48: 3rem;
+  --text-60: 3.75rem;
+  --text-72: 4.5rem;
+
+  /* ── มุม ── รูปทรงบอกหน้าที่: สี่เหลี่ยม = ข้อมูล, มุมมน = กดได้หรือเปิดอ่านได้ */
+  --radius-mark: 0px; /* legend key, หน่วยในแถบ, ช่อง matrix */
+  --radius-control: 6px; /* ปุ่ม, chip กรอง, input, ปุ่มสลับธีม */
+  --radius-card: 12px; /* การ์ดโปรเจกต์, command palette, toast */
+
+  /* ── motion: easing ── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* ของที่เข้ามาหรือตอบการกระทำ */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* ย้ายระหว่างสองตำแหน่ง เช่นการ์ดจัดใหม่หลังกรอง */
+  --ease-in: cubic-bezier(0.55, 0, 1, 0.45); /* ของที่ออกจากจอเท่านั้น */
+
+  /* ── layout ── `max-w-page` และ `max-w-measure` */
+  --container-page: 75rem; /* 1200px: ความกว้างเดียวของทุก section, nav, footer */
+  --container-measure: 66ch; /* บรรทัดยาวสุดของ body */
+  --container-measure-lead: 56ch; /* บรรทัดยาวสุดของ lead */
+}
+
+/* ── ตัวแปรที่ Tailwind v4 ไม่มี namespace ให้ ── เรียกผ่าน arbitrary value เช่น `duration-(--duration-fast)`
+   บล็อกนี้ต้องอยู่ก่อน [data-theme="dark"] เพราะ specificity เท่ากัน ตัวที่มาทีหลังจึงชนะ */
+:root {
+  --duration-fast: 120ms; /* hover, press */
+  --duration-base: 200ms; /* เมนู, command palette, การกรองโปรเจกต์ */
+  --duration-slow: 360ms; /* แถบและ matrix ขยายเข้าที่ครั้งแรกที่เลื่อนมาเห็น */
+  --duration-intro: 720ms; /* sequence เดียวตอนโหลด: legend key ใน hero เติมสีจากซ้ายไปขวา */
+
+  --gutter: 1.5rem; /* ช่องว่างระหว่างคอลัมน์ของ grid */
+  --margin-sm: 1rem; /* ขอบหน้า < 768px */
+  --margin-md: 2rem; /* ขอบหน้า ≥ 768px */
+  --margin-lg: 3rem; /* ขอบหน้า ≥ 1280px */
+  --nav-height: 4rem;
+  --key-size: 12px; /* legend key, tag key (หน่วยในแถบใช้ 10px) */
+  --unit-gap: 2px; /* ช่องว่างระหว่างหน่วยในแถบและช่องใน matrix */
+  --target-min: 44px; /* ขนาดเล็กสุดของสิ่งที่กดได้ (WCAG 2.5.5) */
+
+  /* เงา: การ์ดวางราบ มีเงาเฉพาะของที่ลอยเหนือหน้า (command palette, toast)
+     ไม่ได้ใส่ใน @theme เพราะ Tailwind จะฝังค่าโหมดสว่างลงใน class shadow-* ตอน build ทำให้โหมดมืดเปลี่ยนค่าไม่ได้ */
+  --shadow-overlay: 0 0 0 1px rgb(0 0 0 / 0.06), 0 16px 40px rgb(0 0 0 / 0.18);
+}
+
+/* ── โหมดมืด ── หมึกขาวบนกระดาษดำ: paper กับ ink สลับกัน token อื่นไม่เปลี่ยนบทบาท
+   ปุ่มสลับธีม (Phase 3) ใส่ data-theme ที่ <html> ก่อน paint ตามค่าที่ผู้ใช้เลือกหรือตามระบบ
+   ใช้ selector แบบไม่ผูก :root จึงบังคับโหมดให้แค่บางส่วนของหน้าได้ด้วย
+   (สีใน @theme อยู่ใน @layer theme ซึ่งแพ้ style นอก layer เสมอ บล็อกนี้จึงชนะโดยไม่ต้องเพิ่ม specificity) */
+[data-theme="dark"] {
+  color-scheme: dark; /* scrollbar และ form control ของ browser เปลี่ยนตาม */
+  --color-paper: #000000;
+  --color-surface: #161616;
+  --color-rule: #2a2a2a;
+  --color-stroke: #7a7a7a; /* 4.9:1 บน paper, 4.2:1 บน surface */
+  --color-ink: #e8e8e8; /* ไม่ใช้ขาวล้วน ลดอาการตัวหนังสือฟุ้งบนพื้นดำ: 17.1:1 */
+  --color-ink-muted: #a0a0a0; /* 8.0:1 บน paper, 6.9:1 บน surface */
+  --color-ink-hover: #ffffff;
+  --color-on-ink: #000000;
+  --color-focus: #e8e8e8;
+  --color-data: #56b4e9; /* sky blue ของ Okabe–Ito สว่างพอบนพื้นดำ */
+  --color-lang: #cc79a7; /* ค่ามาตรฐานของ Okabe–Ito */
+  /* ml, stack, highlight ใช้ค่าเดียวกันทั้งสองโหมด */
+  --shadow-overlay: 0 0 0 1px rgb(255 255 255 / 0.12), 0 16px 40px rgb(0 0 0 / 0.8); /* เงาทำพื้นดำให้ดำกว่าเดิมไม่ได้ จึงเพิ่มเส้นขอบสว่าง */
+}
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* `dark:` ของ Tailwind ให้ตาม data-theme แทน prefers-color-scheme (ค่าเริ่มต้นของ v4)
+   ส่วนใหญ่ไม่ต้องใช้ เพราะ token เปลี่ยนเองแล้ว ใช้เฉพาะกรณีอย่างสลับไฟล์ภาพ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@utility shadow-overlay {
+  box-shadow: var(--shadow-overlay);
+}
+
+/*
+ * ── Type styles ── 1 class = 1 บทบาทของข้อความ รวมขนาด ระยะบรรทัด น้ำหนัก ระยะตัวอักษร และความกว้าง
+ * ขนาดที่เปลี่ยนตามจออยู่ใน class แล้ว component จึงเขียนแค่ `type-display` ไม่ต้องใส่ md:/xl: เอง
+ * ความกว้างใช้ชื่อมาตรฐานของ CSS: 125% expanded, 112.5% semi-expanded, 87.5% semi-condensed, 75% condensed
+ */
+@utility type-display {
+  /* ชื่อใน hero เท่านั้น */
+  font-size: var(--text-36);
+  line-height: 2.25rem;
+  font-weight: 800;
+  font-stretch: 112.5%;
+  letter-spacing: -0.02em;
+  @media (width >= 48rem) {
+    font-size: var(--text-60);
+    line-height: 3.5rem;
+    font-stretch: 125%;
+  }
+  @media (width >= 80rem) {
+    font-size: var(--text-72);
+    line-height: 4.25rem;
+  }
+}
+@utility type-headline {
+  /* หัว section (h2) */
+  font-size: var(--text-24);
+  line-height: 1.75rem;
+  font-weight: 750;
+  font-stretch: 112.5%;
+  letter-spacing: -0.01em;
+  @media (width >= 48rem) {
+    font-size: var(--text-36);
+    line-height: 2.5rem;
+  }
+}
+@utility type-title {
+  /* ชื่อการ์ดและ timeline (h3) */
+  font-size: var(--text-21);
+  line-height: 1.75rem;
+  font-weight: 700;
+}
+@utility type-lead {
+  /* summary ใน hero และบรรทัดนำของ section */
+  font-size: var(--text-18);
+  line-height: 1.75rem;
+  font-weight: 400;
+  @media (width >= 48rem) {
+    font-size: var(--text-21);
+    line-height: 2rem;
+  }
+}
+@utility type-body {
+  font-size: var(--text-16);
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+@utility type-small {
+  /* บริบท วันที่ ลิงก์รอง */
+  font-size: var(--text-14);
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+@utility type-label {
+  /* label ของ legend, ชื่อช่อง Problem/Approach/Result, ข้อความใน tag และปุ่ม — sentence case เสมอ */
+  font-size: var(--text-14);
+  line-height: 1.25rem;
+  font-weight: 600;
+  font-stretch: 87.5%;
+  letter-spacing: 0.01em;
+}
+@utility type-metric {
+  /* ตัวเลขผลลัพธ์ ต้องตามด้วยสิ่งที่วัดเสมอ */
+  font-size: var(--text-36);
+  line-height: 2.25rem;
+  font-weight: 700;
+  font-stretch: 75%;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums; /* ตัวเลขกว้างเท่ากันทุกหลัก วางซ้อนกันแล้วหลักตรงกัน */
+  @media (width >= 48rem) {
+    font-size: var(--text-48);
+    line-height: 3rem;
+  }
+}
+@utility type-caption {
+  /* จำนวนข้าง legend, หัว matrix — ขนาดเล็กสุดของระบบ */
+  font-size: var(--text-12);
+  line-height: 1rem;
+  font-weight: 500;
+  font-stretch: 87.5%;
+}

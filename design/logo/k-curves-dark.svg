@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="title">
+  <title id="title">Kulachart logo: a K made of two learning curves</title>
+  <!-- Concept 1 · Learning curves (สำหรับพื้นมืด: ใช้ค่าโหมดมืดของ ink, pen และ margin จาก tokens.css) -->
+  <g fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 35C24 24 31 13 48 10" stroke="#8ca6ff"/>
+    <path d="M16 35C24 46 31 55 48 56" stroke="#e36c72"/>
+    <path d="M16 8V56" stroke="#e8ecf3"/>
+  </g>
+  <circle cx="28.6" cy="19.5" r="4" fill="#8ca6ff"/>
+  <circle cx="48" cy="10" r="5" fill="#8ca6ff"/>
+  <circle cx="28.6" cy="49.3" r="4" fill="#e36c72"/>
+  <circle cx="48" cy="56" r="5" fill="#e36c72"/>
+</svg>

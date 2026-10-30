@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <!--
+    Concept 3 · favicon: ที่ขนาดเล็ก แถบเน้นขยายเต็มแผ่นสี่เหลี่ยม แล้ว K หมึกเข้มวางบนสีเหลือง
+    ได้ contrast 13.6:1 ซึ่งเห็นชัดทั้งบนแถบ tab สว่างและมืด จึงไม่ต้องมีชุดสีโหมดมืด
+  -->
+  <rect width="16" height="16" rx="3.5" fill="#ffe566"/>
+  <g fill="none" stroke="#141b2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5.5 3V13"/>
+    <path d="M5.5 9.5L11 3.5"/>
+    <path d="M7.8 7L11.5 13"/>
+  </g>
+</svg>

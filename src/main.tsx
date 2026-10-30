@@ -1,8 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { LazyMotion, MotionConfig, domAnimation } from "framer-motion";
-import "@fontsource-variable/geist";
-import "@fontsource-variable/geist-mono";
+// Newsreader แบบมีแกน optical size: ตัวใหญ่ (ชื่อใน hero) ได้รูปตัวที่ออกแบบมาสำหรับขนาดนั้น คมและแน่นกว่า
+import "@fontsource-variable/newsreader/opsz.css";
+import "@fontsource-variable/ibm-plex-sans";
 import App from "./App";
 import "./index.css";
 

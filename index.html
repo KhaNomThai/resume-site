@@ -8,9 +8,32 @@
       name="description"
       content="Portfolio of Kulachart Parnduangkeaw, a Computer Engineering student at Srinakharinwirot University building full-stack web apps and machine-learning systems. Data Science Intern at Botnoi Group."
     />
-    <meta name="theme-color" content="#0b1220" />
-    <meta name="color-scheme" content="dark" />
-    <link rel="icon" type="image/png" href="/src/assets/favicon.png" />
+    <!-- สีแถบเบราว์เซอร์บนมือถือ = สี paper ของแต่ละโหมด (src/styles/tokens.css) -->
+    <meta name="theme-color" content="#f6f8fb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- favicon คือ logo Serif K. ที่วาดใหม่สำหรับ 16px (design/logo/k-serif-favicon.svg) และเปลี่ยนสีตามโหมดมืดเอง
+         PNG สำหรับเบราว์เซอร์ที่ไม่รองรับ favicon แบบ SVG และ apple-touch-icon สำหรับหน้าจอโฮมของ iOS -->
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <script>
+      // ตั้งธีมก่อนหน้าเว็บถูกวาด: ค่าที่ผู้ใช้เคยเลือก > ค่าของระบบ (กันหน้ากระพริบเป็นสว่างแล้วค่อยเปลี่ยนเป็นมืด)
+      // ต้องตรงกับ src/lib/theme.ts ซึ่งดูแลปุ่มสลับธีมหลังจากนี้
+      (function () {
+        var theme = null;
+        try {
+          theme = localStorage.getItem("theme");
+        } catch (e) {
+          // storage ถูกปิด (เช่นโหมดส่วนตัวบางเบราว์เซอร์) → ใช้ค่าของระบบ
+        }
+        if (theme !== "light" && theme !== "dark") {
+          theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
 
     <!-- URL จริงของเว็บ (Vercel) — ถ้าเปลี่ยนโดเมน แก้ทุกจุดในไฟล์นี้ + profile.siteUrl ใน src/data.ts -->
     <link rel="canonical" href="https://kulachart-resume-site.vercel.app/" />
@@ -48,11 +71,11 @@
   <body>
     <div id="root"></div>
     <noscript>
-      <p style="color: #fff; font-family: system-ui, sans-serif; padding: 2rem">
+      <p style="font-family: Georgia, serif; padding: 2rem; color: #141b2b; background: #f6f8fb">
         Kulachart Parnduangkeaw — Computer Engineering Student. This site needs JavaScript; you can also reach me at
-        <a style="color: #a5b4fc" href="mailto:kulachart.parn@gmail.com">kulachart.parn@gmail.com</a>,
-        <a style="color: #a5b4fc" href="https://github.com/KhaNomThai">GitHub</a> or
-        <a style="color: #a5b4fc" href="https://www.linkedin.com/in/kulachart-parnduangkeaw-247b47395">LinkedIn</a>.
+        <a style="color: #2343c4" href="mailto:kulachart.parn@gmail.com">kulachart.parn@gmail.com</a>,
+        <a style="color: #2343c4" href="https://github.com/KhaNomThai">GitHub</a> or
+        <a style="color: #2343c4" href="https://www.linkedin.com/in/kulachart-parnduangkeaw-247b47395">LinkedIn</a>.
       </p>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>

@@ -1,84 +1,183 @@
 @import "tailwindcss";
+@import "./styles/tokens.css";
 
-/* Tailwind v4: ประกาศ token/animation ใน @theme → ได้ utility (`bg-ink`, `font-mono`, `animate-*`) และถูก tree-shake ถ้าไม่ใช้ */
-@theme {
-  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --color-ink: #0b1220;
-
-  --animate-drift-1: drift-1 22s ease-in-out infinite;
-  --animate-drift-2: drift-2 26s ease-in-out infinite;
-  --animate-drift-3: drift-3 30s ease-in-out infinite;
-  --animate-spin-slow: spin-slow 14s linear infinite;
-
-  @keyframes spin-slow {
-    to { transform: rotate(1turn); }
-  }
-
-  @keyframes drift-1 {
-    0%, 100% { transform: translate(-5%, -8%) scale(1); }
-    33% { transform: translate(10%, 5%) scale(1.08); }
-    66% { transform: translate(-3%, 15%) scale(0.95); }
-  }
-  @keyframes drift-2 {
-    0%, 100% { transform: translate(70%, 10%) scale(1); }
-    50% { transform: translate(55%, 30%) scale(1.1); }
-  }
-  @keyframes drift-3 {
-    0%, 100% { transform: translate(15%, 60%) scale(1); }
-    50% { transform: translate(35%, 50%) scale(1.08); }
-  }
-}
+/*
+ * สไตล์ระดับเว็บ: ทุกค่ามาจาก token ใน styles/tokens.css ไฟล์นี้ไม่ประกาศสีหรือขนาดใหม่
+ * ความหมายของแต่ละ token และกติกาการใช้อยู่ใน DESIGN_SYSTEM.md
+ */
 
 @layer base {
   html {
-    color-scheme: dark;
     scroll-behavior: smooth;
-    /* ลิงก์ #section จะหยุดใต้ navbar (fixed สูง 3.5rem) ไม่โดนบังหัวข้อ */
-    scroll-padding-top: 4.5rem;
+    /* ลิงก์ #section หยุดใต้ navbar (สูง --nav-height) ไม่โดนบังหัวข้อ */
+    scroll-padding-top: calc(var(--nav-height) + 1.5rem);
     /* framer-motion useScroll({ target }) ต้องการ scroll container ที่ไม่ใช่ position: static (ไม่งั้นเตือนใน dev) */
     position: relative;
   }
   body {
-    background-color: var(--color-ink);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  /* เลือกข้อความ = ขีดด้วยปากกาเน้น ตรงกับแนวคิดของทั้งระบบ */
   ::selection {
-    background-color: rgb(99 102 241 / 0.4);
+    background-color: var(--color-marker);
+    color: var(--color-on-marker);
   }
-  /* focus ring เดียวกันทั้งเว็บ — เห็นชัดเฉพาะตอนใช้คีย์บอร์ด */
+  /* focus ring เดียวกันทั้งเว็บ — เห็นเฉพาะตอนใช้คีย์บอร์ด */
   :focus-visible {
-    outline: 2px solid var(--color-indigo-400);
+    outline: 2px solid var(--color-focus);
     outline-offset: 2px;
   }
+  /* ตั้งสี outline ไว้ล่วงหน้าทุก element: transition-colors ของ Tailwind v4 ไล่สี outline ด้วย
+     ถ้าไม่ตั้งไว้ วงแหวนจะค่อย ๆ เปลี่ยนจากสีตัวอักษรเป็นสี focus แทนที่จะขึ้นทันที */
+  * {
+    outline-color: var(--color-focus);
+  }
+  /* <mark> = ผลลัพธ์ที่ถูกขีดเน้น ข้อความใช้ on-marker เสมอ (ink ในโหมดมืดเป็นสีอ่อน อ่านบนสีเหลืองไม่ออก) */
+  mark {
+    background-color: var(--color-marker);
+    color: var(--color-on-marker);
+    padding-inline: 0.15em;
+    border-radius: 2px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
   kbd {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
+  }
+}
+
+/* container เดียวของทั้งเว็บ: ขอบหน้า + ระยะจากเส้น margin สีแดงถึงต้นบรรทัด (ขอบซ้ายของทุก section จึงตรงกัน) */
+@utility page-container {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: var(--margin-sm);
+  @media (width >= 48rem) {
+    padding-left: calc(var(--margin-md) + var(--margin-line-gap));
+    padding-right: var(--margin-md);
+  }
+  @media (width >= 80rem) {
+    padding-left: calc(var(--margin-lg) + var(--margin-line-gap));
+    padding-right: var(--margin-lg);
+  }
+}
+
+/*
+ * เส้น margin สีแดงของหน้าสมุด วิ่งตลอดความสูงของหน้า ที่ x = ขอบซ้ายของ page-container + ขอบหน้า
+ * 100% คือความกว้างของกล่องที่ครอบทั้งเว็บ จึงคำนวณตำแหน่งเดียวกับ container ที่จัดกึ่งกลางได้
+ * บนมือถือซ่อน เพราะพื้นที่แนวนอนมีค่ามากกว่า
+ */
+@utility margin-line {
+  position: absolute;
+  inset-block: 0;
+  width: 1px;
+  display: none;
+  pointer-events: none;
+  background-color: var(--color-margin);
+  left: calc(max(0px, (100% - var(--container-page)) / 2) + var(--margin-md));
+  @media (width >= 48rem) {
+    display: block;
+  }
+  @media (width >= 80rem) {
+    left: calc(max(0px, (100% - var(--container-page)) / 2) + var(--margin-lg));
+  }
+}
+
+/* กระดาษกราฟหลัง hero: เริ่มที่เส้น margin (เส้นกราฟเส้นแรกทับเส้น margin พอดี) และจางหายด้านล่าง */
+@utility hero-grid {
+  @apply bg-graph-paper;
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  right: 0;
+  mask-image: linear-gradient(to bottom, black 55%, transparent);
+  @media (width >= 48rem) {
+    left: calc(max(0px, (100% - var(--container-page)) / 2) + var(--margin-md));
+  }
+  @media (width >= 80rem) {
+    left: calc(max(0px, (100% - var(--container-page)) / 2) + var(--margin-lg));
+  }
+}
+
+/*
+ * ปากกาเน้นขีดผ่านข้อความครั้งเดียว: ขยาย background-size จาก 0 เป็น 100%
+ * เปลี่ยนแค่การวาดพื้นหลัง ไม่กระทบ layout และกำหนดจังหวะด้วย --swipe-delay
+ */
+@utility mark-swipe {
+  background-color: transparent;
+  background-image: linear-gradient(var(--color-marker), var(--color-marker));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  animation: mark-swipe var(--swipe-duration, var(--duration-intro)) var(--ease-out) var(--swipe-delay, 0ms) both;
+}
+/* ยังไม่เลื่อนมาเห็น: เตรียมไว้โดยยังไม่มีแถบเหลือง */
+@utility mark-pending {
+  background-color: transparent;
+  background-image: linear-gradient(var(--color-marker), var(--color-marker));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+}
+
+@keyframes mark-swipe {
+  from {
+    background-size: 0% 100%;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+  /* ไม่มีการขีด: ผลลัพธ์ถูกเน้นไว้แล้วตั้งแต่แรก */
+  .mark-pending {
+    background-size: 100% 100%;
   }
 }
 
 @media print {
-  @page { margin: 12mm; }
+  @page {
+    margin: 12mm;
+  }
   /* framer-motion ใส่ inline style opacity:0 / transform ไว้กับ element ที่ยังไม่เคย scroll ถึง
      ถ้าไม่ override ตอนสั่งพิมพ์ เนื้อหาส่วนนั้นจะหายไปจากกระดาษ */
-  [style*="opacity"] { opacity: 1 !important; }
-  [style*="transform"] { transform: none !important; }
+  [style*="opacity"] {
+    opacity: 1 !important;
+  }
+  [style*="transform"] {
+    transform: none !important;
+  }
   #root * {
-    color: #000 !important;
+    color: black !important;
     background: transparent !important;
     box-shadow: none !important;
-    border-color: #ccc !important;
   }
-  section { padding-block: 1.25rem !important; min-height: 0 !important; }
-  article, li { break-inside: avoid; }
+  /* ปากกาเน้นพิมพ์ขาวดำไม่ออก จึงเปลี่ยนเป็นตัวหนา */
+  mark {
+    font-weight: 600;
+  }
+  section {
+    padding-block: 1.25rem !important;
+    min-height: 0 !important;
+  }
+  article,
+  li {
+    break-inside: avoid;
+  }
   /* หัวข้อ section ต้องไม่ถูกทิ้งไว้ท้ายหน้าโดยไม่มีเนื้อหาตาม */
-  header, h2, h3 { break-inside: avoid; break-after: avoid; }
+  header,
+  h2,
+  h3 {
+    break-inside: avoid;
+    break-after: avoid;
+  }
 }

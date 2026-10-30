@@ -29,14 +29,15 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
       >
         <AnimatePresence>
           {toast && (
+            // toast เป็นของที่ลอยเหนือหน้า จึงเป็นหนึ่งในสองที่ที่ใช้ shadow-overlay (อีกที่คือ command palette)
             <m.p
               key={toast.id}
-              initial={{ opacity: 0, y: 16, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 8, transition: { duration: 0.15 } }}
-              className="flex items-center gap-2 rounded-full border border-white/10 bg-[#141c2e]/95 px-4 py-2.5 text-sm text-white shadow-xl shadow-black/40 backdrop-blur"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              className="flex items-center gap-2 rounded-card border border-rule bg-surface px-4 py-3 type-small text-ink shadow-overlay"
             >
-              <CheckIcon className="size-4 text-emerald-400" />
+              <CheckIcon className="size-4 text-pen" />
               {toast.message}
             </m.p>
           )}

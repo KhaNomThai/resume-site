@@ -1,12 +1,9 @@
-import { m } from "framer-motion";
 import type { ComponentType, SVGProps } from "react";
 import NewTabHint from "../components/NewTabHint";
 import Section from "../components/Section";
 import { CopyIcon, GitHubIcon, LinkedInIcon, MailIcon, MapPinIcon, PhoneIcon } from "../components/icons";
 import { contacts, profile, type ContactKind } from "../data";
 import { linkProps } from "../lib/links";
-import { revealOnView } from "../lib/motion";
-import { trackSpotlight } from "../lib/spotlight";
 import { useCopyEmail } from "../lib/useCopyEmail";
 
 /** Presentation (icon) แยกจาก data — data.ts เก็บแค่ข้อมูลจริง */
@@ -20,68 +17,64 @@ const ICONS: Record<ContactKind, ComponentType<SVGProps<SVGSVGElement>>> = {
 /** อีเมลมีปุ่มใหญ่ของตัวเองแล้ว รายการด้านล่างจึงไม่ต้องซ้ำ */
 const OTHER_CONTACTS = contacts.filter((c) => c.kind !== "email");
 
+/** ให้ตัดบรรทัดได้หลัง @ เท่านั้น — เดิม break-all ตัดกลางคำบนมือถือเป็น "gmail.co / m" */
+const [EMAIL_USER, EMAIL_DOMAIN] = profile.email.split("@");
+
 export default function ContactSection() {
   const copyEmail = useCopyEmail();
 
   return (
     <Section
       id="contact"
-      eyebrow="Contact"
-      title="Let's work together"
-      subtitle="I'm open to Data/AI and full-stack internship opportunities. Email is the fastest way to reach me."
-      width="narrow"
+      intro="I'm open to Data/AI and full-stack internship opportunities. Email is the fastest way to reach me."
     >
-      <m.address
-        {...revealOnView()}
-        onPointerMove={trackSpotlight}
-        className="group relative isolate block overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] p-6 text-center not-italic md:p-10"
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(480px_circle_at_var(--x,50%)_var(--y,0%),rgb(129_140_248/0.12),transparent_50%)]"
-        />
-
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-400">Email</p>
-        <a
-          href={`mailto:${profile.email}`}
-          className="mt-2 inline-block break-all text-2xl font-semibold tracking-tight text-white decoration-indigo-400/60 underline-offset-8 hover:underline md:text-3xl"
-        >
-          {profile.email}
-        </a>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-3 print:hidden">
+      <address className="grid gap-12 not-italic lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-16">
+        <div>
+          <p className="type-label text-ink-muted">Email</p>
           <a
             href={`mailto:${profile.email}`}
-            className="inline-flex h-11 items-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-ink transition-colors hover:bg-indigo-100"
+            className="mt-1 inline-block font-serif text-24 font-medium leading-8 text-pen underline decoration-2 underline-offset-4 transition-colors duration-(--duration-fast) hover:text-pen-hover md:text-36 md:leading-11"
           >
-            <MailIcon className="size-4" />
-            Send an email
+            {EMAIL_USER}@<wbr />
+            {EMAIL_DOMAIN}
           </a>
-          <button
-            type="button"
-            onClick={copyEmail}
-            className="inline-flex h-11 items-center gap-2 rounded-full border border-white/15 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/[0.06]"
-          >
-            <CopyIcon className="size-4" />
-            Copy email
-          </button>
+
+          <div className="mt-6 flex flex-wrap gap-3 print:hidden">
+            <a
+              href={`mailto:${profile.email}`}
+              className="inline-flex h-11 items-center gap-2 rounded-control bg-pen px-4 type-label text-on-pen transition-colors duration-(--duration-fast) hover:bg-pen-hover"
+            >
+              <MailIcon className="size-4" />
+              Send an email
+            </a>
+            <button
+              type="button"
+              onClick={copyEmail}
+              className="inline-flex h-11 items-center gap-2 rounded-control border border-stroke bg-surface px-4 type-label text-ink transition-colors duration-(--duration-fast) hover:border-ink"
+            >
+              <CopyIcon className="size-4" />
+              Copy email
+            </button>
+          </div>
+
+          <p className="mt-6 flex items-center gap-1 type-small text-ink-muted">
+            <MapPinIcon className="size-4" />
+            {profile.location}
+          </p>
         </div>
 
-        <ul className="mt-8 grid gap-3 text-left sm:grid-cols-3">
+        <ul className="border-t border-rule">
           {OTHER_CONTACTS.map((c) => {
             const Icon = ICONS[c.kind];
             return (
-              <li key={c.kind}>
-                <a
-                  {...linkProps(c.href)}
-                  className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.02] p-3 transition-colors hover:border-white/[0.16] hover:bg-white/[0.05]"
-                >
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] text-gray-200">
-                    <Icon className="size-4" />
-                  </span>
+              <li key={c.kind} className="border-b border-rule">
+                <a {...linkProps(c.href)} className="group flex min-h-11 items-center gap-4 py-4">
+                  <Icon className="size-5 shrink-0 text-ink-muted" />
                   <span className="min-w-0">
-                    <span className="block text-xs text-gray-400">{c.label}</span>
-                    <span className="block truncate text-sm text-white">{c.value}</span>
+                    <span className="block type-small text-ink-muted">{c.label}</span>
+                    <span className="block truncate type-body text-pen underline underline-offset-3 group-hover:text-pen-hover">
+                      {c.value}
+                    </span>
                   </span>
                   <NewTabHint href={c.href} />
                 </a>
@@ -89,12 +82,7 @@ export default function ContactSection() {
             );
           })}
         </ul>
-
-        <p className="mt-6 flex items-center justify-center gap-1.5 text-sm text-gray-400">
-          <MapPinIcon className="size-4" />
-          {profile.location}
-        </p>
-      </m.address>
+      </address>
     </Section>
   );
 }

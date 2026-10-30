@@ -5,15 +5,18 @@ import NewTabHint from "./NewTabHint";
 
 export default function Footer({ onOpenPalette }: { onOpenPalette: () => void }) {
   return (
-    <footer className="border-t border-white/[0.06] print:hidden">
-      {/* บนพื้น ink: gray-500 ≈ 3.9:1 ต่ำกว่า 4.5:1 (WCAG AA) จึงใช้ gray-400 */}
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-6 py-8 text-center text-sm text-gray-400 md:flex-row md:justify-between md:text-left">
+    <footer className="border-t border-rule print:hidden">
+      <div className="page-container flex flex-col gap-3 py-8 type-small text-ink-muted md:flex-row md:items-center md:justify-between">
         <p>
           © {new Date().getFullYear()} {profile.name}
         </p>
         <p>
-          Built with React, TypeScript, Tailwind CSS &amp; Framer Motion ·{" "}
-          <a {...linkProps(repoUrl)} className="text-gray-300 underline-offset-4 transition-colors hover:text-white hover:underline">
+          Built with React, TypeScript, Tailwind CSS and Framer Motion.{" "}
+          {/* ลิงก์กลางประโยค: ขีดเส้นใต้เสมอ ไม่บอกด้วยสีอย่างเดียว (axe: link-in-text-block) */}
+          <a
+            {...linkProps(repoUrl)}
+            className="text-pen underline underline-offset-3 transition-colors duration-(--duration-fast) hover:text-pen-hover"
+          >
             Source code
             <NewTabHint href={repoUrl} />
           </a>
@@ -21,10 +24,10 @@ export default function Footer({ onOpenPalette }: { onOpenPalette: () => void })
         <button
           type="button"
           onClick={onOpenPalette}
-          className="hidden items-center gap-2 rounded-full px-2 py-1 transition-colors hover:text-white md:inline-flex"
+          className="hidden min-h-11 items-center gap-2 rounded-control text-left transition-colors duration-(--duration-fast) hover:text-ink md:inline-flex"
         >
           Press
-          <kbd className="rounded border border-white/15 px-1.5 py-0.5 text-xs text-gray-300">{PALETTE_SHORTCUT}</kbd>
+          <kbd className="rounded-tag border border-stroke px-1.5 py-0.5 type-caption text-ink">{PALETTE_SHORTCUT}</kbd>
           for quick actions
         </button>
       </div>

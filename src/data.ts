@@ -22,6 +22,14 @@ export type Project = {
   /** บริบทของงาน เช่น วิชา/งานแข่ง/ขนาดทีม */
   context?: string;
   desc: string;
+  /**
+   * การ์ดแบบ problem → approach → result: ถ้าใส่ problem กับ approach การ์ดจะแสดงสามช่องนี้แทน desc
+   * ยังว่างทุกโปรเจกต์ — ข้อความที่เสนอรอยืนยันใน design/content-proposals.md
+   */
+  problem?: string;
+  approach?: string;
+  /** ผลลัพธ์ที่เป็นประโยค (ถ้ามี metric จะแสดง metric ที่ถูกขีดเน้นไว้ก่อน) */
+  result?: string;
   /** ตัวเลขเด่น — ใส่เฉพาะค่าที่วัดได้จริงและอ้างอิงได้ใน repo */
   metric?: { value: string; label: string };
   /** เทคที่ชื่อตรงกับ skill → ปุ่ม skill ใช้กรองโปรเจกต์ได้ */
@@ -61,6 +69,11 @@ export const profile = {
   siteUrl: "https://kulachart-resume-site.vercel.app",
   summary:
     "I build full-stack web apps and machine-learning systems — from a skin-cancer classifier benchmarked on 25,000+ images to the runner-status checker for SWU Run Together 2026. Data Science Intern at Botnoi Group (2026).",
+  /**
+   * วลีใน summary ที่ hero ขีดด้วยปากกาเน้น (หลักฐานที่ recruiter ควรเห็นก่อน) ไม่เกิน 2 วลีต่อจอ
+   * ต้องพิมพ์ให้ตรงกับข้อความใน summary ทุกตัวอักษร — ใช้แค่บนเว็บ CV ไม่ได้ใช้
+   */
+  summaryMarks: ["25,000+ images", "Data Science Intern at Botnoi Group (2026)"],
   /** CV ไม่ใช้สรรพนาม "I" ตามธรรมเนียมเรซูเม่ */
   cvSummary:
     "Computer Engineering student building full-stack web apps and machine-learning systems. Data Science Intern at Botnoi Group (2026). Built a deep-learning skin-cancer screening system (0.91 AUC-ROC), a flood-monitoring platform for the DOH Hackathon, and the runner-status checker for SWU Run Together 2026. Seeking Data/AI or full-stack internship opportunities.",

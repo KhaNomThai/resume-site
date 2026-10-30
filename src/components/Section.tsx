@@ -1,54 +1,31 @@
-import { m } from "framer-motion";
 import type { ReactNode } from "react";
 import { SECTIONS, type SectionId } from "../config/sections";
-import { EASE_OUT } from "../lib/motion";
-
-const WIDTHS = { narrow: "max-w-3xl", default: "max-w-5xl", wide: "max-w-6xl" } as const;
 
 type Props = {
   id: SectionId;
-  /** ป้ายเล็กเหนือหัวข้อ — ใช้ชื่อเดียวกับเมนู */
-  eyebrow: string;
-  title: string;
-  subtitle?: string;
-  width?: keyof typeof WIDTHS;
+  /** บรรทัดนำหนึ่งบรรทัดใต้หัวข้อ (ไม่บังคับ) */
+  intro?: string;
   children: ReactNode;
 };
 
-export default function Section({ id, eyebrow, title, subtitle, width = "default", children }: Props) {
+/**
+ * หัว section ชั้นเดียว: ชื่อเดียวกับเมนู (จาก config/sections.ts) + บรรทัดนำถ้ามี
+ * เดิมซ้อน 4 ชั้น (เส้นไล่สี, "01 / PROJECTS", หัวข้อกว้าง ๆ, subtitle) คนอ่านต้องผ่าน ~20 คำก่อนเจอเนื้อหา
+ * เส้นบน section คือเส้นบรรทัดของหน้าสมุด แบ่งช่วงโดยไม่ต้องใช้กล่อง
+ */
+export default function Section({ id, intro, children }: Props) {
   const headingId = `${id}-heading`;
-  const number = String(SECTIONS.findIndex((s) => s.id === id) + 1).padStart(2, "0");
+  const title = SECTIONS.find((s) => s.id === id)!.label;
 
   return (
-    <section id={id} aria-labelledby={headingId} className="relative py-20 md:py-28">
-      <div className={`${WIDTHS[width]} mx-auto px-6`}>
-        <m.header
-          className="mb-10 md:mb-14"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.5, ease: EASE_OUT }}
-        >
-          {/* เส้นวาดออกจากซ้าย: scaleX (compositor) แทนการอนิเมต width ที่ต้องคำนวณ layout ทุกเฟรม */}
-          <m.div
-            aria-hidden="true"
-            className="mb-6 h-px origin-left bg-gradient-to-r from-indigo-400/70 via-white/10 to-transparent"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: EASE_OUT }}
-          />
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-indigo-300">
-            <span aria-hidden="true" className="text-gray-500">
-              {number} /{" "}
-            </span>
-            {eyebrow}
-          </p>
-          <h2 id={headingId} className="mt-3 text-3xl font-semibold tracking-tight text-white outline-none md:text-4xl">
+    <section id={id} aria-labelledby={headingId} className="border-t border-rule py-12 md:py-16 xl:py-24">
+      <div className="page-container">
+        <header className="mb-12">
+          <h2 id={headingId} className="type-headline text-ink outline-none">
             {title}
           </h2>
-          {subtitle && <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-400">{subtitle}</p>}
-        </m.header>
+          {intro && <p className="mt-3 max-w-measure-lead type-lead text-ink-muted">{intro}</p>}
+        </header>
         {children}
       </div>
     </section>

@@ -3,7 +3,7 @@
 เอกสารนี้อธิบาย token ทุกตัวใน [`src/styles/tokens.css`](src/styles/tokens.css) ว่าคืออะไร ใช้ตรงไหน และทำไมถึงเป็นค่านี้
 
 > **สถานะ:** เลือกแนว **A · Lab Notebook** แล้ว (Phase 1) และผสมบางส่วนจากแนว C
-> ไฟล์ token ยังไม่ถูก import เข้าเว็บ Phase 3 จะต่อเข้ากับ `src/index.css` และเปลี่ยน component ให้ใช้ token ชุดนี้
+> Phase 3 ต่อ token เข้าเว็บแล้ว (`src/index.css` import `styles/tokens.css`) และทุก component ใช้ token ชุดนี้ ตรวจด้วย `npm run check:tokens`
 
 ## แนวคิด: หน้าหนึ่งจากสมุดของนักศึกษาวิศวะ
 
@@ -54,7 +54,7 @@ Tailwind v4 ไม่มี `tailwind.config.js` แล้ว ค่าใน `@
 - ไฟล์ล้างค่า default ของ Tailwind ใน namespace ที่ระบบคุมเอง (`--color-*: initial` ฯลฯ) ดังนั้น `bg-indigo-500`, `text-sm`, `rounded-xl`, `shadow-lg` จะ **ไม่มี** ให้ใช้ ถ้าต้องการค่าที่ไม่มีใน token แปลว่าควรคุยกันว่าจะเพิ่ม token หรือไม่
 - `@theme static` ทำให้ตัวแปรทุกตัวอยู่ที่ `:root` เสมอ เรียก `var(--color-pen)` จาก SVG หรือ inline style ได้
 
-**โหมดมืด:** ใส่ `data-theme="dark"` ที่ `<html>` แล้ว token ทุกตัวเปลี่ยนค่าเอง component ส่วนใหญ่จึงไม่ต้องเขียน `dark:` เลย ปุ่มสลับธีมใน Phase 3 จะตั้งค่านี้ก่อน paint ตามที่ผู้ใช้เลือกหรือตามระบบ ส่วน `dark:` ใช้เฉพาะกรณีอย่างสลับไฟล์ logo
+**โหมดมืด:** ใส่ `data-theme="dark"` ที่ `<html>` แล้ว token ทุกตัวเปลี่ยนค่าเอง component ส่วนใหญ่จึงไม่ต้องเขียน `dark:` เลย สคริปต์ใน `index.html` ตั้งค่านี้ก่อน paint ตามที่ผู้ใช้เคยเลือกหรือตามระบบ และปุ่มสลับธีมใน navbar (`src/lib/theme.ts`) ดูแลต่อ ส่วน `dark:` ใช้เฉพาะกรณีพิเศษ (logo ใน navbar ไม่ต้องใช้ เพราะวาดด้วย `currentColor` กับ `fill-pen`)
 
 > ทำไมไม่ใช้ `light-dark()` ของ CSS: Tailwind 4.1 ส่งฟังก์ชันนี้ออกไปตรงๆ โดยไม่แปลง (ผมทดสอบกับ build ของโปรเจกต์แล้ว) แต่ Safari ก่อน 17.5 เช่น iPhone X ที่ค้างอยู่ iOS 16 ไม่รู้จัก สีทั้งเว็บจะหาย จึงแยกเป็นสองบล็อกแทน
 
@@ -88,7 +88,7 @@ Tailwind v4 ไม่มี `tailwind.config.js` แล้ว ค่าใน `@
 
 รูปทรงทั้ง 4 คือ marker เริ่มต้นของ matplotlib (`o`, `s`, `^`, `D`) ซึ่งคนสาย DS เห็นทุกวัน รูปทรงต่างกันชัดแม้เหลือ 10px วาดเป็น SVG inline สี `ink` (ไม่ใช้ตัวอักษร Unicode เพราะแต่ละฟอนต์วาดไม่เหมือนกัน) และมีชื่อหมวดกำกับทุกครั้ง โดยตัวสัญลักษณ์ใส่ `aria-hidden="true"`
 
-| สัญลักษณ์ | หมวด | skill ในหมวด (ข้อเสนอ ยืนยันใน Phase 3) |
+| สัญลักษณ์ | หมวด | skill ในหมวด (`src/config/skillFamilies.ts` รอยืนยันใน `design/content-proposals.md`) |
 |---|---|---|
 | ● วงกลม | ML / DL | PyTorch, scikit-learn, OpenCV, Machine Learning, Deep Learning, Computer Vision, Generative AI |
 | ■ สี่เหลี่ยม | Data | Pandas, NumPy, Data Analysis, D3.js, Google Sheets |
@@ -105,13 +105,13 @@ Tailwind v4 ไม่มี `tailwind.config.js` แล้ว ค่าใน `@
 | **Newsreader** (Production Type) | เสียงของเว็บ: ชื่อ, หัวข้อ, ชื่อการ์ด, summary | serif ที่ออกแบบมาให้อ่านบนจอ ให้ความรู้สึกเอกสารที่ผ่านการเรียบเรียง มีแกน optical size ตัวใหญ่จึงคมและแน่นขึ้นเอง |
 | **IBM Plex Sans** (IBM) | งาน: เนื้อหาในการ์ด, label, tag, ปุ่ม | sans ที่มาจากงาน engineering อ่านง่ายที่ขนาดเล็ก ตัวเลขมีแบบ tabular |
 
-Phase 3 จะติดตั้งแบบ self-host:
+ติดตั้งแบบ self-host:
 
 ```bash
 npm i @fontsource-variable/newsreader @fontsource-variable/ibm-plex-sans
 ```
 
-self-host ดีกว่าลิงก์ Google Fonts เพราะไม่ต้องต่อ DNS/TLS ไปอีกโดเมน ขนาดไฟล์ latin: Newsreader แบบมีแกน optical size 132 KB (แบบน้ำหนักอย่างเดียว 58 KB) และ Plex Sans 46 KB เทียบกับ Geist + Geist Mono ตอนนี้ 52 KB ผมจะเทียบหน้าตากับคะแนน Lighthouse ของทั้งสองแบบใน Phase 3 ก่อนเลือก
+self-host ดีกว่าลิงก์ Google Fonts เพราะไม่ต้องต่อ DNS/TLS ไปอีกโดเมน ขนาดไฟล์ latin: Newsreader แบบมีแกน optical size 132 KB (แบบน้ำหนักอย่างเดียว 58 KB) และ Plex Sans 46 KB เทียบกับ Geist + Geist Mono เดิม 52 KB เว็บใช้แบบมี optical size (`newsreader/opsz.css`) เพราะชื่อใน hero คือสิ่งแรกที่คนเห็น ถ้า Lighthouse ใน Phase 4 พบว่า performance ลด ค่อยเปลี่ยนเป็นแบบน้ำหนักอย่างเดียว (Geist ยังอยู่ใน devDependencies เพราะ CV PDF ยังใช้)
 
 ขนาดเลือกจาก classic scale ใน *The Elements of Typographic Style* ของ Robert Bringhurst (12, 14, 16, 18, 21, 24, 36, 48, 60, 72) ซึ่งเป็นลำดับขนาดที่ช่างเรียงพิมพ์ใช้กันมาหลายร้อยปี แต่ละขั้นต่างกันพอให้ตาเห็นลำดับชั้นชัด
 
@@ -148,10 +148,10 @@ self-host ดีกว่าลิงก์ Google Fonts เพราะไม�
 | `space-4` | 16 | ขอบหน้า < 768px, ระหว่างแถวในการ์ด |
 | `space-6` | 24 | padding การ์ด, gutter, ระยะจากเส้น margin ถึงต้นบรรทัด |
 | `space-8` | 32 | ขอบหน้า ≥ 768px, ระหว่างการ์ด |
-| `space-12` | 48 | ขอบหน้า ≥ 1280px, หัว section ถึงเนื้อหา |
-| `space-16` | 64 | ระยะระหว่าง section < 768px, ระหว่างบล็อกใน hero |
-| `space-24` | 96 | ระยะระหว่าง section ≥ 768px |
-| `space-32` | 128 | ระยะระหว่าง section ≥ 1280px |
+| `space-12` | 48 | ขอบหน้า ≥ 1280px, หัว section ถึงเนื้อหา, ระยะบนล่างของ section < 768px |
+| `space-16` | 64 | ระยะบนล่างของ section ≥ 768px, ระหว่างบล็อกใน hero |
+| `space-24` | 96 | ระยะบนล่างของ section ≥ 1280px |
+| `space-32` | 128 | สำรองไว้สำหรับช่องว่างใหญ่พิเศษ (ยังไม่ได้ใช้: ตอนลองใช้กับ section แล้วช่องว่างรวมกว่า 250px ดูขาด) |
 
 ทำไมต้องจำกัด: เว็บเดิมมี padding การ์ด 5 ค่าที่ต่างกันนิดเดียว ตาเห็นว่า "ไม่ตรง" แต่บอกไม่ได้ว่าทำไม ขั้นที่ห่างกันชัดทำให้ระยะทุกจุดดูตั้งใจ
 
@@ -229,7 +229,7 @@ self-host ดีกว่าลิงก์ Google Fonts เพราะไม�
 - **คู่กับชื่อ (lockup)** logo สูง 32px วางหน้าคำว่า "Kulachart" ที่ตั้งด้วย `serif` น้ำหนัก 500 ขนาด 21px เว้นระยะ `space-3` และจัด baseline ของชื่อให้ตรงกับฐานของตัว K
 - **ห้าม** เปลี่ยนสีนอกจากสามแบบข้างบน, ยืดหรือบีบสัดส่วน, ใส่เงาหรือเส้นขอบ, วางบนแถบ `marker` หรือย้ายจุดไปไว้ที่อื่น
 - path ของตัว K แปลงมาจาก glyph ของ Newsreader ซึ่งใช้สัญญาอนุญาต SIL Open Font License ที่อนุญาตให้ใช้ glyph ในโลโก้ได้
-- Phase 3 จะคัดลอกไฟล์ไปไว้ที่ `public/` สำหรับ favicon (พร้อม PNG สำหรับ Safari และ apple-touch-icon) และที่ `src/assets/` สำหรับ navbar
+- favicon อยู่ที่ `public/favicon.svg` พร้อม `favicon-32.png` (เบราว์เซอร์ที่ไม่รองรับ SVG) และ `apple-touch-icon.png` (180px บนพื้น paper) ส่วน navbar ใช้ `src/components/Logo.tsx` ซึ่งฝัง path เดียวกันแบบ inline
 
 ## Accessibility
 

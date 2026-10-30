@@ -34,7 +34,7 @@ npm run check:tokens  # หา class Tailwind default ที่ใช้ไม�
 
 - Phase 1 ✅ token ใน `src/styles/tokens.css`
 - Phase 2 ✅ เลือก logo แบบ **Serif K.** (`design/logo/k-serif*.svg`) จาก 7 แบบใน `design/logo-preview.html` กติกาการใช้อยู่ในหัวข้อ Logo ของ DESIGN_SYSTEM.md
-- Phase 3 ⏳ import token เข้า `src/index.css` แล้วเปลี่ยน component ให้ใช้ token
+- Phase 3 ✅ token ต่อเข้า `src/index.css` แล้ว ทุก component ใช้ token, favicon และรูป OG ใหม่ ⏳ รอเจ้าของอนุมัติข้อเสนอเนื้อหาใน `design/content-proposals.md` ก่อนแก้ `data.ts`
 
 เมื่อ token ถูก import แล้ว ค่า default ของ Tailwind (เช่น `bg-indigo-500`, `text-sm`, `rounded-xl`, `shadow-lg`) จะ **ใช้ไม่ได้** ให้ใช้ utility จาก token (`text-ink`, `bg-surface`, `type-body`, `rounded-card` ฯลฯ) ถ้าค่าที่ต้องการไม่มีใน token ให้ถามก่อนเพิ่ม
 

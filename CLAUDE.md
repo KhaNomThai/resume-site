@@ -33,7 +33,7 @@ npm run check:tokens  # หา class Tailwind default ที่ใช้ไม�
 กำลังเปลี่ยนเป็นแนว **Lab Notebook** รายละเอียดทั้งหมดอยู่ใน [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) อ่านก่อนแตะเรื่อง UI
 
 - Phase 1 ✅ token ใน `src/styles/tokens.css`
-- Phase 2 ✅ logo K สามแบบใน `design/logo/` และหน้า preview `design/logo-preview.html`
+- Phase 2 ✅ เลือก logo แบบ **Serif K.** (`design/logo/k-serif*.svg`) จาก 7 แบบใน `design/logo-preview.html` กติกาการใช้อยู่ในหัวข้อ Logo ของ DESIGN_SYSTEM.md
 - Phase 3 ⏳ import token เข้า `src/index.css` แล้วเปลี่ยน component ให้ใช้ token
 
 เมื่อ token ถูก import แล้ว ค่า default ของ Tailwind (เช่น `bg-indigo-500`, `text-sm`, `rounded-xl`, `shadow-lg`) จะ **ใช้ไม่ได้** ให้ใช้ utility จาก token (`text-ink`, `bg-surface`, `type-body`, `rounded-card` ฯลฯ) ถ้าค่าที่ต้องการไม่มีใน token ให้ถามก่อนเพิ่ม

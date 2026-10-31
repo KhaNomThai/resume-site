@@ -3,7 +3,7 @@
 ตรวจโค้ด dependency ไฟล์ comment เอกสาร และการตั้งค่า Claude Code ทั้งหมดบน `main` ตาม `CLAUDE.md` และ `DESIGN_SYSTEM.md`
 
 - **จุดเริ่ม:** tag `pre-audit-20261031` (commit `19d2c2b`) ย้อนกลับได้ด้วย `git reset --hard pre-audit-20261031`
-- **ยังไม่ได้ push** ทุก commit อยู่ในเครื่อง รอ review (push เข้า `main` แล้ว Vercel จะ deploy ทันที)
+- **push แล้ว** หลังเจ้าของ review (Vercel deploy `main` อัตโนมัติ) รวม commit หลัง review ที่อยู่ในหัวข้อท้ายรายงาน
 
 | Commit | Phase | เรื่อง |
 |---|---|---|
@@ -78,7 +78,7 @@ Phase 3 ไม่มี commit เพราะไม่มีไฟล์ไห�
   - type ของ `data.ts`: `ProjectLink`, `EducationItem`, `Highlight`, `ContactLink` เก็บ export ไว้เพราะเป็น schema ของเนื้อหา
   - `Theme`, `ShowToast`, `ProjectFilter`, `FamilyGroup` เป็น type ของค่าที่ฟังก์ชันคืน
 
-### เจอแต่ไม่ได้แก้ (เปลี่ยนหน้าตา ต้องให้ตัดสินใจ)
+### เจอแต่ไม่ได้แก้ในรอบแรก (แก้แล้วหลัง review ดูท้ายรายงาน)
 
 - **ปากกาเน้นใน hero โหมดมืด:** ข้อความใน `<mark>` ใช้สี `on-marker` (หมึกเข้ม) ตั้งแต่ก่อนแถบเหลืองมาถึง ในโหมดมืดวลี "25,000+ images" และ "Data Science Intern at Botnoi Group (2026)" จึงมองไม่เห็นราว 0.2–0.5 วินาทีแรก (contrast ≈ 1:1 บนพื้น paper) แล้วค่อยโผล่ตามแถบเหลือง `mark-pending` ของการ์ดแก้ปัญหานี้ไว้แล้วด้วย `color: inherit` แต่ `mark-swipe` ของ hero ยังไม่ได้ทำ ถ้าตกลง แก้ได้ด้วยการให้สีข้อความเปลี่ยนเป็น `on-marker` พร้อมกับแถบเหลือง
 
@@ -125,7 +125,7 @@ Phase 3 ไม่มี commit เพราะไม่มีไฟล์ไห�
 
 ทุกไฟล์ใน `src/`, `public/` และ `scripts/` มีที่อ้างถึง (ตรวจด้วย grep ทั้งโปรเจกต์ รวม `index.html`, config และเอกสาร) จึงไม่ได้ลบอะไร
 
-### `design/` (ไม่ได้แตะ ให้เลือก)
+### `design/` (ตอนตรวจ ก่อนเจ้าของเลือกให้ลบ)
 
 | กลุ่ม | ไฟล์ | ขนาด | ใครอ้างถึง |
 |---|---|---|---|
@@ -217,7 +217,7 @@ Phase 3 ไม่มี commit เพราะไม่มีไฟล์ไห�
 2. **`/check-ui`:** `lint` → `build` → `check:tokens` → เปิดเว็บด้วย `.claude/launch.json` ดูโหมดสว่าง/มืดที่ 1440 และ 375 px
 3. **`/pre-push`:** checklist ก่อน push เพราะ push เข้า `main` = deploy ทันที (สามข้อข้างบน + `git log origin/main..HEAD` ให้เห็นว่ากำลังจะ deploy อะไร)
 
-## Phase 7: ข้อเสนอ (ยังไม่ได้ทำ)
+## Phase 7: ข้อเสนอ (ข้อ 1, 2, 5 และ 6 ทำแล้วหลัง review)
 
 1. **GitHub Actions** รัน `npm ci`, `lint`, `build` และ `check:tokens` ทุก push/PR บน Node 22 ส่วน `cv`/`og` ต้องใช้ Chrome ถ้าจะใส่ใน CI ใช้ Chrome ของ runner ได้ แล้วเพิ่มขั้นตรวจว่า PDF ยังเป็นหน้าเดียว ข้อนี้สำคัญเพราะ Vercel deploy `main` ทันทีโดยไม่มีด่านกั้น
 2. **ระบุเวอร์ชัน Node** `"engines": { "node": ">=22.18" }` ใน `package.json` และ `.nvmrc` (`22`) ระวังว่า Vercel ใช้ `engines` เลือกเวอร์ชัน Node ตอน build ด้วย
@@ -244,11 +244,18 @@ Phase 3 ไม่มี commit เพราะไม่มีไฟล์ไห�
   - เปิดดูโหมดสว่างที่ desktop และโหมดมืดที่ 375 px ไม่มี error ใน console
   - ⌘K "Back to top" ย้าย focus ไป `hero-heading` จริง และคำสั่ง GitHub/LinkedIn/source มี "(opens in a new tab)"
 
-## สิ่งที่ต้องให้ตัดสินใจ
+## หลัง review: สิ่งที่ตัดสินใจและทำแล้ว
 
-1. **`design/`:** เก็บไว้ (A), ย้ายไป archive (B) หรือลบ (C)
-2. **Geist:** เก็บไว้ หรือออกแบบ CV ใหม่ด้วยฟอนต์ของเว็บแล้วลบ
-3. **ปากกาเน้นใน hero โหมดมืด:** แก้หรือไม่
-4. **อัปเกรด major:** เริ่มจาก ESLint 10 (ปิด audit ที่เหลือ) หรือรอ
-5. **ข้อเสนอ Phase 7:** โดยเฉพาะ GitHub Actions และ `engines`
-6. **push:** review 5 commit ข้างบนแล้วค่อย push (`git log --oneline pre-audit-20261031..HEAD`)
+เจ้าของให้ลบไฟล์ใน `design/` ที่ไม่ได้ใช้ และให้ตัดสินใจข้อที่เหลือเอง
+
+| เรื่อง | ตัดสินใจ | ผล |
+|---|---|---|
+| `design/` | ลบส่วนที่ไม่ได้ใช้ | ลบ logo 6 แบบที่ไม่ได้เลือก, `logo-preview.html`, `phase4-report.md` พร้อมรูป 7 รูป และ `content-proposals.md` (ราว 1.1 MB) เก็บ `design/logo/k-serif*.svg` ไว้เพราะ `npm run og` อ่าน และเป็นต้นฉบับของ favicon กับ `Logo.tsx` แก้ลิงก์ในเอกสารแล้ว |
+| ปากกาเน้นใน hero โหมดมืด | แก้ | แอนิเมชันเริ่มจากสีหมึกรอบข้างแล้วเปลี่ยนเป็น `on-marker` พร้อมแถบเหลือง ตรวจด้วยภาพหน้าจอก่อนและหลังการขีดแล้ว โหมดสว่างหน้าตาเหมือนเดิม |
+| GitHub Actions | เพิ่ม | `.github/workflows/ci.yml` รัน lint, `check:tokens` และ build ทุก push/PR |
+| เวอร์ชัน Node | `.nvmrc` = 22 | ไม่ใส่ `engines` ใน `package.json` เพราะ Vercel ใช้ค่านั้นเลือก Node ตอน build ค่าแบบ `>=` อาจทำให้ build บน Node major ใหม่โดยไม่ได้ตั้งใจ |
+| branch ที่ merge แล้ว | ลบ | `redesign`, `ux-polish`, `portfolio-redesign` ทั้งในเครื่องและบน GitHub (เฉพาะที่ merge เข้า `main` แล้ว) |
+| Geist | เก็บไว้ | ออกแบบ CV ใหม่ต้องจัดหน้าให้ยังเป็น A4 หน้าเดียว และเปลี่ยนหน้าตาไฟล์ที่ส่งให้บริษัทจริง จึงไม่ทำในรอบ audit |
+| framer-motion | เก็บไว้ | ตัดออกได้ราว 26 KB (gzip) แต่ต้องเขียน toast และการกรองใหม่ เป็นงาน architecture แยกต่างหาก |
+| อัปเกรด major | ยังไม่ทำ | audit ที่เหลือ 12 รายการเป็นเครื่องมือ lint ไม่ได้อยู่ในเว็บ ควรอัปเกรดเป็นงานแยกที่ทดสอบได้เต็มที่ |
+| token ที่ยังไม่มีโค้ดอ้างถึง | เก็บไว้ | เป็นค่าใน design system ที่เอกสารอธิบายไว้แล้วว่าเท่ากับ class ที่ใช้อยู่ |

@@ -21,7 +21,7 @@ export default defineConfig([
     },
   },
   {
-    // สคริปต์ generate CV / og:image รันด้วย Node
+    // สคริปต์ใน scripts/ (cv, og, check:tokens) และ vite.config รันด้วย Node ไม่ใช่ในเบราว์เซอร์
     files: ['scripts/**/*.ts', 'vite.config.ts'],
     languageOptions: {
       globals: globals.node,

@@ -29,7 +29,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
       >
         <AnimatePresence>
           {toast && (
-            // toast เป็นของที่ลอยเหนือหน้า จึงเป็นหนึ่งในสองที่ที่ใช้ shadow-overlay (อีกที่คือ command palette)
+            // toast ลอยเหนือหน้า จึงมีเงา shadow-overlay ตามกติกาเงาของระบบ (ของที่วางราบบนกระดาษไม่มีเงา)
             <m.p
               key={toast.id}
               initial={{ opacity: 0, y: 12 }}

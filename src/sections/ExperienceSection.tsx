@@ -3,7 +3,7 @@ import { leadership, work, type TimelineItem } from "../data";
 
 /**
  * บันทึกเรียงตามเวลาแบบสมุด: วันที่อยู่คอลัมน์ซ้าย เนื้อหาอยู่ขวา แต่ละรายการคั่นด้วยเส้นบรรทัด
- * ไม่มีเส้น timeline ที่เติมตามการเลื่อนหรือจุดกะพริบ (motion ที่ไม่ได้ตอบการกระทำของผู้ใช้)
+ * ไม่ใส่เส้น timeline ที่เติมตามการเลื่อนหรือจุดกะพริบ เพราะเป็น motion ที่ไม่ได้ตอบการกระทำของผู้ใช้ (ดู Motion ใน DESIGN_SYSTEM.md)
  */
 export default function ExperienceSection() {
   return (

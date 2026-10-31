@@ -16,7 +16,8 @@ const LINE_BUTTON =
 /**
  * หน้าแรกของสมุด: ภายใน 5 วินาทีต้องบอกได้ว่าเป็นใคร (ชื่อ) ทำอะไร (role + summary) และมองหางานอะไร (availability)
  * ลำดับตามที่ recruiter สแกน: ชื่อ → ตำแหน่ง → งานที่หา → หลักฐาน (ถูกขีดเน้น) → ปุ่ม → ตัวเลขสรุป
- * motion มีอย่างเดียว คือปากกาเน้นขีดผ่านหลักฐานสองจุดตอนโหลด (ไม่มี fade-in ของข้อความ)
+ * motion ตอนโหลดมีอย่างเดียว คือปากกาเน้นขีดผ่านหลักฐานสองจุด (ไม่มี fade-in ของข้อความ ซึ่งทำให้ต้องรอกว่าจะอ่านได้)
+ * ส่วนหมึกตามเคอร์เซอร์และรูปติดเทปขยับเฉพาะตอนผู้ใช้ชี้
  */
 export default function HeroSection() {
   const inkRef = useInkFollowsPointer();
@@ -54,7 +55,7 @@ export default function HeroSection() {
               {highlightPhrases(profile.summary, profile.summaryMarks)}
             </p>
 
-            {/* ปุ่มหลักคือสิ่งที่ recruiter อยากกดที่สุด: resume (เดิมเป็น "View projects") */}
+            {/* ปุ่มหลัก (สี pen) คือสิ่งที่ recruiter อยากกดที่สุด: resume ส่วนลิงก์อื่นเป็นปุ่มรอง */}
             <div className="mt-8 flex flex-wrap items-center gap-3 print:hidden">
               <a
                 href={CV_URL}
@@ -85,7 +86,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* รูปอยู่ข้างขวาเฉพาะจอใหญ่: บนจอเล็กเดิมรูปอยู่บนสุดและดันชื่อลงไปถึง 35% ของจอ */}
+          {/* รูปอยู่ข้างขวาเฉพาะจอใหญ่: บนจอเล็กถ้าวางรูปไว้บนสุด ชื่อจะถูกดันลงไปราว 1 ใน 3 ของจอ จึงไม่แสดงรูป */}
           {/* รูปติดเทปบนหน้าสมุดแบบรูปโพลารอยด์ (taped-photo, photo-tape ใน index.css) */}
           <figure className="taped-photo relative hidden self-start rounded-card border border-rule bg-surface p-2 lg:block">
             <span aria-hidden="true" className="photo-tape" />

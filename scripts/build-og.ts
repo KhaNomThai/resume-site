@@ -1,7 +1,8 @@
 /**
  * สร้างภาพ preview ตอนแชร์ลิงก์ (og:image 1200×630) จาก src/data.ts → public/og-image.png
  * รัน `npm run og` (ต้องมี Google Chrome) — ภาพนี้คือสิ่งแรกที่คนเห็นเมื่อแชร์ลิงก์ใน LinkedIn/LINE/Facebook
- * หน้าตาเดียวกับ hero ของเว็บ (แนว Lab Notebook): สีคือค่าโหมดสว่างใน src/styles/tokens.css
+ * หน้าตาเดียวกับ hero ของเว็บ (กติกาอยู่ใน DESIGN_SYSTEM.md) สีคัดลอกจากค่าโหมดสว่างใน src/styles/tokens.css
+ * เพราะ HTML นี้ render แยกนอกเว็บ อ่าน token ไม่ได้ — ถ้าแก้สีใน tokens.css ต้องแก้ที่นี่ด้วย
  */
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";

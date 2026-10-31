@@ -1,7 +1,7 @@
 /**
- * หา class ของ Tailwind ที่ไม่มีแล้วหลัง import src/styles/tokens.css
- * tokens.css ล้าง namespace color/font/text/radius/shadow ทิ้ง class พวกนี้จึงไม่ error แต่ไม่สร้าง CSS (หน้าเว็บพังเงียบ ๆ)
- * ระหว่าง Phase 3 ใช้เป็น checklist ว่าเหลือที่ไหนต้องย้ายไปใช้ token: `npm run check:tokens`
+ * หา class ค่า default ของ Tailwind (สี ขนาดตัวอักษร ฟอนต์ มุม เงา) ที่ใช้ไม่ได้ในโปรเจกต์นี้: `npm run check:tokens`
+ * tokens.css ล้าง namespace เหล่านี้ทิ้งเพื่อบังคับให้ทุกจุดใช้ token แต่ Tailwind ไม่ error เมื่อเจอ class ที่ไม่รู้จัก
+ * มันแค่ไม่สร้าง CSS lint และ build จึงผ่านทั้งที่หน้าเว็บพัง สคริปต์นี้คือด่านที่จับกรณีนั้น (exit 1 ถ้าเจอ)
  */
 import { readdirSync, readFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";

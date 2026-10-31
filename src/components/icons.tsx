@@ -2,7 +2,11 @@ import type { SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
-/** Decorative icons (Heroicons v2): aria-hidden เสมอ — ข้อความข้าง ๆ เป็นตัวบอกความหมายแทน */
+/**
+ * ไอคอนตกแต่ง: aria-hidden เสมอ ข้อความข้าง ๆ เป็นตัวบอกความหมายแทน
+ * ไอคอนเส้นมาจาก Heroicons v2 ส่วน GitHub/LinkedIn เป็นโลโก้แบรนด์แบบทึบ
+ * ฝังเป็น path แทนการติดตั้งไลบรารีไอคอน เพราะใช้แค่ไม่กี่ตัว
+ */
 function Outline({ children, ...props }: IconProps) {
   return (
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true" {...props}>

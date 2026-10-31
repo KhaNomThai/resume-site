@@ -1,5 +1,5 @@
 /*
- * Design tokens — "Lab Notebook" (แนว A ที่เลือกใน Phase 1 + สิ่งที่ยืมจากแนว C)
+ * Design tokens — แนวคิด "Lab Notebook" (หน้าสมุดบันทึกการทดลองของนักศึกษาวิศวะ)
  * ที่เดียวที่เก็บค่าสี ตัวอักษร ระยะห่าง มุม เงา และ motion ของเว็บ
  * ความหมายและวิธีใช้ของทุก token อยู่ใน DESIGN_SYSTEM.md
  * import ใน src/index.css ต่อจาก tailwindcss
@@ -111,13 +111,13 @@
   --key-size: 10px; /* สัญลักษณ์หมวด ● ■ ▲ ◆ หน้า tag และใน legend */
   --target-min: 44px; /* ขนาดเล็กสุดของสิ่งที่กดได้ (WCAG 2.5.5) */
 
-  /* เงา: บัตรคำวางราบบนกระดาษ มีเงาเฉพาะของที่ลอยเหนือหน้า (command palette, toast)
+  /* เงา: บัตรคำวางราบบนกระดาษ มีเงาเฉพาะของที่ลอยเหนือหน้า (command palette, toast และการ์ด/รูปตอนชี้ที่ยกขึ้น)
      ไม่ได้ใส่ใน @theme เพราะ Tailwind จะฝังค่าโหมดสว่างลงใน class shadow-* ตอน build ทำให้โหมดมืดเปลี่ยนค่าไม่ได้ */
   --shadow-overlay: 0 0 0 1px rgb(20 27 43 / 0.06), 0 16px 40px rgb(20 27 43 / 0.16);
 }
 
 /* ── โหมดมืด ── "สมุดตอนกลางคืน": กระดาษสีกราไฟต์ หมึกสีอ่อน ปากกาและ marker ยังเป็นสีเดิมในโทนที่อ่านได้บนพื้นมืด
-   ปุ่มสลับธีม (Phase 3) ใส่ data-theme ที่ <html> ก่อน paint ตามค่าที่ผู้ใช้เลือกหรือตามระบบ
+   สคริปต์ใน index.html ใส่ data-theme ที่ <html> ก่อน paint ตามค่าที่ผู้ใช้เลือกหรือตามระบบ แล้ว src/lib/theme.ts ดูแลปุ่มสลับธีมต่อ
    (สีใน @theme อยู่ใน @layer theme ซึ่งแพ้ style นอก layer เสมอ บล็อกนี้จึงชนะโดยไม่ต้องเพิ่ม specificity) */
 [data-theme="dark"] {
   color-scheme: dark; /* scrollbar และ form control ของ browser เปลี่ยนตาม */
@@ -142,7 +142,8 @@
 }
 
 /* `dark:` ของ Tailwind ให้ตาม data-theme แทน prefers-color-scheme (ค่าเริ่มต้นของ v4)
-   ส่วนใหญ่ไม่ต้องใช้ เพราะ token เปลี่ยนเองแล้ว ใช้เฉพาะกรณีอย่างสลับไฟล์ logo */
+   ไม่ให้ dark: กับปุ่มสลับธีมขัดกัน ตอนนี้ยังไม่มี component ไหนใช้ เพราะ token เปลี่ยนค่าตามธีมเองแล้ว
+   เก็บไว้สำหรับกรณีที่ token ช่วยไม่ได้ เช่นต้องสลับไฟล์รูปตามธีม */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @utility shadow-overlay {

@@ -36,13 +36,13 @@ function useBrandLogos() {
   return logos;
 }
 
+/** สีของไอคอนที่วาดเอง: Matplotlib/Seaborn ใช้สีหลักของโลโก้จริง ส่วนแนวคิดไม่มีแบรนด์ จึงใช้สี pen */
+const DRAWN_HEX: Readonly<Record<string, string>> = { Matplotlib: "11557C", Seaborn: "4C72B0" };
+
 /**
  * skill ที่ไม่มี logo ใน Simple Icons (Matplotlib, Seaborn) และ skill ที่เป็นแนวคิด ไม่ใช่ผลิตภัณฑ์
  * วาดเป็นเส้นหมึก 1.75px บน grid 24 ให้หนักพอ ๆ กับ logo แบบทึบข้างเคียง
  */
-/** สีของไอคอนที่วาดเอง: Matplotlib/Seaborn ใช้สีหลักของโลโก้จริง ส่วนแนวคิดไม่มีแบรนด์ จึงใช้สี pen */
-const DRAWN_HEX: Readonly<Record<string, string>> = { Matplotlib: "11557C", Seaborn: "4C72B0" };
-
 const DRAWN: Readonly<Record<string, ReactNode>> = {
   // แกนกราฟ + เส้นข้อมูล: หน้าที่หลักของ Matplotlib
   Matplotlib: (

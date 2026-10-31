@@ -63,7 +63,7 @@ export default function ProjectsSection() {
         </p>
       </div>
 
-      {/* เปลี่ยนตัวกรอง = motion ที่ตอบการกระทำของผู้ใช้ จึงยังมี (จางสั้น ๆ ไม่มีการเลื่อนตำแหน่ง) */}
+      {/* จางสั้น ๆ ตอนเปลี่ยนตัวกรอง: motion ที่ตอบการกระทำของผู้ใช้ใช้ได้ตามกติกา และไม่เลื่อนตำแหน่ง (ไม่กระทบ layout) */}
       <AnimatePresence mode="wait" initial={false}>
         <m.ul
           key={tag ?? "all"}
@@ -75,7 +75,7 @@ export default function ProjectsSection() {
           className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
         >
           {visible.map((project, i) => {
-            // ใบแรกกว้าง 2 ช่องบนจอ 3 คอลัมน์ → 8 ใบเต็ม 3 แถวพอดี ไม่มีช่องโหว่
+            // ใบแรกกว้าง 2 ช่องบนจอ 3 คอลัมน์ → 8 ใบเต็ม 3 แถวพอดี (ถ้าจำนวนโปรเจกต์เปลี่ยน แถวสุดท้ายอาจมีช่องว่าง)
             const featured = i === 0 && tag === null;
             const collapsed = collapsible && !showAll && i >= MOBILE_PREVIEW;
             return (
@@ -145,7 +145,7 @@ function ProjectCard({ project, featured }: { project: Project; featured: boolea
       </div>
       {meta && <p className="mt-2 type-small text-ink-muted">{meta}</p>}
 
-      {/* problem → approach → result: ใช้เมื่อมีข้อมูลครบ ระหว่างนี้แสดงคำอธิบายเดิม (ไม่มีป้าย) + ผลลัพธ์ */}
+      {/* problem → approach → result เมื่อมีทั้ง problem และ approach ถ้าไม่ครบแสดง desc (ไม่มีป้าย) แทน แล้วต่อด้วยผลลัพธ์ */}
       {!structured && <p className={`mt-4 type-body text-ink ${featured ? "md:max-w-measure" : ""}`}>{desc}</p>}
       <dl className={`mt-4 grid gap-3 empty:hidden ${featured ? "md:max-w-measure" : ""}`}>
         {structured && (

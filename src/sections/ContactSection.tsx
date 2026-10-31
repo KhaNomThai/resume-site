@@ -17,7 +17,7 @@ const ICONS: Record<ContactKind, ComponentType<SVGProps<SVGSVGElement>>> = {
 /** อีเมลมีปุ่มใหญ่ของตัวเองแล้ว รายการด้านล่างจึงไม่ต้องซ้ำ */
 const OTHER_CONTACTS = contacts.filter((c) => c.kind !== "email");
 
-/** ให้ตัดบรรทัดได้หลัง @ เท่านั้น — เดิม break-all ตัดกลางคำบนมือถือเป็น "gmail.co / m" */
+/** อีเมลยาวบนจอแคบให้ตัดบรรทัดได้หลัง @ เท่านั้น (ผ่าน <wbr>) ไม่ใช่กลางคำแบบ "gmail.co / m" ที่ break-all ทำ */
 const [EMAIL_USER, EMAIL_DOMAIN] = profile.email.split("@");
 
 export default function ContactSection() {

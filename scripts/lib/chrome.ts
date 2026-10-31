@@ -55,7 +55,8 @@ const dataUri = (path: string, mime: string) =>
 
 /**
  * ฝังฟอนต์เป็น base64 → render ได้ทันทีไม่ต้องรอโหลดไฟล์
- * Newsreader + IBM Plex Sans = ชุดเดียวกับเว็บ (ใช้กับรูป OG) ส่วน Geist ยังใช้กับ CV PDF ที่ยังไม่ได้ออกแบบใหม่
+ * Newsreader + IBM Plex Sans เป็นชุดเดียวกับเว็บ (ใช้กับรูป OG) ส่วน CV PDF มีดีไซน์ของตัวเองที่ใช้ Geist / Geist Mono
+ * Geist จึงยังต้องอยู่ใน devDependencies ถ้าเปลี่ยน CV ไปใช้ฟอนต์ของเว็บเมื่อไร ลบสองแพ็กเกจนั้นได้
  */
 export function fontFaceCss() {
   const face = (family: string, path: string, weight = "100 900") =>

@@ -1,5 +1,5 @@
-// import ผ่าน Vite → ได้ URL ที่มี hash (cache ได้นาน) และ base path ถูกต้องอัตโนมัติ
-// ไฟล์นี้ generate จาก src/data.ts ด้วย `npm run cv`
+// import ผ่าน Vite → ได้ URL ที่มี hash (cache ได้นาน และได้ไฟล์ใหม่ทันทีที่ CV เปลี่ยน) และ base path ถูกต้องอัตโนมัติ
+// ตัว PDF สร้างจาก src/data.ts ด้วย `npm run cv` อย่าแก้ไฟล์ PDF ด้วยมือ
 import cvUrl from "../assets/Kulachart-Parnduangkeaw-CV.pdf";
 
 export const CV_URL = cvUrl;

@@ -12,8 +12,9 @@ export const SKILL_FAMILIES = [
 export type SkillFamilyId = (typeof SKILL_FAMILIES)[number]["id"];
 
 /**
- * skill และ tag ของโปรเจกต์ → หมวด (ใช้ชื่อตรงกับ data.ts) เจ้าของยืนยันแล้วใน design/content-proposals.md ข้อ 4
+ * skill และ tag ของโปรเจกต์ → หมวด (ใช้ชื่อตรงกับ data.ts ทุกตัวอักษร)
  * ชื่อที่ไม่อยู่ในตารางนี้ถือเป็น Tools ซึ่งไม่มีสัญลักษณ์ — เพิ่ม skill หรือ tag ใหม่ใน data.ts แล้วอย่าลืมเพิ่มที่นี่
+ * ไม่อย่างนั้น tag นั้นจะไปอยู่กลุ่มท้ายสุดของการ์ดแบบไม่มีสัญลักษณ์ โดยไม่มี error เตือน
  */
 const FAMILY_OF: Readonly<Record<string, SkillFamilyId>> = {
   PyTorch: "ml",

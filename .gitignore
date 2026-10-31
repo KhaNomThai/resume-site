@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code (ค่าส่วนตัว ไม่ commit)
+.claude/settings.local.json

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="title">
+  <title id="title">Kulachart logo: a handwritten K signed in ballpoint</title>
+  <!--
+    Concept 7 · Signature (สำหรับพื้นมืด: ค่าโหมดมืดจาก tokens.css)
+    K เขียนมือด้วยปากกาลูกลื่นสีน้ำเงิน มีห่วงเล็กที่ข้อต่อแบบลายมือจริง และขีดเส้นใต้ด้วยปากกาแดงเหมือนลงชื่อท้ายหน้าสมุด
+    เป็นแบบที่ "เป็นตัวคุณ" ที่สุด ความหมายด้าน data อยู่ที่บริบทของระบบ ไม่ได้อยู่ในตัวรูป
+  -->
+  <path d="M10 57C24 54 40 53 56 55" fill="none" stroke="#e36c72" stroke-width="3" stroke-linecap="round"/>
+  <g fill="none" stroke="#8ca6ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 8C20 22 19 36 18 49"/>
+    <path d="M47 9C38 17 29 26 24 31C20 35 23 39 27 36C30 33.5 28 30 25 31.5C22 33 25 38 31 42C37 46 43 49 49 50"/>
+  </g>
+</svg>

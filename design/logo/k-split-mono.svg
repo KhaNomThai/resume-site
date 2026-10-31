@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="title">
+  <title id="title">Kulachart logo: a K drawn as a decision split</title>
+  <!-- Concept 2 · Decision split (monochrome: หมึกสีเดียว node ยังเห็นเพราะเป็นวงกลมที่ใหญ่กว่าเส้น) -->
+  <g fill="none" stroke="#141b2b" stroke-width="6" stroke-linecap="round">
+    <path d="M16 8V56"/>
+    <path d="M16 33L44 13"/>
+    <path d="M16 33L44 53"/>
+  </g>
+  <g fill="#141b2b">
+    <circle cx="16" cy="33" r="6.5"/>
+    <circle cx="46" cy="12" r="6"/>
+    <rect x="40.5" y="48" width="11" height="11"/>
+  </g>
+</svg>

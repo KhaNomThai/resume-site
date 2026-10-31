@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+  <!--
+    Concept 6 · Serif K. · favicon: วาดใหม่บนตาราง 16×16 ไม่ได้ย่อจากตัว 64
+    ใช้ glyph น้ำหนัก 800 และ optical size 12 ซึ่งเส้นหนาและ serif ใหญ่ขึ้น จึงยังอ่านออกที่ 16px และตัดจุดทิ้ง
+    media query ในไฟล์เปลี่ยนสีตามโหมดมืดของ browser ได้เอง (Chrome, Firefox)
+  -->
+  <style>
+    .tile { fill: #ffffff; } .ink { stroke: #141b2b; } .inkf { fill: #141b2b; } .pen { stroke: #2343c4; } .penf { fill: #2343c4; } .red { stroke: #d9464e; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #1b1f26; } .ink { stroke: #e8ecf3; } .inkf { fill: #e8ecf3; } .pen { stroke: #8ca6ff; } .penf { fill: #8ca6ff; } .red { stroke: #e36c72; }
+    }
+  </style>
+  <rect class="tile" width="16" height="16" rx="3.5"/>
+  <path class="inkf" d="M13.21 11.86 14.27 12.33V13H8.85V12.41L9.3 12.21L7.05 8.57H5.11V6.99H7.29L10.41 3.9L9.24 3.56V2.89H13.5V3.56L12.39 3.94L8.45 7.79L9.39 6ZM6.28 3.96V11.92L7.36 12.33V13H1.75V12.33L2.87 11.92V3.96L1.75 3.56V2.89H7.4V3.56Z"/>
+</svg>

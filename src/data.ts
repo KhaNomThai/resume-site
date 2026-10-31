@@ -5,11 +5,7 @@
  * ห้าม import asset ของ Vite ในไฟล์นี้ — สคริปต์ CV รันไฟล์นี้ด้วย Node ตรง ๆ
  */
 
-export type Skill = {
-  name: string;
-  /** ชื่อไฟล์ใน src/assets/skills (ไม่ต้องมี .svg) — ไม่ใส่ = chip ข้อความล้วน เช่นหัวข้อความรู้ */
-  icon?: string;
-};
+export type Skill = { name: string };
 export type SkillGroup = { title: string; skills: Skill[] };
 
 export type ProjectLinkKind = "code" | "demo" | "notebook";
@@ -22,6 +18,14 @@ export type Project = {
   /** บริบทของงาน เช่น วิชา/งานแข่ง/ขนาดทีม */
   context?: string;
   desc: string;
+  /**
+   * การ์ดแบบ problem → approach → result: ถ้าใส่ problem กับ approach การ์ดจะแสดงสามช่องนี้แทน desc
+   * ไม่ใส่ (เช่นยังไม่มีข้อมูล) = การ์ดแสดง desc แทน — desc ยังต้องมีเสมอ เพราะ CV PDF ใช้
+   */
+  problem?: string;
+  approach?: string;
+  /** ผลลัพธ์ที่เป็นประโยค (ถ้ามี metric จะแสดง metric ที่ถูกขีดเน้นไว้ก่อน) */
+  result?: string;
   /** ตัวเลขเด่น — ใส่เฉพาะค่าที่วัดได้จริงและอ้างอิงได้ใน repo */
   metric?: { value: string; label: string };
   /** เทคที่ชื่อตรงกับ skill → ปุ่ม skill ใช้กรองโปรเจกต์ได้ */
@@ -49,7 +53,7 @@ export const profile = {
   lastName: "Parnduangkeaw",
   role: "Computer Engineering Student",
   school: "Srinakharinwirot University",
-  focus: "Full-Stack & Data/AI",
+  focus: "Data Science & ML · Full-Stack",
   availability: "Open to Data/AI & full-stack internships",
   /** แสดงแค่ระดับจังหวัด — ไม่เปิดเผยบ้านเลขที่บนเว็บสาธารณะ (รวมถึง CV PDF ที่ให้ดาวน์โหลดด้วย) */
   location: "Pathum Thani, Thailand",
@@ -60,10 +64,15 @@ export const profile = {
   /** ต้องตรงกับ canonical / og:url ใน index.html */
   siteUrl: "https://kulachart-resume-site.vercel.app",
   summary:
-    "I build full-stack web apps and machine-learning systems — from a skin-cancer classifier benchmarked on 25,000+ images to the runner-status checker for SWU Run Together 2026. Data Science Intern at Botnoi Group (2026).",
+    "I build machine-learning systems and the full-stack apps around them — from a skin-cancer classifier benchmarked on 25,000+ images to the runner-status checker for SWU Run Together 2026. Data Science Intern at Botnoi Group (2026).",
+  /**
+   * วลีใน summary ที่ hero ขีดด้วยปากกาเน้น (หลักฐานที่ recruiter ควรเห็นก่อน) ไม่เกิน 2 วลีต่อจอ
+   * ต้องพิมพ์ให้ตรงกับข้อความใน summary ทุกตัวอักษร — ใช้แค่บนเว็บ CV ไม่ได้ใช้
+   */
+  summaryMarks: ["25,000+ images", "Data Science Intern at Botnoi Group (2026)"],
   /** CV ไม่ใช้สรรพนาม "I" ตามธรรมเนียมเรซูเม่ */
   cvSummary:
-    "Computer Engineering student building full-stack web apps and machine-learning systems. Data Science Intern at Botnoi Group (2026). Built a deep-learning skin-cancer screening system (0.91 AUC-ROC), a flood-monitoring platform for the DOH Hackathon, and the runner-status checker for SWU Run Together 2026. Seeking Data/AI or full-stack internship opportunities.",
+    "Computer Engineering student building machine-learning systems and the full-stack apps around them. Data Science Intern at Botnoi Group (2026). Built a deep-learning skin-cancer screening system (0.91 AUC-ROC), a flood-monitoring platform for the DOH Hackathon, and a runner-status checker used by ~300 runners. Seeking Data/AI or full-stack internship opportunities.",
 };
 
 export const githubUrl = `https://github.com/${profile.github}`;
@@ -77,57 +86,44 @@ export const contacts: ContactLink[] = [
   { kind: "phone", label: "Phone", value: profile.phone, href: `tel:${profile.phone.replace(/\s+/g, "")}` },
 ];
 
-/** กลุ่มแรกกว้าง 2 คอลัมน์บนจอใหญ่ — ลำดับนี้จัดให้ grid ไม่มีช่องว่างทั้งจอ 2 และ 3 คอลัมน์ */
+/** เรียงตามหมวดใน src/config/skillFamilies.ts: ML / DL → Data → Full-stack → Languages → Tools (ชื่อกลุ่มตรงกับ legend บนเว็บ) */
 export const skillGroups: SkillGroup[] = [
   {
-    title: "AI & Data",
+    title: "ML / DL",
     skills: [
-      { name: "PyTorch", icon: "pytorch" },
-      { name: "scikit-learn", icon: "scikitlearn" },
-      { name: "Pandas", icon: "pandas" },
-      { name: "NumPy", icon: "numpy" },
-      { name: "OpenCV", icon: "opencv" },
+      { name: "PyTorch" },
+      { name: "scikit-learn" },
+      { name: "OpenCV" },
       { name: "Machine Learning" },
       { name: "Deep Learning" },
       { name: "Computer Vision" },
     ],
   },
   {
+    title: "Data",
+    skills: [{ name: "Pandas" }, { name: "NumPy" }, { name: "Matplotlib" }, { name: "Seaborn" }],
+  },
+  {
+    title: "Full-stack",
+    skills: [
+      { name: "React" },
+      { name: "React Native" },
+      { name: "Tailwind CSS" },
+      { name: "HTML" },
+      { name: "CSS" },
+      { name: "Node.js" },
+      { name: "Firebase" },
+      { name: "MySQL" },
+      { name: "Google Cloud" },
+    ],
+  },
+  {
     title: "Languages",
-    skills: [
-      { name: "Python", icon: "python" },
-      { name: "TypeScript", icon: "typescript" },
-      { name: "JavaScript", icon: "javascript" },
-      { name: "Java", icon: "java" },
-      { name: "C/C++", icon: "cplusplus" },
-    ],
-  },
-  {
-    title: "Frontend & Mobile",
-    skills: [
-      { name: "React", icon: "react" },
-      { name: "React Native", icon: "reactnative" },
-      { name: "Tailwind CSS", icon: "tailwindcss" },
-      { name: "HTML", icon: "html5" },
-      { name: "CSS", icon: "css3" },
-    ],
-  },
-  {
-    title: "Backend & Cloud",
-    skills: [
-      { name: "Node.js", icon: "nodejs" },
-      { name: "Firebase", icon: "firebase" },
-      { name: "MySQL", icon: "mysql" },
-      { name: "Google Cloud", icon: "googlecloud" },
-    ],
+    skills: [{ name: "Python" }, { name: "TypeScript" }, { name: "JavaScript" }, { name: "Java" }, { name: "C/C++" }],
   },
   {
     title: "Tools",
-    skills: [
-      { name: "Git", icon: "git" },
-      { name: "Figma", icon: "figma" },
-      { name: "Unity", icon: "unity" },
-    ],
+    skills: [{ name: "Git" }, { name: "Figma" }, { name: "Unity" }],
   },
 ];
 
@@ -140,6 +136,9 @@ export const projects: Project[] = [
     year: "2026",
     context: "CPE310 Healthcare AI",
     desc: "8-class skin-lesion classifier trained on ISIC 2019 (25,331 images). Benchmarked ResNet50, EfficientNet-B3, and DenseNet121 with class-weighted loss; the best model reaches 0.91 AUC-ROC for cancer screening and 89.6% top-2 accuracy, served through a Gradio clinical UI.",
+    problem: "Screen skin lesions for cancer across 8 classes (ISIC 2019, 25,331 images).",
+    approach: "Benchmarked ResNet50, EfficientNet-B3 and DenseNet121 with class-weighted loss; served the best model through a Gradio clinical UI.",
+    result: "89.6% top-2 accuracy.",
     metric: { value: "0.91", label: "AUC-ROC on 3,800 unseen test images" },
     tags: ["Python", "PyTorch", "scikit-learn", "Pandas", "Deep Learning", "Computer Vision", "Gradio"],
     links: [{ kind: "code", href: "https://github.com/KhaNomThai/Healthcare-AI-System" }],
@@ -151,7 +150,9 @@ export const projects: Project[] = [
     year: "2026",
     context: "DOH Hackathon · Team of 2",
     desc: "Real-time flood monitoring command center for the Department of Highways hackathon. Zero-shot Grounding DINO finds cars and wheels in CCTV footage to estimate water depth, feeding a Next.js dashboard with flood-aware routing and LINE OA alerts.",
-    tags: ["Python", "PyTorch", "OpenCV", "FastAPI", "Next.js", "Firebase", "Computer Vision"],
+    problem: "Estimate flood depth from Department of Highways CCTV in real time.",
+    approach: "Zero-shot Grounding DINO finds cars and wheels in the footage to estimate water depth, feeding a Next.js command center with flood-aware routing and LINE OA alerts.",
+    tags: ["Python", "PyTorch", "OpenCV", "Grounding DINO", "FastAPI", "Next.js", "Firebase", "Computer Vision"],
     links: [{ kind: "code", href: "https://github.com/Panupong-xD/DOH_Hackathon" }],
   },
   {
@@ -161,7 +162,9 @@ export const projects: Project[] = [
     year: "2026",
     context: "True Innovation competition · Team",
     desc: "Chronic-care prototype connecting patients, caregivers, and doctors — multi-factor early-warning alerts, PDPA-aligned consent, and Gemini-powered tools that read device screens, analyze meals, and draft care plans.",
-    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Generative AI"],
+    problem: "Connect chronic-care patients, caregivers and doctors in one place.",
+    approach: "Multi-factor early-warning alerts, PDPA-aligned consent, and Gemini-powered tools that read device screens, analyze meals and draft care plans.",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Generative AI", "Gemini"],
     links: [
       { kind: "demo", href: "https://true-innovation-mockup.vercel.app" },
       { kind: "code", href: "https://github.com/Panupong-xD/True-innovation-mock" },
@@ -174,6 +177,9 @@ export const projects: Project[] = [
     year: "2026",
     context: "SWU Athletics Club · Team of 2",
     desc: "Registration and order-status checker for a university running event. Runners search by phone number to get a digital BIB with their package, shirt size, and payment status, read live from Google Form responses.",
+    problem: "Runners needed to check their registration and order status for a university running event.",
+    approach: "A React app that searches by phone number and reads live Google Form responses.",
+    result: "About 300 runners used it to get a digital BIB with their package, shirt size and payment status.",
     tags: ["React", "JavaScript", "Vite", "Google Sheets"],
     links: [{ kind: "code", href: "https://github.com/Panupong-xD/SwuRun_Register" }],
   },
@@ -184,6 +190,9 @@ export const projects: Project[] = [
     year: "2025",
     context: "Team of 5",
     desc: "Cross-platform brain-training app for iOS and Android with memory and logic mini-games, using Google Sheets as a lightweight backend to track each player's progress.",
+    problem: "Brain training on both iOS and Android.",
+    approach: "React Native (Expo) app with memory and logic mini-games, using Google Sheets as a lightweight backend.",
+    result: "Tracks each player's progress.",
     tags: ["React Native", "Expo", "JavaScript", "Google Sheets"],
     links: [{ kind: "code", href: "https://github.com/KhaNomThai/BrainFit" }],
   },
@@ -193,7 +202,12 @@ export const projects: Project[] = [
     category: "Data Analysis",
     context: "Research project",
     desc: "Research project that applies machine learning to find gaps in employment data for the Computer Engineering field.",
-    tags: ["Python", "Machine Learning", "Data Analysis"],
+    // ตัวเลขจาก Colab notebook ของเจ้าของ: Random Forest บนข้อมูล Kaggle 100,000 แถว เทียบกับแบบสอบถามนิสิต CPE 80 คน
+    // สัดส่วนนิสิต = คะแนนเฉลี่ยแต่ละหมวด / ผลรวม (3.56, 3.96, 3.39 จาก 5) ส่วนของโมเดล = feature importance รวมตามหมวด
+    problem: "Do Computer Engineering students value the same skills that predict job placement?",
+    approach: "Trained a Random Forest on 100,000 student-placement records, grouped its feature importance into technical, soft-skill and experience factors, and compared them with a survey of 80 CPE students.",
+    result: "Students weighted internships and portfolio above the model (31% vs 24%) and technical skills below it (33% vs 39%).",
+    tags: ["Python", "scikit-learn", "Pandas", "Matplotlib", "Seaborn", "Machine Learning", "Data Analysis"],
     links: [
       {
         kind: "notebook",
@@ -208,6 +222,9 @@ export const projects: Project[] = [
     year: "2024",
     context: "CPE101 course project",
     desc: "Interactive tool that builds a Minimum Spanning Tree step by step — add or remove nodes and edges, then watch edge selection and the total cost update in real time.",
+    problem: "Make Minimum Spanning Tree construction easy to follow.",
+    approach: "Interactive D3.js tool: add or remove nodes and edges, then watch edge selection step by step.",
+    result: "The total cost updates in real time.",
     tags: ["JavaScript", "D3.js", "HTML", "CSS"],
     links: [
       { kind: "demo", href: "https://khanomthai.github.io/project-cpe101/" },
@@ -220,6 +237,9 @@ export const projects: Project[] = [
     category: "Web App",
     year: "2026",
     desc: "The site you're on. One typed data file drives both the website and the PDF CV; built with React 19, Tailwind CSS v4, and Framer Motion, with keyboard and reduced-motion support.",
+    problem: "Keep the website and the PDF CV in sync.",
+    approach: "One typed data file drives both; React 19, Tailwind CSS v4 and Framer Motion.",
+    result: "Keyboard and reduced-motion support.",
     tags: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
     links: [{ kind: "code", href: repoUrl }],
   },
@@ -229,7 +249,7 @@ export const projects: Project[] = [
 export const highlights: Highlight[] = [
   { value: "Data Science Intern", label: "Botnoi Group · 2026" },
   { value: "0.91 AUC-ROC", label: "Skin-cancer screening model" },
-  { value: `${projects.length} projects`, label: "Web · Mobile · AI" },
+  { value: "89.6% top-2 accuracy", label: "8-class skin-lesion classification" },
   { value: "Student Leader", label: "SWU Computer Engineering" },
 ];
 
@@ -239,8 +259,8 @@ export const work: TimelineItem[] = [
     id: "botnoi-data-science-intern",
     title: "Data Science Intern",
     org: "Botnoi Group",
-    // TODO: ใส่เดือน (เช่น "Jun – Aug 2026") และตัวเลขจริงใน bullet: ขนาด dataset, metric ก่อน/หลัง, จำนวนโมเดล
-    period: "2026",
+    // TODO: ใส่ตัวเลขจริงใน bullet ถ้าเปิดเผยได้: ขนาด dataset, metric ก่อน/หลัง, จำนวนโมเดล
+    period: "May – Jul 2026",
     bullets: [
       "Developed, trained, and evaluated machine learning models for real-world business use cases.",
       "Cleaned and preprocessed complex datasets and engineered features that improved model accuracy.",

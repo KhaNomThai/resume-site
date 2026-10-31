@@ -53,11 +53,16 @@ export function renderWithChrome(html: string, flags: string[]) {
 const dataUri = (path: string, mime: string) =>
   `data:${mime};base64,${readFileSync(resolve(ROOT, path)).toString("base64")}`;
 
-/** ฝังฟอนต์ Geist (ชุดเดียวกับเว็บ) เป็น base64 → render ได้ทันทีไม่ต้องรอโหลดไฟล์ */
+/**
+ * ฝังฟอนต์เป็น base64 → render ได้ทันทีไม่ต้องรอโหลดไฟล์
+ * Newsreader + IBM Plex Sans = ชุดเดียวกับเว็บ (ใช้กับรูป OG) ส่วน Geist ยังใช้กับ CV PDF ที่ยังไม่ได้ออกแบบใหม่
+ */
 export function fontFaceCss() {
-  const face = (family: string, path: string) =>
-    `@font-face { font-family: "${family}"; font-weight: 100 900; src: url(${dataUri(path, "font/woff2")}) format("woff2"); }`;
+  const face = (family: string, path: string, weight = "100 900") =>
+    `@font-face { font-family: "${family}"; font-weight: ${weight}; src: url(${dataUri(path, "font/woff2")}) format("woff2"); }`;
   return [
+    face("Newsreader", "node_modules/@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2", "200 800"),
+    face("IBM Plex Sans", "node_modules/@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2", "100 700"),
     face("Geist", "node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2"),
     face("Geist Mono", "node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2"),
   ].join("\n");

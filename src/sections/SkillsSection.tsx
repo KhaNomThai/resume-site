@@ -1,10 +1,14 @@
-import { m } from "framer-motion";
 import Section from "../components/Section";
-import SkillIcon from "../components/SkillIcon";
-import { skillGroups, type Skill } from "../data";
-import { revealOnView } from "../lib/motion";
+import SkillMarker from "../components/SkillMarker";
+import { familyLabel, familyOf, type SkillFamilyId } from "../config/skillFamilies";
+import { skillGroups, type Skill, type SkillGroup } from "../data";
 import { projectCountByTag, useProjectFilter } from "../lib/projectFilter";
 
+/**
+ * Skills แบบดัชนีท้ายเล่ม: ชื่อ ....... จำนวนโปรเจกต์ที่ใช้ (แทนเลขหน้า)
+ * ไม่มี progress bar แบบ % เพราะไม่มีหน่วยวัดจริง ตัวเลขที่แสดงคือนับจากโปรเจกต์ใน data.ts
+ * กลุ่มใน data.ts เรียงตามหมวด (ML / DL, Data, Full-stack, Languages, Tools) สัญลักษณ์ของหมวดจึงอยู่ที่หัวกลุ่มครั้งเดียว
+ */
 export default function SkillsSection() {
   const { setTag } = useProjectFilter();
 
@@ -16,56 +20,66 @@ export default function SkillsSection() {
   };
 
   return (
-    <Section
-      id="skills"
-      eyebrow="Skills"
-      title="Tools I work with"
-      subtitle="Skills with a number are used in my projects — select one to see them."
-    >
-      <div className="grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-        {skillGroups.map((group, i) => (
-          // กลุ่มแรกกว้าง 2 ช่อง → grid เต็มพอดีทั้งจอ 2 และ 3 คอลัมน์
-          <m.div key={group.title} {...revealOnView(i * 0.05)} className={i === 0 ? "md:col-span-2" : undefined}>
-            <h3 className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-gray-400">{group.title}</h3>
-            <ul className="flex flex-wrap gap-2">
-              {group.skills.map((skill) => (
-                <li key={skill.name}>
-                  <SkillChip skill={skill} onSelect={showProjects} />
-                </li>
-              ))}
-            </ul>
-          </m.div>
-        ))}
+    <Section id="skills" intro="The number is how many of my projects use a skill. Select it to see those projects.">
+      <div className="grid gap-x-12 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
+        {skillGroups.map((group) => {
+          const family = groupFamily(group);
+          return (
+            <div key={group.title}>
+              <h3 className="flex items-center gap-2 border-b border-margin pb-2 type-title text-ink">
+                {family && <SkillMarker family={family} className="size-3" />}
+                {group.title}
+              </h3>
+              <ul className="mt-2">
+                {group.skills.map((skill) => (
+                  <li key={skill.name}>
+                    {/* กลุ่มที่ทุก skill อยู่หมวดเดียวกันไม่ต้องใส่สัญลักษณ์ซ้ำทุกแถว */}
+                    <SkillRow skill={skill} showMarker={!family} onSelect={showProjects} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
     </Section>
   );
 }
 
-function SkillChip({ skill, onSelect }: { skill: Skill; onSelect: (name: string) => void }) {
+/** หมวดของทั้งกลุ่ม ถ้าทุก skill ในกลุ่มอยู่หมวดเดียวกัน (Tools ไม่มีหมวด → undefined) */
+function groupFamily(group: SkillGroup): SkillFamilyId | undefined {
+  const first = familyOf(group.skills[0]?.name ?? "");
+  return first && group.skills.every((skill) => familyOf(skill.name) === first) ? first : undefined;
+}
+
+function SkillRow({ skill, showMarker, onSelect }: { skill: Skill; showMarker: boolean; onSelect: (name: string) => void }) {
+  const family = familyOf(skill.name);
   const count = projectCountByTag.get(skill.name) ?? 0;
 
+  const name = (
+    <>
+      {showMarker && family && <SkillMarker family={family} />}
+      {showMarker && family && <span className="sr-only">{familyLabel(family)}: </span>}
+      <span>{skill.name}</span>
+    </>
+  );
+
   if (count === 0) {
-    return (
-      <span className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 text-sm text-gray-300">
-        <SkillIcon icon={skill.icon} />
-        {skill.name}
-      </span>
-    );
+    return <span className="flex min-h-11 items-center gap-2 type-body text-ink">{name}</span>;
   }
 
   return (
     <button
       type="button"
       onClick={() => onSelect(skill.name)}
-      className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.045] px-3 text-sm text-white transition-colors hover:border-indigo-400/50 hover:bg-indigo-500/10"
+      className="group flex min-h-11 w-full items-center gap-2 rounded-control text-left type-body text-ink transition-colors duration-(--duration-fast) hover:text-pen"
     >
-      <SkillIcon icon={skill.icon} />
-      {skill.name}
-      <span aria-hidden="true" className="rounded-md bg-indigo-400/15 px-1.5 py-px font-mono text-[11px] text-indigo-200">
+      {name}
+      {/* เส้นจุดนำสายตา (dot leader) แบบดัชนีท้ายเล่ม พาจากชื่อไปหาตัวเลข */}
+      <span aria-hidden="true" className="mx-1 h-0 flex-1 translate-y-1 border-b border-dotted border-stroke group-hover:border-pen" />
+      <span className="type-label tabular-nums text-pen underline underline-offset-3">
         {count}
-      </span>
-      <span className="sr-only">
-        : show {count} {count === 1 ? "project" : "projects"}
+        <span className="sr-only"> {count === 1 ? "project" : "projects"} — show them</span>
       </span>
     </button>
   );

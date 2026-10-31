@@ -2,9 +2,8 @@
 
 เอกสารนี้อธิบาย token ทุกตัวใน [`src/styles/tokens.css`](src/styles/tokens.css) ว่าคืออะไร ใช้ตรงไหน และทำไมถึงเป็นค่านี้
 
-> **สถานะ:** เลือกแนว **A · Lab Notebook** แล้ว (Phase 1) และผสมบางส่วนจากแนว C
-> Phase 3 ต่อ token เข้าเว็บแล้ว (`src/index.css` import `styles/tokens.css`) และทุก component ใช้ token ชุดนี้ ตรวจด้วย `npm run check:tokens`
-> Phase 4 เทียบก่อน/หลังด้วยภาพหน้าจอและ Lighthouse ไว้ใน [design/phase4-report.md](design/phase4-report.md)
+> ทุก component ใช้ token ชุดนี้ (`src/index.css` import `styles/tokens.css`) ตรวจว่าไม่มี class ค่า default ของ Tailwind หลุดเข้ามาด้วย `npm run check:tokens`
+> ที่มาของแนวคิดอยู่ในหัวข้อ "บันทึกการตัดสินใจ" ท้ายเอกสาร ส่วนผลเทียบก่อน/หลังพร้อม Lighthouse อยู่ใน [design/phase4-report.md](design/phase4-report.md)
 
 ## แนวคิด: หน้าหนึ่งจากสมุดของนักศึกษาวิศวะ
 
@@ -92,7 +91,7 @@ Tailwind v4 ไม่มี `tailwind.config.js` แล้ว ค่าใน `@
 | สัญลักษณ์ | หมวด | skill และ tag ในหมวด (`src/config/skillFamilies.ts` เจ้าของยืนยันแล้ว) |
 |---|---|---|
 | ● วงกลม | ML / DL | PyTorch, scikit-learn, OpenCV, Machine Learning, Deep Learning, Computer Vision, Generative AI, Grounding DINO, Gemini |
-| ■ สี่เหลี่ยม | Data | Pandas, NumPy, Data Analysis, D3.js, Google Sheets |
+| ■ สี่เหลี่ยม | Data | Pandas, NumPy, Matplotlib, Seaborn, Data Analysis, D3.js, Google Sheets |
 | ▲ สามเหลี่ยม | Full-stack | React, React Native, Next.js, Node.js, FastAPI, Gradio, Firebase, MySQL, Google Cloud, Tailwind CSS, HTML, CSS, Vite, Expo, Framer Motion |
 | ◆ ข้าวหลามตัด | Languages | Python, TypeScript, JavaScript, Java, C/C++ |
 | ไม่มี | Tools | Git, Figma, Unity |
@@ -114,7 +113,7 @@ npm i @fontsource-variable/newsreader @fontsource-variable/ibm-plex-sans
 
 self-host ดีกว่าลิงก์ Google Fonts เพราะไม่ต้องต่อ DNS/TLS ไปอีกโดเมน ขนาดไฟล์ latin: Newsreader แบบมีแกน optical size 132 KB (แบบน้ำหนักอย่างเดียว 58 KB) และ Plex Sans 46 KB เทียบกับ Geist + Geist Mono เดิม 52 KB เว็บใช้แบบมี optical size (`newsreader/opsz.css`) เพราะชื่อใน hero คือสิ่งแรกที่คนเห็น (Geist ยังอยู่ใน devDependencies เพราะ CV PDF ยังใช้)
 
-Phase 4 วัดแล้ว ([รายงาน](design/phase4-report.md)): แบบน้ำหนักอย่างเดียวได้คะแนน Lighthouse มือถือ 93–98 เทียบกับ 95 ของแบบที่ใช้ ซึ่งต่างกันไม่ชัดเกินค่าแกว่ง แต่ชื่อใน hero เสียรูปตัวแบบ display จึงคงแบบ optical size ไว้
+วัดแล้ว ([รายงาน](design/phase4-report.md)): แบบน้ำหนักอย่างเดียวได้คะแนน Lighthouse มือถือ 93–98 เทียบกับ 95 ของแบบที่ใช้ ซึ่งต่างกันไม่ชัดเกินค่าแกว่ง แต่ชื่อใน hero เสียรูปตัวแบบ display จึงคงแบบ optical size ไว้
 
 ฟอนต์ไม่ทำให้หน้ากระโดดตอนโหลด (CLS 0) เพราะสองอย่าง:
 - **ฟอนต์สำรองที่ปรับขนาดแล้ว** `tokens.css` มี "Newsreader Fallback" (Georgia) และ "IBM Plex Sans Fallback" (Arial) ที่ตั้ง `size-adjust` ให้กว้างเท่าฟอนต์จริง ข้อความจึงตัดบรรทัดที่จุดเดิมระหว่างรอ
@@ -171,12 +170,12 @@ Phase 4 วัดแล้ว ([รายงาน](design/phase4-report.md)): �
 | `max-w-page` | 1200px | ความกว้างเดียวของทุก section, nav, footer |
 | `max-w-measure` / `max-w-measure-lead` | 66ch / 60ch | บรรทัดยาวสุดของ body / lead |
 | `--grid-size` | 24px | ช่องกระดาษกราฟ = gutter = ระยะบรรทัดของ body |
-| `--gutter` | 24px | ช่องระหว่างคอลัมน์: 4 คอลัมน์ < 768px, 8 คอลัมน์ ≥ 768px, 12 คอลัมน์ ≥ 1280px |
+| `--gutter` | 24px | ช่องระหว่างคอลัมน์ (grid ของการ์ดใช้ `gap-6` ซึ่งเท่ากัน ยังไม่มีโค้ดอ้างถึงตัวแปรนี้ตรง ๆ) |
 | `--margin-sm` / `-md` / `-lg` | 16 / 32 / 48px | ขอบซ้ายขวาของหน้า |
 | `--margin-line-gap` | 24px | ระยะจากเส้น margin สีแดงถึงต้นบรรทัด |
 | `--nav-height` | 64px | ความสูง nav และ `scroll-margin-top` ของ section |
-| `--key-size` | 10px | สัญลักษณ์หมวด ● ■ ▲ ◆ |
-| `--target-min` | 44px | ขนาดเล็กสุดของสิ่งที่กดได้ |
+| `--key-size` | 10px | สัญลักษณ์หมวด ● ■ ▲ ◆ (`SkillMarker` ใช้ `size-2.5` ซึ่งเท่ากัน) |
+| `--target-min` | 44px | ขนาดเล็กสุดของสิ่งที่กดได้ (ปุ่มใช้ `h-11` / `size-11` / `min-h-11` ซึ่งเท่ากัน) |
 
 - **เส้น margin สีแดง** วิ่งตลอดความสูงของหน้าที่ความกว้าง 768px ขึ้นไป และข้อความทุกบรรทัดเริ่มห่างจากเส้น 24px บนมือถือซ่อนเส้นนี้ เพราะพื้นที่แนวนอนมีค่ามากกว่า
 - **กระดาษกราฟ** อยู่หลัง hero เท่านั้น และจางหายด้านล่าง ถ้าใส่ทั้งหน้าจะกลายเป็น noise ที่แข่งกับเนื้อหา
@@ -198,7 +197,7 @@ Phase 4 วัดแล้ว ([รายงาน](design/phase4-report.md)): �
 
 | Utility | Light | Dark | ใช้กับ |
 |---|---|---|---|
-| `shadow-overlay` | เส้นขอบหมึก 6% + เงาหมึก 16% | เส้นขอบขาว 10% + เงาดำ 60% | command palette, toast |
+| `shadow-overlay` | เส้นขอบหมึก 6% + เงาหมึก 16% | เส้นขอบขาว 10% + เงาดำ 60% | command palette, toast และการ์ดโปรเจกต์/รูปโปรไฟล์ตอนชี้ (ยกขึ้นจากหน้า) |
 
 บัตรคำวางราบบนกระดาษโดยมีแค่ขอบ `rule` เงามีไว้บอกว่า "สิ่งนี้ลอยอยู่เหนือหน้า" ถ้าใส่ทุกการ์ดเงาจะหมดความหมาย โหมดมืดต้องมีเส้นขอบสว่างเพิ่ม เพราะเงาทำพื้นมืดให้มืดกว่าเดิมได้น้อย
 
@@ -209,17 +208,17 @@ Phase 4 วัดแล้ว ([รายงาน](design/phase4-report.md)): �
 | Token | ค่า | ใช้กับ |
 |---|---|---|
 | `--duration-fast` | 120ms | hover, press |
-| `--duration-base` | 200ms | เมนู, command palette, การกรองโปรเจกต์ |
+| `--duration-base` | 200ms | พื้นของ navbar ตอนเลื่อน, การ์ด/รูปยกขึ้นตอนชี้, logo ของ skill, การกรองโปรเจกต์ (ตั้ง 0.2s ไว้ใน framer-motion ให้เท่ากัน) |
 | `--duration-slow` | 360ms | ปากกาเน้นขีดผ่านผลลัพธ์บนการ์ดครั้งแรกที่เลื่อนมาเห็น |
 | `--duration-intro` | 720ms | sequence เดียวตอนโหลด: ปากกาเน้นขีดผ่านผลลัพธ์ใน hero จากซ้ายไปขวา |
 | `ease-out` | `cubic-bezier(0.22, 1, 0.36, 1)` | ของที่เข้ามาหรือตอบการกระทำ |
-| `ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | ย้ายระหว่างสองตำแหน่ง เช่นการ์ดจัดใหม่หลังกรอง |
-| `ease-in` | `cubic-bezier(0.55, 0, 1, 0.45)` | ของที่ออกจากจอเท่านั้น |
+| `ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | ย้ายระหว่างสองตำแหน่ง เช่นการ์ดจัดใหม่หลังกรอง (ยังไม่มีที่ใช้: ตอนนี้การกรองแค่จาง ไม่ย้ายการ์ด) |
+| `ease-in` | `cubic-bezier(0.55, 0, 1, 0.45)` | ของที่ออกจากจอเท่านั้น (ยังไม่มีที่ใช้) |
 
 - **มี sequence เดียวตอนโหลด** สิ่งที่ขยับจะดึงสายตาเสมอ จึงใช้ motion กับสิ่งที่อยากให้เห็นก่อน คือหลักฐาน ปากกาเน้นขีดแบบเดียวกับที่คนขีดในสมุดจริง (`background-size` ของ `<mark>` จาก 0% เป็น 100%)
 - ไม่มี loop ที่เล่นตลอดเวลา (เว็บเดิมมี blob, วงแหวนหมุน, ping และลูกศร bounce)
 
-### ลูกเล่นตกแต่ง (เพิ่มหลัง Phase 4 ตามที่เจ้าของขอ)
+### ลูกเล่นตกแต่ง
 
 ทุกอันขยับแค่ transform, opacity, สี หรือเส้นที่วาด จึงไม่กระทบ layout และ CLS อันที่ขยับตอนเลื่อนใช้ scroll-driven animation ของ CSS (`animation-timeline`) จึงไม่ต้องรัน JS เบราว์เซอร์ที่ไม่รองรับ (ตอนนี้คือ Firefox) เห็นหน้านิ่งแบบเดิม ไม่มีอะไรถูกซ่อนค้างไว้ utility ทั้งหมดอยู่ใน `src/index.css`
 

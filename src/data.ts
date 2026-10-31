@@ -329,8 +329,8 @@ export const education: EducationItem[] = [
     degree: "Bachelor of Engineering in Computer Engineering",
     school: "Srinakharinwirot University (SWU)",
     period: "2024 – Present",
-    // TODO: ตรวจปีจบ (หลักสูตร 4 ปี เริ่ม 2024) และเพิ่ม GPA ถ้าอยากโชว์
-    graduation: "Expected 2028",
+    // TODO: เพิ่ม GPA ถ้าอยากโชว์
+    graduation: "Expected 2027",
     coursework: [
       "Software Development",
       "Database Systems",

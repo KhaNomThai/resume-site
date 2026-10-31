@@ -20,7 +20,10 @@
 - **Employment Data Gap Analysis:** เขียน problem → approach → result จาก Colab notebook (Random Forest บน 100,000 แถว เทียบกับแบบสอบถามนิสิต CPE 80 คน) และเพิ่ม tag `scikit-learn`, `Pandas` ที่ใช้ใน notebook
 - **Botnoi (ข้อ 6):** ช่วงฝึกงานเป็น "May – Jul 2026" ส่วนตัวเลขใน bullet ยังไม่มี
 
-ยังเปิดอยู่: จะเพิ่ม Matplotlib และ Seaborn (ใช้วาดกราฟใน notebook) เข้ากลุ่ม Data ของ skill หรือไม่
+- **Matplotlib และ Seaborn:** เพิ่มเข้ากลุ่ม Data และเป็น tag ของ Employment Data Gap Analysis (ใช้วาดกราฟใน notebook)
+- **CV summary และ meta description ใน `index.html`:** ขึ้นต้นด้วยงาน ML เหมือน summary บนเว็บ ใน CV ใช้ "(2026)" และ "~300 runners" แบบสั้น เพื่อให้ยังจบใน A4 หน้าเดียว
+
+ยังเปิดอยู่: ตัวเลขใน bullet ของงานที่ Botnoi ถ้าเปิดเผยได้
 
 ด้านล่างคือข้อเสนอเดิม เก็บไว้เป็นบันทึก
 

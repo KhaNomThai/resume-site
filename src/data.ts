@@ -72,7 +72,7 @@ export const profile = {
   summaryMarks: ["25,000+ images", "Data Science Intern at Botnoi Group (2026)"],
   /** CV ไม่ใช้สรรพนาม "I" ตามธรรมเนียมเรซูเม่ */
   cvSummary:
-    "Computer Engineering student building full-stack web apps and machine-learning systems. Data Science Intern at Botnoi Group (2026). Built a deep-learning skin-cancer screening system (0.91 AUC-ROC), a flood-monitoring platform for the DOH Hackathon, and the runner-status checker for SWU Run Together 2026. Seeking Data/AI or full-stack internship opportunities.",
+    "Computer Engineering student building machine-learning systems and the full-stack apps around them. Data Science Intern at Botnoi Group (2026). Built a deep-learning skin-cancer screening system (0.91 AUC-ROC), a flood-monitoring platform for the DOH Hackathon, and a runner-status checker used by ~300 runners. Seeking Data/AI or full-stack internship opportunities.",
 };
 
 export const githubUrl = `https://github.com/${profile.github}`;
@@ -101,7 +101,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: "Data",
-    skills: [{ name: "Pandas" }, { name: "NumPy" }],
+    skills: [{ name: "Pandas" }, { name: "NumPy" }, { name: "Matplotlib" }, { name: "Seaborn" }],
   },
   {
     title: "Full-stack",
@@ -207,7 +207,7 @@ export const projects: Project[] = [
     problem: "Do Computer Engineering students value the same skills that predict job placement?",
     approach: "Trained a Random Forest on 100,000 student-placement records, grouped its feature importance into technical, soft-skill and experience factors, and compared them with a survey of 80 CPE students.",
     result: "Students weighted internships and portfolio above the model (31% vs 24%) and technical skills below it (33% vs 39%).",
-    tags: ["Python", "scikit-learn", "Pandas", "Machine Learning", "Data Analysis"],
+    tags: ["Python", "scikit-learn", "Pandas", "Matplotlib", "Seaborn", "Machine Learning", "Data Analysis"],
     links: [
       {
         kind: "notebook",

@@ -27,6 +27,8 @@ const FAMILY_OF: Readonly<Record<string, SkillFamilyId>> = {
   Gemini: "ml",
   Pandas: "data",
   NumPy: "data",
+  Matplotlib: "data",
+  Seaborn: "data",
   "Data Analysis": "data",
   "D3.js": "data",
   "Google Sheets": "data",

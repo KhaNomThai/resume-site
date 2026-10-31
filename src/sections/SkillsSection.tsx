@@ -1,13 +1,13 @@
 import Section from "../components/Section";
 import SkillMarker from "../components/SkillMarker";
-import { familyLabel, familyOf } from "../config/skillFamilies";
-import { skillGroups, type Skill } from "../data";
+import { familyLabel, familyOf, type SkillFamilyId } from "../config/skillFamilies";
+import { skillGroups, type Skill, type SkillGroup } from "../data";
 import { projectCountByTag, useProjectFilter } from "../lib/projectFilter";
 
 /**
  * Skills แบบดัชนีท้ายเล่ม: ชื่อ ....... จำนวนโปรเจกต์ที่ใช้ (แทนเลขหน้า)
  * ไม่มี progress bar แบบ % เพราะไม่มีหน่วยวัดจริง ตัวเลขที่แสดงคือนับจากโปรเจกต์ใน data.ts
- * กลุ่มยังเป็นของเดิมใน data.ts — การจัดกลุ่มใหม่เป็น ML/DL, Data, Full-stack, Languages รอยืนยันใน design/content-proposals.md
+ * กลุ่มใน data.ts เรียงตามหมวด (ML / DL, Data, Full-stack, Languages, Tools) สัญลักษณ์ของหมวดจึงอยู่ที่หัวกลุ่มครั้งเดียว
  */
 export default function SkillsSection() {
   const { setTag } = useProjectFilter();
@@ -22,32 +22,44 @@ export default function SkillsSection() {
   return (
     <Section id="skills" intro="The number is how many of my projects use a skill. Select it to see those projects.">
       <div className="grid gap-x-12 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
-        {skillGroups.map((group) => (
-          <div key={group.title}>
-            <h3 className="border-b border-margin pb-2 type-title text-ink">{group.title}</h3>
-            <ul className="mt-2">
-              {group.skills.map((skill) => (
-                <li key={skill.name}>
-                  <SkillRow skill={skill} onSelect={showProjects} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {skillGroups.map((group) => {
+          const family = groupFamily(group);
+          return (
+            <div key={group.title}>
+              <h3 className="flex items-center gap-2 border-b border-margin pb-2 type-title text-ink">
+                {family && <SkillMarker family={family} className="size-3" />}
+                {group.title}
+              </h3>
+              <ul className="mt-2">
+                {group.skills.map((skill) => (
+                  <li key={skill.name}>
+                    {/* กลุ่มที่ทุก skill อยู่หมวดเดียวกันไม่ต้องใส่สัญลักษณ์ซ้ำทุกแถว */}
+                    <SkillRow skill={skill} showMarker={!family} onSelect={showProjects} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </div>
     </Section>
   );
 }
 
-function SkillRow({ skill, onSelect }: { skill: Skill; onSelect: (name: string) => void }) {
+/** หมวดของทั้งกลุ่ม ถ้าทุก skill ในกลุ่มอยู่หมวดเดียวกัน (Tools ไม่มีหมวด → undefined) */
+function groupFamily(group: SkillGroup): SkillFamilyId | undefined {
+  const first = familyOf(group.skills[0]?.name ?? "");
+  return first && group.skills.every((skill) => familyOf(skill.name) === first) ? first : undefined;
+}
+
+function SkillRow({ skill, showMarker, onSelect }: { skill: Skill; showMarker: boolean; onSelect: (name: string) => void }) {
   const family = familyOf(skill.name);
   const count = projectCountByTag.get(skill.name) ?? 0;
 
   const name = (
     <>
-      {/* ช่องว่างขนาดเดียวกับสัญลักษณ์ → ชื่อทุกแถวเริ่มตรงกันแม้ไม่มีหมวด (Tools) */}
-      {family ? <SkillMarker family={family} /> : <span aria-hidden="true" className="size-2.5 shrink-0" />}
-      {family && <span className="sr-only">{familyLabel(family)}: </span>}
+      {showMarker && family && <SkillMarker family={family} />}
+      {showMarker && family && <span className="sr-only">{familyLabel(family)}: </span>}
       <span>{skill.name}</span>
     </>
   );

@@ -38,7 +38,8 @@ body::after { content: ""; position: absolute; top: 0; bottom: 0; left: 96px; wi
 .text { position: relative; z-index: 1; max-width: 760px; }
 .logo { display: block; width: 52px; height: 52px; margin-left: -4px; }
 h1 { margin-top: 14px; font-family: "Newsreader", serif; font-weight: 500; font-size: 76px; line-height: 0.98; letter-spacing: -0.015em; }
-.role { margin-top: 18px; font-family: "Newsreader", serif; font-weight: 600; font-size: 25px; line-height: 1.25; white-space: nowrap; }
+.focus { margin-top: 18px; font-family: "Newsreader", serif; font-weight: 600; font-size: 28px; line-height: 1.2; }
+.role { margin-top: 4px; font-size: 19px; color: #4b5568; }
 .stamp { display: inline-block; margin-top: 14px; padding: 5px 12px; border: 1.5px solid #7e899a; border-radius: 4px; font-size: 18px; font-weight: 600; }
 .facts { display: flex; gap: 32px; margin-top: 30px; white-space: nowrap; }
 .fact b { display: block; font-family: "Newsreader", serif; font-weight: 600; font-size: 24px; line-height: 1.2; }
@@ -53,7 +54,8 @@ h1 { margin-top: 14px; font-family: "Newsreader", serif; font-weight: 500; font-
   <div class="text">
     ${LOGO.replace("<svg ", '<svg class="logo" ')}
     <h1>${esc(profile.firstName)}<br />${esc(profile.lastName)}</h1>
-    <p class="role">${esc(profile.role)} · ${esc(profile.focus)}</p>
+    <p class="focus">${esc(profile.focus)}</p>
+    <p class="role">${esc(profile.role)}, ${esc(profile.school)}</p>
     <p class="stamp">${esc(profile.availability)}</p>
     <div class="facts">${highlights
       .slice(0, 3)

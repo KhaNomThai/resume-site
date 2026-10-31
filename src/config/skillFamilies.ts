@@ -12,8 +12,8 @@ export const SKILL_FAMILIES = [
 export type SkillFamilyId = (typeof SKILL_FAMILIES)[number]["id"];
 
 /**
- * skill และ tag ของโปรเจกต์ → หมวด (ใช้ชื่อตรงกับ data.ts)
- * เป็นข้อเสนอที่รอเจ้าของยืนยัน (design/content-proposals.md) ชื่อที่ไม่อยู่ในตารางนี้ถือเป็น Tools ซึ่งไม่มีสัญลักษณ์
+ * skill และ tag ของโปรเจกต์ → หมวด (ใช้ชื่อตรงกับ data.ts) เจ้าของยืนยันแล้วใน design/content-proposals.md ข้อ 4
+ * ชื่อที่ไม่อยู่ในตารางนี้ถือเป็น Tools ซึ่งไม่มีสัญลักษณ์ — เพิ่ม skill หรือ tag ใหม่ใน data.ts แล้วอย่าลืมเพิ่มที่นี่
  */
 const FAMILY_OF: Readonly<Record<string, SkillFamilyId>> = {
   PyTorch: "ml",
@@ -23,6 +23,8 @@ const FAMILY_OF: Readonly<Record<string, SkillFamilyId>> = {
   "Deep Learning": "ml",
   "Computer Vision": "ml",
   "Generative AI": "ml",
+  "Grounding DINO": "ml",
+  Gemini: "ml",
   Pandas: "data",
   NumPy: "data",
   "Data Analysis": "data",

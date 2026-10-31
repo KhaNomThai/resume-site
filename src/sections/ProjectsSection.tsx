@@ -166,8 +166,9 @@ function ProjectCard({ project, featured }: { project: Project; featured: boolea
 
       <ul aria-label="Tech stack" className="mt-6 flex flex-wrap gap-x-4 gap-y-2 border-t border-rule pt-4 type-small text-ink">
         {groupByFamily(tags).map(({ family, names }) => (
-          <li key={family ?? "other"} className="flex items-center gap-1">
-            {family && <SkillMarker family={family} />}
+          // items-start + mt: สัญลักษณ์อยู่ตรงบรรทัดแรกเสมอ แม้รายชื่อยาวจนขึ้นบรรทัดใหม่ ((20px − 10px) / 2 = 5px)
+          <li key={family ?? "other"} className="flex items-start gap-1">
+            {family && <SkillMarker family={family} className="mt-[5px]" />}
             {family && <span className="sr-only">{familyLabel(family)}: </span>}
             {names.join(", ")}
           </li>

@@ -88,9 +88,9 @@ Tailwind v4 ไม่มี `tailwind.config.js` แล้ว ค่าใน `@
 
 รูปทรงทั้ง 4 คือ marker เริ่มต้นของ matplotlib (`o`, `s`, `^`, `D`) ซึ่งคนสาย DS เห็นทุกวัน รูปทรงต่างกันชัดแม้เหลือ 10px วาดเป็น SVG inline สี `ink` (ไม่ใช้ตัวอักษร Unicode เพราะแต่ละฟอนต์วาดไม่เหมือนกัน) และมีชื่อหมวดกำกับทุกครั้ง โดยตัวสัญลักษณ์ใส่ `aria-hidden="true"`
 
-| สัญลักษณ์ | หมวด | skill ในหมวด (`src/config/skillFamilies.ts` รอยืนยันใน `design/content-proposals.md`) |
+| สัญลักษณ์ | หมวด | skill และ tag ในหมวด (`src/config/skillFamilies.ts` เจ้าของยืนยันแล้ว) |
 |---|---|---|
-| ● วงกลม | ML / DL | PyTorch, scikit-learn, OpenCV, Machine Learning, Deep Learning, Computer Vision, Generative AI |
+| ● วงกลม | ML / DL | PyTorch, scikit-learn, OpenCV, Machine Learning, Deep Learning, Computer Vision, Generative AI, Grounding DINO, Gemini |
 | ■ สี่เหลี่ยม | Data | Pandas, NumPy, Data Analysis, D3.js, Google Sheets |
 | ▲ สามเหลี่ยม | Full-stack | React, React Native, Next.js, Node.js, FastAPI, Gradio, Firebase, MySQL, Google Cloud, Tailwind CSS, HTML, CSS, Vite, Expo, Framer Motion |
 | ◆ ข้าวหลามตัด | Languages | Python, TypeScript, JavaScript, Java, C/C++ |

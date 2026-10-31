@@ -31,10 +31,12 @@ export default function HeroSection() {
               <span className="block">{profile.lastName}</span>
             </h1>
 
-            <p className="mt-6 type-title text-ink">
+            {/* สายงานมาก่อนสถานะ: recruiter สาย DS/ML ต้องเห็นคำว่า Data Science & ML ในบรรทัดแรกใต้ชื่อ */}
+            <p className="mt-6 type-title text-ink">{profile.focus}</p>
+            <p className="mt-1 type-body text-ink-muted">
               {profile.role}, {profile.school}
             </p>
-            <ul className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+            <ul className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2">
               {/* งานที่มองหา: กรอบบางแบบตราประทับ ให้เห็นแยกจากข้อความรอบข้าง โดยไม่ต้องใช้สีสถานะ */}
               <li className="rounded-tag border border-stroke px-2 py-1 type-label text-ink">{profile.availability}</li>
               <li className="flex items-center gap-1 type-small text-ink-muted">

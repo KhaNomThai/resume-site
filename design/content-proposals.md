@@ -1,5 +1,23 @@
 # ข้อเสนอเรื่องเนื้อหา (Phase 3)
 
+## ผลการตัดสินใจ (31 ต.ค. 2026)
+
+เจ้าของเลือกแบบที่แนะนำทุกข้อ และแก้ใน `src/data.ts` แล้ว:
+
+- **ข้อ 1:** `focus` เป็น "Data Science & ML · Full-Stack" และแสดงใต้ชื่อใน hero ส่วน `role` คงเดิม (ปรับจากตัวเลือก A/B เดิม เพราะหัว CV และรูป OG ต่อ role กับ focus เข้าด้วยกัน ถ้าแก้ role จะได้คำว่า Data ซ้ำ) และอัปเดต `<title>`, `og:title`, `og:image:alt` ใน `index.html` ให้ตรงกัน
+- **ข้อ 2:** summary ขึ้นต้นด้วยงาน ML
+- **ข้อ 3:** ใช้ร่าง problem → approach → result กับ 7 โปรเจกต์ ส่วน Employment Data Gap Analysis ยังใช้คำอธิบายเดิม
+- **ข้อ 4:** จัดกลุ่ม skill เป็น ML / DL, Data, Full-stack, Languages, Tools (CV เปลี่ยนตาม)
+- **ข้อ 5:** เพิ่ม tag `Grounding DINO` (Smart Flood AI) และ `Gemini` (WELLYNC)
+- **ข้อ 7:** ช่อง "8 projects" เปลี่ยนเป็น "89.6% top-2 accuracy / 8-class skin-lesion classification"
+- **ข้อ 8:** ใช้หัว section ตามชื่อเมนู และลบ field `icon` กับไฟล์ `src/assets/skills/` แล้ว
+
+ยังรอข้อมูลจากคุณ (ส่งมาเมื่อพร้อม): ผลของ Smart Flood AI และ WELLYNC, จำนวนผู้ใช้ของ SWU Run และ BrainFit, รายละเอียด Employment Data Gap Analysis, skill ด้าน Data ที่ใช้จริง (เช่น SQL, Matplotlib) และตัวเลขช่วงฝึกงานที่ Botnoi (ข้อ 6)
+
+ด้านล่างคือข้อเสนอเดิม เก็บไว้เป็นบันทึก
+
+---
+
 Phase 3 เปลี่ยนแค่หน้าตา ข้อความและข้อมูลของคุณใน `src/data.ts` ยังเหมือนเดิมทุกตัวอักษร (เพิ่มแค่ field ใหม่ที่ยังว่างหรือใช้เฉพาะบนเว็บ ดูท้ายไฟล์) ข้อเสนอด้านล่างเรียงจากสิ่งที่ช่วย recruiter มากที่สุด ตอบกลับด้วยเลขข้อที่ตกลง เช่น "ใช้ 1B, 2, 3 ยกเว้น WELLYNC" แล้วผมจะแก้ `data.ts` ให้ (CV PDF สร้างใหม่อัตโนมัติ และถ้าข้อ 1 เปลี่ยน จะรัน `npm run og` ด้วย)
 
 ข้อที่ต้องใช้ข้อมูลจากคุณ (ผมเดาตัวเลขเองไม่ได้) มีป้าย **ต้องการข้อมูล**

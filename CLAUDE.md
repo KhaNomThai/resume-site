@@ -46,7 +46,7 @@ npm run og            # สร้างรูป link preview → public/og-imag
 - โหมดมืดเปลี่ยนค่า token เองตาม `data-theme` บน `<html>` ไม่ต้องเขียน `dark:` ถ้าไม่จำเป็นจริง
 - ถ้าเปลี่ยนฟอนต์หรือไฟล์ฟอนต์ ต้องคำนวณ `size-adjust` ของฟอนต์สำรองใน `tokens.css` ใหม่ และแก้ชื่อไฟล์ใน `preloadFonts` ของ `vite.config.ts` ไม่อย่างนั้นหน้าจะกระโดดตอนฟอนต์โหลด (CLS) โดยที่ lint/build ยังผ่าน
 - logo คือ **Serif K.** (`design/logo/k-serif*.svg`) กติกาการใช้อยู่ในหัวข้อ Logo ของ DESIGN_SYSTEM.md ห้ามลบ `design/logo/k-serif.svg` เพราะ `npm run og` อ่านไฟล์นี้
-- `design/` เก็บบันทึกการตัดสินใจ ไฟล์ logo และรายงานก่อน/หลัง (`design/phase4-report.md`) ไม่ได้ถูก build เข้าเว็บ
+- `design/logo/` เก็บไฟล์ต้นฉบับของ logo เท่านั้น ไม่ได้ถูก build เข้าเว็บ
 - CV PDF มีดีไซน์ของตัวเองที่ใช้ฟอนต์ Geist แยกจากเว็บ จึงยังต้องมี `@fontsource-variable/geist` และ `geist-mono` ใน devDependencies
 
 ## เนื้อหาที่ยังรอข้อมูล

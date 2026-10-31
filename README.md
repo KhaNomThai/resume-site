@@ -72,7 +72,7 @@ src/
 ├── types/                  # type declarations (CSS custom properties in `style`)
 └── assets/                 # profile photos and the generated CV
 scripts/                    # CV PDF and og:image generators, token check
-design/                     # logo files, decision records, before/after report
+design/logo/                # source files of the Serif K. logo
 DESIGN_SYSTEM.md            # what every token means and how to use it
 ```
 

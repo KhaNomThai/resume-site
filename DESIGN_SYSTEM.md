@@ -3,7 +3,7 @@
 เอกสารนี้อธิบาย token ทุกตัวใน [`src/styles/tokens.css`](src/styles/tokens.css) ว่าคืออะไร ใช้ตรงไหน และทำไมถึงเป็นค่านี้
 
 > ทุก component ใช้ token ชุดนี้ (`src/index.css` import `styles/tokens.css`) ตรวจว่าไม่มี class ค่า default ของ Tailwind หลุดเข้ามาด้วย `npm run check:tokens`
-> ที่มาของแนวคิดอยู่ในหัวข้อ "บันทึกการตัดสินใจ" ท้ายเอกสาร ส่วนผลเทียบก่อน/หลังพร้อม Lighthouse อยู่ใน [design/phase4-report.md](design/phase4-report.md)
+> ที่มาของแนวคิดอยู่ในหัวข้อ "บันทึกการตัดสินใจ" ท้ายเอกสาร
 
 ## แนวคิด: หน้าหนึ่งจากสมุดของนักศึกษาวิศวะ
 
@@ -113,7 +113,7 @@ npm i @fontsource-variable/newsreader @fontsource-variable/ibm-plex-sans
 
 self-host ดีกว่าลิงก์ Google Fonts เพราะไม่ต้องต่อ DNS/TLS ไปอีกโดเมน ขนาดไฟล์ latin: Newsreader แบบมีแกน optical size 132 KB (แบบน้ำหนักอย่างเดียว 58 KB) และ Plex Sans 46 KB เทียบกับ Geist + Geist Mono เดิม 52 KB เว็บใช้แบบมี optical size (`newsreader/opsz.css`) เพราะชื่อใน hero คือสิ่งแรกที่คนเห็น (Geist ยังอยู่ใน devDependencies เพราะ CV PDF ยังใช้)
 
-วัดแล้ว ([รายงาน](design/phase4-report.md)): แบบน้ำหนักอย่างเดียวได้คะแนน Lighthouse มือถือ 93–98 เทียบกับ 95 ของแบบที่ใช้ ซึ่งต่างกันไม่ชัดเกินค่าแกว่ง แต่ชื่อใน hero เสียรูปตัวแบบ display จึงคงแบบ optical size ไว้
+วัดด้วย Lighthouse แล้ว: แบบน้ำหนักอย่างเดียวได้คะแนน Lighthouse มือถือ 93–98 เทียบกับ 95 ของแบบที่ใช้ ซึ่งต่างกันไม่ชัดเกินค่าแกว่ง แต่ชื่อใน hero เสียรูปตัวแบบ display จึงคงแบบ optical size ไว้
 
 ฟอนต์ไม่ทำให้หน้ากระโดดตอนโหลด (CLS 0) เพราะสองอย่าง:
 - **ฟอนต์สำรองที่ปรับขนาดแล้ว** `tokens.css` มี "Newsreader Fallback" (Georgia) และ "IBM Plex Sans Fallback" (Arial) ที่ตั้ง `size-adjust` ให้กว้างเท่าฟอนต์จริง ข้อความจึงตัดบรรทัดที่จุดเดิมระหว่างรอ
@@ -238,7 +238,7 @@ logo มาจาก [Simple Icons](https://simpleicons.org) (CC0) ส่วน 
 
 ## Logo
 
-เลือกแบบ **6 · Serif K.** ใน Phase 2: ตัว K จาก Newsreader (ฟอนต์หัวข้อของเว็บ) ตามด้วยจุดสี `pen` ที่เป็นทั้งจุดจบประโยคและจุดข้อมูลบนกราฟ ส่วนอีก 6 แบบเก็บไว้ใน `design/logo/` เป็นบันทึกการตัดสินใจ
+เลือกแบบ **6 · Serif K.** ใน Phase 2: ตัว K จาก Newsreader (ฟอนต์หัวข้อของเว็บ) ตามด้วยจุดสี `pen` ที่เป็นทั้งจุดจบประโยคและจุดข้อมูลบนกราฟ `design/logo/` เก็บเฉพาะไฟล์ของแบบนี้
 
 | ไฟล์ | ใช้เมื่อ |
 |---|---|

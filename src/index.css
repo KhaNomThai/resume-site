@@ -116,6 +116,8 @@
 }
 /* ยังไม่เลื่อนมาเห็น: เตรียมไว้โดยยังไม่มีแถบเหลือง */
 @utility mark-pending {
+  /* ยังไม่มีพื้นเหลือง: ใช้สีหมึกปกติ (on-marker เป็นสีเข้ม จะมองไม่เห็นบนการ์ดโหมดมืด) */
+  color: inherit;
   background-color: transparent;
   background-image: linear-gradient(var(--color-marker), var(--color-marker));
   background-repeat: no-repeat;
@@ -125,6 +127,138 @@
 @keyframes mark-swipe {
   from {
     background-size: 0% 100%;
+  }
+}
+
+/*
+ * ── ลูกเล่นตกแต่ง ── ทุกอันขยับแค่ transform, opacity, สี หรือเส้นที่วาด ไม่กระทบ layout (CLS คงเดิม)
+ * อันที่ขยับเองตอนเลื่อนหน้าใช้ scroll-driven animation ของ CSS: ไม่ต้องรัน JS
+ * เบราว์เซอร์ที่ยังไม่รองรับเห็นหน้าเว็บนิ่งแบบเดิมทุกอย่าง ไม่มีอะไรถูกซ่อนค้างไว้
+ * ผู้ใช้ที่ตั้ง prefers-reduced-motion จะไม่เห็นการเคลื่อนไหวเหล่านี้เลย
+ */
+
+/* logo ของ skill: สีแบรนด์ต้นฉบับ (สีต่อโหมดมาจาก SkillLogo.tsx) ชี้ที่แถวแล้วขยายและเอียงเล็กน้อย */
+@utility skill-logo {
+  --brand: var(--brand-light, var(--color-pen));
+  color: var(--brand);
+  transition: transform var(--duration-base) var(--ease-out);
+  [data-theme="dark"] & {
+    --brand: var(--brand-dark, var(--color-pen));
+  }
+  .group:hover &,
+  .group:focus-visible & {
+    transform: scale(1.15) rotate(-6deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+/* หมึกปากกาบนกระดาษกราฟ: เส้นตารางรอบเคอร์เซอร์กลายเป็นสี pen (ตำแหน่ง --ink-x/--ink-y ตั้งจาก HeroSection)
+   อยู่ใน hero-grid จึงจางหายด้านล่างตาม mask ของกระดาษไปด้วย */
+@utility hero-ink {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-pen) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-pen) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  mask-image: radial-gradient(circle 11rem at var(--ink-x, 50%) var(--ink-y, 50%), rgb(0 0 0 / 0.55), transparent);
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out);
+  &[data-active] {
+    opacity: 1;
+  }
+}
+
+/* รูปโปรไฟล์ติดเทปบนหน้าสมุด: เอียงนิดหนึ่งแบบติดด้วยมือ ชี้แล้ววางตรงและยกขึ้น */
+@utility taped-photo {
+  rotate: -2deg;
+  transition:
+    rotate var(--duration-base) var(--ease-out),
+    translate var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+  &:hover {
+    rotate: 0deg;
+    translate: 0 -4px;
+    box-shadow: var(--shadow-overlay);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+/* เทปกาวโปร่งแสง: สีปากกาเน้นผสมกระดาษ */
+@utility photo-tape {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  width: 5.5rem;
+  height: 1.5rem;
+  translate: -50% 0;
+  rotate: 4deg;
+  background-color: color-mix(in srgb, var(--color-marker) 60%, transparent);
+  border-inline: 1px dashed color-mix(in srgb, var(--color-on-marker) 12%, transparent);
+}
+
+/* เส้นปากกาแดงขีดใต้หัว section: วาดตัวเองตอนหัวข้อเลื่อนเข้ามาในจอ (path ใช้ pathLength="1") */
+@utility heading-scribble {
+  stroke: var(--color-margin);
+  stroke-dasharray: 1;
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: draw-stroke linear both;
+      animation-timeline: view();
+      animation-range: entry 40% cover 35%;
+    }
+  }
+}
+@keyframes draw-stroke {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* บัตรคำ/แถวเลื่อนขึ้นมาวางตอนเข้าจอ: ระยะสั้น (1.5rem) และจบก่อนถึงกลางจอ ผู้อ่านจึงไม่ต้องรอ */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: reveal var(--ease-out) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+/* แถบความคืบหน้าการอ่านใต้ navbar: สี pen ยืดตามระยะที่เลื่อน */
+@utility scroll-progress {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 2px;
+  display: none;
+  pointer-events: none;
+  transform-origin: left;
+  background-color: var(--color-pen);
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      display: block;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+@keyframes grow-x {
+  from {
+    scale: 0 1;
   }
 }
 
@@ -155,6 +289,11 @@
   }
   [style*="transform"] {
     transform: none !important;
+  }
+  /* animation ที่ผูกกับการเลื่อนไม่มีความหมายบนกระดาษ: แสดงทุกอย่างในสภาพสุดท้าย */
+  .reveal,
+  .heading-scribble {
+    animation: none !important;
   }
   #root * {
     color: black !important;

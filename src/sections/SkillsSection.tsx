@@ -1,4 +1,5 @@
 import Section from "../components/Section";
+import SkillLogo from "../components/SkillLogo";
 import SkillMarker from "../components/SkillMarker";
 import { familyLabel, familyOf, type SkillFamilyId } from "../config/skillFamilies";
 import { skillGroups, type Skill, type SkillGroup } from "../data";
@@ -25,7 +26,7 @@ export default function SkillsSection() {
         {skillGroups.map((group) => {
           const family = groupFamily(group);
           return (
-            <div key={group.title}>
+            <div key={group.title} className="reveal">
               <h3 className="flex items-center gap-2 border-b border-margin pb-2 type-title text-ink">
                 {family && <SkillMarker family={family} className="size-3" />}
                 {group.title}
@@ -60,19 +61,23 @@ function SkillRow({ skill, showMarker, onSelect }: { skill: Skill; showMarker: b
     <>
       {showMarker && family && <SkillMarker family={family} />}
       {showMarker && family && <span className="sr-only">{familyLabel(family)}: </span>}
+      {/* ช่อง logo กว้างคงที่ ชื่อ skill ทุกแถวจึงเริ่มตรงกันแม้บางตัวไม่มี logo */}
+      <span className="flex size-6 shrink-0 items-center justify-center">
+        <SkillLogo name={skill.name} className="size-5" />
+      </span>
       <span>{skill.name}</span>
     </>
   );
 
   if (count === 0) {
-    return <span className="flex min-h-11 items-center gap-2 type-body text-ink">{name}</span>;
+    return <span className="group flex min-h-11 items-center gap-3 type-body text-ink">{name}</span>;
   }
 
   return (
     <button
       type="button"
       onClick={() => onSelect(skill.name)}
-      className="group flex min-h-11 w-full items-center gap-2 rounded-control text-left type-body text-ink transition-colors duration-(--duration-fast) hover:text-pen"
+      className="group flex min-h-11 w-full items-center gap-3 rounded-control text-left type-body text-ink transition-colors duration-(--duration-fast) hover:text-pen"
     >
       {name}
       {/* เส้นจุดนำสายตา (dot leader) แบบดัชนีท้ายเล่ม พาจากชื่อไปหาตัวเลข */}

@@ -22,6 +22,8 @@ type Command = {
   hint: string;
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
   run: () => void;
+  /** เปิดแท็บใหม่: บอก screen reader แบบเดียวกับ NewTabHint ของลิงก์ทั่วไป */
+  external?: boolean;
 };
 
 /** เลื่อนไปที่ section แล้วย้าย focus ไปที่หัวข้อ → Tab ถัดไปเริ่มจากตรงนั้น และ screen reader อ่านชื่อ section */
@@ -30,7 +32,9 @@ function goTo(id: string) {
   if (!target) return;
   history.pushState(null, "", `#${id}`);
   target.scrollIntoView();
-  const heading = document.getElementById(`${id}-heading`);
+  // หาหัวข้อจาก aria-labelledby ของ section: hero ใช้ id "hero-heading" ไม่ใช่ "top-heading" ตามแบบของ section อื่น
+  const headingId = target.getAttribute("aria-labelledby");
+  const heading = headingId ? document.getElementById(headingId) : null;
   if (heading) {
     heading.tabIndex = -1;
     heading.focus({ preventScroll: true });
@@ -79,9 +83,30 @@ export default function CommandPalette({ open, onClose }: Props) {
         },
       },
       { id: "download-cv", label: "Download resume (PDF)", hint: "Action", Icon: DownloadIcon, run: downloadCv },
-      { id: "github", label: "GitHub", hint: `@${profile.github}`, Icon: GitHubIcon, run: () => openExternal(githubUrl) },
-      { id: "linkedin", label: "LinkedIn", hint: "Profile", Icon: LinkedInIcon, run: () => openExternal(linkedinUrl) },
-      { id: "source", label: "View source code", hint: "GitHub", Icon: CodeIcon, run: () => openExternal(repoUrl) },
+      {
+        id: "github",
+        label: "GitHub",
+        hint: `@${profile.github}`,
+        Icon: GitHubIcon,
+        run: () => openExternal(githubUrl),
+        external: true,
+      },
+      {
+        id: "linkedin",
+        label: "LinkedIn",
+        hint: "Profile",
+        Icon: LinkedInIcon,
+        run: () => openExternal(linkedinUrl),
+        external: true,
+      },
+      {
+        id: "source",
+        label: "View source code",
+        hint: "GitHub",
+        Icon: CodeIcon,
+        run: () => openExternal(repoUrl),
+        external: true,
+      },
     ],
     [copyEmail]
   );
@@ -177,7 +202,10 @@ export default function CommandPalette({ open, onClose }: Props) {
               }`}
             >
               <command.Icon className="size-4 shrink-0" />
-              <span className="flex-1 truncate">{command.label}</span>
+              <span className="flex-1 truncate">
+                {command.label}
+                {command.external && <span className="sr-only"> (opens in a new tab)</span>}
+              </span>
               <span className="max-w-[45%] truncate type-caption text-ink-muted">{command.hint}</span>
             </li>
           );

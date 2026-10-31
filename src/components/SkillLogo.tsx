@@ -11,15 +11,24 @@ const SAME_LOGO_AS: Readonly<Record<string, string>> = { "React Native": "React"
  * ระหว่างรอ ช่อง logo ว่างไว้ (ช่องกว้างคงที่ใน SkillRow) layout จึงไม่ขยับตอน logo มาถึง
  */
 let loaded: BrandLogos | null = null;
-let loading: Promise<BrandLogos> | null = null;
+let loading: Promise<BrandLogos | null> | null = null;
 
 function useBrandLogos() {
   const [logos, setLogos] = useState(loaded);
   useEffect(() => {
     if (logos) return;
     let alive = true;
-    loading ??= import("../config/skillLogos").then((m) => (loaded = m.BRAND_LOGOS));
-    loading.then((l) => alive && setLogos(l));
+    loading ??= import("../config/skillLogos")
+      .then((m) => (loaded = m.BRAND_LOGOS))
+      .catch(() => {
+        // โหลด chunk ไม่สำเร็จ (เช่นเน็ตหลุด): แสดงแค่ไอคอนที่วาดเอง ไม่ปล่อย promise ที่ reject ให้ทุกแถวแจ้ง error
+        // และล้างไว้ให้ลองโหลดใหม่ครั้งหน้าที่ component ถูก mount
+        loading = null;
+        return null;
+      });
+    loading.then((l) => {
+      if (alive && l) setLogos(l);
+    });
     return () => {
       alive = false;
     };
@@ -94,12 +103,12 @@ const PAPER_DARK = luminance("14171c");
  * สีแบรนด์แยกตามโหมด: สีที่กลืนกับกระดาษ (เช่น Unity สีขาวบนพื้นสว่าง, NumPy น้ำเงินเข้มบนพื้นมืด)
  * ใช้ ink แทน logo จึงไม่กลืนหายไปกับพื้น (ค่า paper ต้องตรงกับ --color-paper ใน tokens.css)
  */
-function brandVars(hex: string) {
+function brandVars(hex: string): CSSProperties {
   const lum = luminance(hex);
   return {
     "--brand-light": contrast(lum, PAPER_LIGHT) < 1.2 ? "var(--color-ink)" : `#${hex}`,
     "--brand-dark": contrast(lum, PAPER_DARK) < 2 ? "var(--color-ink)" : `#${hex}`,
-  } as CSSProperties;
+  };
 }
 
 /**

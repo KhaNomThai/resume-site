@@ -11,8 +11,6 @@
     scroll-behavior: smooth;
     /* ลิงก์ #section หยุดใต้ navbar (สูง --nav-height) ไม่โดนบังหัวข้อ */
     scroll-padding-top: calc(var(--nav-height) + 1.5rem);
-    /* framer-motion useScroll({ target }) ต้องการ scroll container ที่ไม่ใช่ position: static (ไม่งั้นเตือนใน dev) */
-    position: relative;
   }
   body {
     background-color: var(--color-paper);

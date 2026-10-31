@@ -5,7 +5,7 @@ import Section from "../components/Section";
 import SkillMarker, { SkillLegend } from "../components/SkillMarker";
 import { CodeIcon, GlobeIcon, NotebookIcon } from "../components/icons";
 import { familyLabel, groupByFamily } from "../config/skillFamilies";
-import { projects, type Project, type ProjectLinkKind } from "../data";
+import { projects, sectionIntros, type Project, type ProjectLinkKind } from "../data";
 import { linkProps } from "../lib/links";
 import { projectCountByTag, useProjectFilter } from "../lib/projectFilter";
 import { useInViewOnce } from "../lib/useInViewOnce";
@@ -35,10 +35,7 @@ export default function ProjectsSection() {
   const filterTags = tag && !FILTER_TAGS.includes(tag) ? [...FILTER_TAGS, tag] : FILTER_TAGS;
 
   return (
-    <Section
-      id="projects"
-      intro="Deep learning, computer vision, and full-stack work — from course projects to hackathons and real events."
-    >
+    <Section id="projects" intro={sectionIntros.projects}>
       {/* legend อธิบายสัญลักษณ์ครั้งเดียว ก่อนถึงการ์ดที่ใช้มัน */}
       <SkillLegend className="mb-6" />
 
@@ -210,7 +207,7 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 /** ตัวเลขผลลัพธ์: ปากกาเน้นขีดผ่านครั้งแรกที่การ์ดเข้ามาในจอ (ช้ากว่าใน hero คือ --duration-slow) */
 function ResultMark({ value }: { value: string }) {
   const [ref, seen] = useInViewOnce<HTMLElement>();
-  const style = { "--swipe-duration": "var(--duration-slow)" } as CSSProperties;
+  const style: CSSProperties = { "--swipe-duration": "var(--duration-slow)" };
   return (
     <mark ref={ref} style={style} className={`type-metric ${seen ? "mark-swipe" : "mark-pending"}`}>
       {value}

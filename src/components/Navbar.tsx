@@ -37,7 +37,7 @@ export default function Navbar({ onOpenPalette }: { onOpenPalette: () => void })
       if (e.key === "Escape") setMenuOpen(false);
     };
     const onPointer = (e: PointerEvent) => {
-      if (!headerRef.current?.contains(e.target as Node)) setMenuOpen(false);
+      if (e.target instanceof Node && !headerRef.current?.contains(e.target)) setMenuOpen(false);
     };
     document.addEventListener("keydown", onKey);
     document.addEventListener("pointerdown", onPointer);

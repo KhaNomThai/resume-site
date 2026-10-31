@@ -21,7 +21,7 @@ export function highlightPhrases(text: string, phrases: readonly string[] = []):
   let markIndex = 0;
   return text.split(new RegExp(`(${phrases.map(escapeRegExp).join("|")})`)).map((part, i) => {
     if (!phrases.includes(part)) return part;
-    const style = { "--swipe-delay": `${FIRST_DELAY_MS + markIndex++ * STAGGER_MS}ms` } as CSSProperties;
+    const style: CSSProperties = { "--swipe-delay": `${FIRST_DELAY_MS + markIndex++ * STAGGER_MS}ms` };
     return (
       <mark key={i} className="mark-swipe" style={style}>
         {part}

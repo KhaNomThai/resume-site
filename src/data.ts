@@ -30,8 +30,8 @@ export type Project = {
   metric?: { value: string; label: string };
   /** เทคที่ชื่อตรงกับ skill → ปุ่ม skill ใช้กรองโปรเจกต์ได้ */
   tags: string[];
-  /** ลิงก์แรก = ลิงก์หลักของการ์ด (คลิกได้ทั้งใบ) */
-  links: ProjectLink[];
+  /** ลิงก์แรก = ลิงก์หลักของการ์ด (คลิกได้ทั้งใบ) และของ CV จึงต้องมีอย่างน้อยหนึ่งลิงก์ */
+  links: [ProjectLink, ...ProjectLink[]];
 };
 export type TimelineItem = { id: string; title: string; org: string; period: string; bullets: string[] };
 export type Certification = { id: string; title: string; issuer: string; year: string; desc: string };
@@ -78,6 +78,13 @@ export const profile = {
 export const githubUrl = `https://github.com/${profile.github}`;
 export const linkedinUrl = `https://www.linkedin.com/in/${profile.linkedin}`;
 export const repoUrl = `${githubUrl}/resume-site`;
+
+/** บรรทัดนำใต้หัว section (ใช้แค่บนเว็บ) — section ที่ไม่มีในนี้แสดงแค่หัวข้อ */
+export const sectionIntros = {
+  projects: "Deep learning, computer vision, and full-stack work — from course projects to hackathons and real events.",
+  skills: "The number is how many of my projects use a skill. Select it to see those projects.",
+  contact: "I'm open to Data/AI and full-stack internship opportunities. Email is the fastest way to reach me.",
+};
 
 export const contacts: ContactLink[] = [
   { kind: "email", label: "Email", value: profile.email, href: `mailto:${profile.email}` },

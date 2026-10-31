@@ -30,7 +30,7 @@ export default function HeroSection() {
       <div className="page-container pb-16 pt-12 md:pb-24 md:pt-16 xl:pt-24">
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-16">
           <div>
-            <h1 id="hero-heading" className="type-display text-ink">
+            <h1 id="hero-heading" className="type-display text-ink outline-none">
               {/* แยกบรรทัดตามชื่อ-นามสกุล: "Parnduangkeaw" เป็นคำเดียว ตัดกลางคำไม่ได้ */}
               <span className="block">{profile.firstName}</span>
               <span className="block">{profile.lastName}</span>

@@ -2,7 +2,7 @@ import type { ComponentType, SVGProps } from "react";
 import NewTabHint from "../components/NewTabHint";
 import Section from "../components/Section";
 import { CopyIcon, GitHubIcon, LinkedInIcon, MailIcon, MapPinIcon, PhoneIcon } from "../components/icons";
-import { contacts, profile, type ContactKind } from "../data";
+import { contacts, profile, sectionIntros, type ContactKind } from "../data";
 import { linkProps } from "../lib/links";
 import { useCopyEmail } from "../lib/useCopyEmail";
 
@@ -24,10 +24,7 @@ export default function ContactSection() {
   const copyEmail = useCopyEmail();
 
   return (
-    <Section
-      id="contact"
-      intro="I'm open to Data/AI and full-stack internship opportunities. Email is the fastest way to reach me."
-    >
+    <Section id="contact" intro={sectionIntros.contact}>
       <address className="grid gap-12 not-italic lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-16">
         <div>
           <p className="type-label text-ink-muted">Email</p>

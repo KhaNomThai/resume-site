@@ -2,7 +2,7 @@ import Section from "../components/Section";
 import SkillLogo from "../components/SkillLogo";
 import SkillMarker from "../components/SkillMarker";
 import { familyLabel, familyOf, type SkillFamilyId } from "../config/skillFamilies";
-import { skillGroups, type Skill, type SkillGroup } from "../data";
+import { sectionIntros, skillGroups, type Skill, type SkillGroup } from "../data";
 import { projectCountByTag, useProjectFilter } from "../lib/projectFilter";
 
 /**
@@ -21,7 +21,7 @@ export default function SkillsSection() {
   };
 
   return (
-    <Section id="skills" intro="The number is how many of my projects use a skill. Select it to see those projects.">
+    <Section id="skills" intro={sectionIntros.skills}>
       <div className="grid gap-x-12 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
         {skillGroups.map((group) => {
           const family = groupFamily(group);

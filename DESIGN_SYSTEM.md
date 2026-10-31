@@ -4,6 +4,7 @@
 
 > **สถานะ:** เลือกแนว **A · Lab Notebook** แล้ว (Phase 1) และผสมบางส่วนจากแนว C
 > Phase 3 ต่อ token เข้าเว็บแล้ว (`src/index.css` import `styles/tokens.css`) และทุก component ใช้ token ชุดนี้ ตรวจด้วย `npm run check:tokens`
+> Phase 4 เทียบก่อน/หลังด้วยภาพหน้าจอและ Lighthouse ไว้ใน [design/phase4-report.md](design/phase4-report.md)
 
 ## แนวคิด: หน้าหนึ่งจากสมุดของนักศึกษาวิศวะ
 
@@ -111,7 +112,15 @@ Tailwind v4 ไม่มี `tailwind.config.js` แล้ว ค่าใน `@
 npm i @fontsource-variable/newsreader @fontsource-variable/ibm-plex-sans
 ```
 
-self-host ดีกว่าลิงก์ Google Fonts เพราะไม่ต้องต่อ DNS/TLS ไปอีกโดเมน ขนาดไฟล์ latin: Newsreader แบบมีแกน optical size 132 KB (แบบน้ำหนักอย่างเดียว 58 KB) และ Plex Sans 46 KB เทียบกับ Geist + Geist Mono เดิม 52 KB เว็บใช้แบบมี optical size (`newsreader/opsz.css`) เพราะชื่อใน hero คือสิ่งแรกที่คนเห็น ถ้า Lighthouse ใน Phase 4 พบว่า performance ลด ค่อยเปลี่ยนเป็นแบบน้ำหนักอย่างเดียว (Geist ยังอยู่ใน devDependencies เพราะ CV PDF ยังใช้)
+self-host ดีกว่าลิงก์ Google Fonts เพราะไม่ต้องต่อ DNS/TLS ไปอีกโดเมน ขนาดไฟล์ latin: Newsreader แบบมีแกน optical size 132 KB (แบบน้ำหนักอย่างเดียว 58 KB) และ Plex Sans 46 KB เทียบกับ Geist + Geist Mono เดิม 52 KB เว็บใช้แบบมี optical size (`newsreader/opsz.css`) เพราะชื่อใน hero คือสิ่งแรกที่คนเห็น (Geist ยังอยู่ใน devDependencies เพราะ CV PDF ยังใช้)
+
+Phase 4 วัดแล้ว ([รายงาน](design/phase4-report.md)): แบบน้ำหนักอย่างเดียวได้คะแนน Lighthouse มือถือ 93–98 เทียบกับ 95 ของแบบที่ใช้ ซึ่งต่างกันไม่ชัดเกินค่าแกว่ง แต่ชื่อใน hero เสียรูปตัวแบบ display จึงคงแบบ optical size ไว้
+
+ฟอนต์ไม่ทำให้หน้ากระโดดตอนโหลด (CLS 0) เพราะสองอย่าง:
+- **ฟอนต์สำรองที่ปรับขนาดแล้ว** `tokens.css` มี "Newsreader Fallback" (Georgia) และ "IBM Plex Sans Fallback" (Arial) ที่ตั้ง `size-adjust` ให้กว้างเท่าฟอนต์จริง ข้อความจึงตัดบรรทัดที่จุดเดิมระหว่างรอ
+- **preload** `vite.config.ts` ใส่ `<link rel="preload">` ให้ไฟล์ latin ทั้งสองตอน build
+
+ถ้าเปลี่ยนฟอนต์หรือไฟล์ที่ใช้ ต้องคำนวณค่าฟอนต์สำรองใหม่ (วิธีอยู่ใน comment ของ `tokens.css`) และแก้ชื่อไฟล์ใน `preloadFonts`
 
 ขนาดเลือกจาก classic scale ใน *The Elements of Typographic Style* ของ Robert Bringhurst (12, 14, 16, 18, 21, 24, 36, 48, 60, 72) ซึ่งเป็นลำดับขนาดที่ช่างเรียงพิมพ์ใช้กันมาหลายร้อยปี แต่ละขั้นต่างกันพอให้ตาเห็นลำดับชั้นชัด
 

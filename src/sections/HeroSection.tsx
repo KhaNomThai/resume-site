@@ -81,16 +81,19 @@ export default function HeroSection() {
 
           {/* รูปอยู่ข้างขวาเฉพาะจอใหญ่: บนจอเล็กเดิมรูปอยู่บนสุดและดันชื่อลงไปถึง 35% ของจอ */}
           <figure className="hidden lg:block">
-            <img
-              src={avatar320}
-              srcSet={`${avatar320} 320w, ${avatar640} 640w`}
-              sizes="240px"
-              alt={`Portrait of ${profile.name}`}
-              width={240}
-              height={240}
-              fetchPriority="high"
-              className="aspect-square w-full rounded-card border border-rule object-cover"
-            />
+            {/* <img> ที่ซ่อนด้วย CSS ยังถูกโหลดอยู่ดี → ใช้ <picture> ให้เลือกรูปจริงเฉพาะจอ lg (64rem) ขึ้นไป
+                จอเล็กได้ GIF โปร่งใสขนาด 1px ที่ฝังในหน้า ไม่ต้องโหลดอะไร และไม่แย่ง bandwidth กับ JS/ฟอนต์ */}
+            <picture>
+              <source media="(min-width: 64rem)" srcSet={`${avatar320} 320w, ${avatar640} 640w`} sizes="240px" />
+              <img
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                alt={`Portrait of ${profile.name}`}
+                width={240}
+                height={240}
+                fetchPriority="high"
+                className="aspect-square w-full rounded-card border border-rule object-cover"
+              />
+            </picture>
           </figure>
         </div>
 

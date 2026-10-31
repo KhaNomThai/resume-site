@@ -2,10 +2,32 @@
  * Design tokens — "Lab Notebook" (แนว A ที่เลือกใน Phase 1 + สิ่งที่ยืมจากแนว C)
  * ที่เดียวที่เก็บค่าสี ตัวอักษร ระยะห่าง มุม เงา และ motion ของเว็บ
  * ความหมายและวิธีใช้ของทุก token อยู่ใน DESIGN_SYSTEM.md
- *
- * ยังไม่ได้ import: Phase 3 จะเพิ่ม `@import "./styles/tokens.css";` ใน index.css
- * พร้อมเปลี่ยน component ให้ใช้ token ชุดนี้ (ถ้า import ตอนนี้ class เดิมอย่าง bg-indigo-500 จะหายทันที)
+ * import ใน src/index.css ต่อจาก tailwindcss
  */
+
+/* ฟอนต์สำรองระหว่างรอฟอนต์จริงโหลด: ย่อ/ขยาย Georgia กับ Arial ให้กว้างเท่า Newsreader กับ Plex
+   ข้อความจึงตัดบรรทัดที่จุดเดิม พอฟอนต์จริงมาถึง เนื้อหาข้างล่างไม่ถูกดัน (ไม่มี layout shift / CLS)
+   ค่าคำนวณด้วย fontTools จากความกว้างเฉลี่ยของข้อความทั้งหมดใน data.ts:
+   Newsreader (wght 400, opsz 18 = ขนาด summary ใน hero) เทียบ Georgia, IBM Plex Sans (wght 400) เทียบ Arial
+   ascent/descent = ค่า typo ของฟอนต์จริงหารด้วย size-adjust → baseline อยู่ตำแหน่งเดียวกัน
+   ถ้าเปลี่ยนฟอนต์หรือน้ำหนักหลักของ summary ต้องคำนวณใหม่ */
+@font-face {
+  font-family: "Newsreader Fallback";
+  src: local("Georgia");
+  size-adjust: 92%;
+  ascent-override: 79.9%;
+  descent-override: 28.8%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Fallback";
+  src: local("Arial"), local("ArialMT");
+  size-adjust: 101%;
+  ascent-override: 101.4%;
+  descent-override: 27.2%;
+  line-gap-override: 0%;
+}
 
 /* Tailwind v4: ทุกตัวแปรใน @theme กลายเป็น utility (`--color-ink` → `text-ink`, `bg-ink`, `border-ink`)
    `static` = ส่งตัวแปรออกไปที่ :root เสมอแม้ไม่มี class ไหนใช้ → เรียก var(--color-pen) จาก style หรือ SVG ได้ */
@@ -37,8 +59,8 @@
   --color-focus: #2343c4; /* วงแหวน focus = สีปากกา */
 
   /* ── ตัวอักษร ── serif พูด sans ทำงาน */
-  --font-serif: "Newsreader Variable", Georgia, serif; /* เสียงของเว็บ: ชื่อ หัวข้อ ชื่อการ์ด summary */
-  --font-sans: "IBM Plex Sans Variable", ui-sans-serif, system-ui, sans-serif; /* งาน: เนื้อหาในการ์ด label tag ปุ่ม */
+  --font-serif: "Newsreader Variable", "Newsreader Fallback", Georgia, serif; /* เสียงของเว็บ: ชื่อ หัวข้อ ชื่อการ์ด summary */
+  --font-sans: "IBM Plex Sans Variable", "IBM Plex Sans Fallback", ui-sans-serif, system-ui, sans-serif; /* งาน: เนื้อหาในการ์ด label tag ปุ่ม */
 
   /* ขนาดจาก classic scale ใน The Elements of Typographic Style (Bringhurst) — ชื่อ = px
      ปกติไม่เรียกตรงๆ ให้ใช้ type-* ด้านล่างซึ่งรวมฟอนต์ ขนาด ระยะบรรทัด และน้ำหนักไว้แล้ว */

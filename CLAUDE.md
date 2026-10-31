@@ -35,6 +35,9 @@ npm run check:tokens  # หา class Tailwind default ที่ใช้ไม�
 - Phase 1 ✅ token ใน `src/styles/tokens.css`
 - Phase 2 ✅ เลือก logo แบบ **Serif K.** (`design/logo/k-serif*.svg`) จาก 7 แบบใน `design/logo-preview.html` กติกาการใช้อยู่ในหัวข้อ Logo ของ DESIGN_SYSTEM.md
 - Phase 3 ✅ token ต่อเข้า `src/index.css` แล้ว ทุก component ใช้ token, favicon และรูป OG ใหม่ ข้อเสนอเนื้อหาใน `design/content-proposals.md` อนุมัติและแก้ `data.ts` แล้ว เหลือแค่ตัวเลขใน bullet ของงานที่ Botnoi (ถ้าเจ้าของเปิดเผยได้)
+- Phase 4 ✅ ภาพก่อน/หลังและ Lighthouse ใน `design/phase4-report.md` (ภาพอยู่ใน `design/phase4/`) แก้ layout shift จากฟอนต์ด้วยฟอนต์สำรองที่ปรับขนาดใน `tokens.css` และ preload ใน `vite.config.ts` ยังไม่ได้ merge เข้า `main` เว็บจริงจึงยังเป็นเวอร์ชันเดิม
+
+ถ้าเปลี่ยนฟอนต์หรือไฟล์ฟอนต์ ต้องคำนวณ `size-adjust` ของฟอนต์สำรองใน `tokens.css` ใหม่ และแก้ชื่อไฟล์ใน `preloadFonts` ของ `vite.config.ts` ไม่อย่างนั้นหน้าจะกระโดดตอนฟอนต์โหลด (CLS) โดยที่ lint/build ยังผ่าน
 
 เมื่อ token ถูก import แล้ว ค่า default ของ Tailwind (เช่น `bg-indigo-500`, `text-sm`, `rounded-xl`, `shadow-lg`) จะ **ใช้ไม่ได้** ให้ใช้ utility จาก token (`text-ink`, `bg-surface`, `type-body`, `rounded-card` ฯลฯ) ถ้าค่าที่ต้องการไม่มีใน token ให้ถามก่อนเพิ่ม
 

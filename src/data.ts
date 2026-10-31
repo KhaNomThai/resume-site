@@ -179,7 +179,7 @@ export const projects: Project[] = [
     desc: "Registration and order-status checker for a university running event. Runners search by phone number to get a digital BIB with their package, shirt size, and payment status, read live from Google Form responses.",
     problem: "Runners needed to check their registration and order status for a university running event.",
     approach: "A React app that searches by phone number and reads live Google Form responses.",
-    result: "Each runner gets a digital BIB with their package, shirt size and payment status.",
+    result: "About 300 runners used it to get a digital BIB with their package, shirt size and payment status.",
     tags: ["React", "JavaScript", "Vite", "Google Sheets"],
     links: [{ kind: "code", href: "https://github.com/Panupong-xD/SwuRun_Register" }],
   },
@@ -202,7 +202,12 @@ export const projects: Project[] = [
     category: "Data Analysis",
     context: "Research project",
     desc: "Research project that applies machine learning to find gaps in employment data for the Computer Engineering field.",
-    tags: ["Python", "Machine Learning", "Data Analysis"],
+    // ตัวเลขจาก Colab notebook ของเจ้าของ: Random Forest บนข้อมูล Kaggle 100,000 แถว เทียบกับแบบสอบถามนิสิต CPE 80 คน
+    // สัดส่วนนิสิต = คะแนนเฉลี่ยแต่ละหมวด / ผลรวม (3.56, 3.96, 3.39 จาก 5) ส่วนของโมเดล = feature importance รวมตามหมวด
+    problem: "Do Computer Engineering students value the same skills that predict job placement?",
+    approach: "Trained a Random Forest on 100,000 student-placement records, grouped its feature importance into technical, soft-skill and experience factors, and compared them with a survey of 80 CPE students.",
+    result: "Students weighted internships and portfolio above the model (31% vs 24%) and technical skills below it (33% vs 39%).",
+    tags: ["Python", "scikit-learn", "Pandas", "Machine Learning", "Data Analysis"],
     links: [
       {
         kind: "notebook",
@@ -254,8 +259,8 @@ export const work: TimelineItem[] = [
     id: "botnoi-data-science-intern",
     title: "Data Science Intern",
     org: "Botnoi Group",
-    // TODO: ใส่เดือน (เช่น "Jun – Aug 2026") และตัวเลขจริงใน bullet: ขนาด dataset, metric ก่อน/หลัง, จำนวนโมเดล
-    period: "2026",
+    // TODO: ใส่ตัวเลขจริงใน bullet ถ้าเปิดเผยได้: ขนาด dataset, metric ก่อน/หลัง, จำนวนโมเดล
+    period: "May – Jul 2026",
     bullets: [
       "Developed, trained, and evaluated machine learning models for real-world business use cases.",
       "Cleaned and preprocessed complex datasets and engineered features that improved model accuracy.",

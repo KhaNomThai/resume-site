@@ -12,7 +12,15 @@
 - **ข้อ 7:** ช่อง "8 projects" เปลี่ยนเป็น "89.6% top-2 accuracy / 8-class skin-lesion classification"
 - **ข้อ 8:** ใช้หัว section ตามชื่อเมนู และลบ field `icon` กับไฟล์ `src/assets/skills/` แล้ว
 
-ยังรอข้อมูลจากคุณ (ส่งมาเมื่อพร้อม): ผลของ Smart Flood AI และ WELLYNC, จำนวนผู้ใช้ของ SWU Run และ BrainFit, รายละเอียด Employment Data Gap Analysis, skill ด้าน Data ที่ใช้จริง (เช่น SQL, Matplotlib) และตัวเลขช่วงฝึกงานที่ Botnoi (ข้อ 6)
+ข้อมูลที่เจ้าของส่งมาภายหลัง (31 ต.ค. 2026):
+
+- **Smart Flood AI และ WELLYNC:** ไม่มีช่อง result เพราะเป็นงานส่งแข่ง ไม่ได้นำไปใช้จริง
+- **SWU Run:** result เป็น "About 300 runners used it to get a digital BIB with their package, shirt size and payment status."
+- **BrainFit:** ไม่มีจำนวนผู้ใช้ (ทำให้โรงพยาบาล ซึ่งน่าจะไม่ได้ใช้ต่อ) คง result เดิม
+- **Employment Data Gap Analysis:** เขียน problem → approach → result จาก Colab notebook (Random Forest บน 100,000 แถว เทียบกับแบบสอบถามนิสิต CPE 80 คน) และเพิ่ม tag `scikit-learn`, `Pandas` ที่ใช้ใน notebook
+- **Botnoi (ข้อ 6):** ช่วงฝึกงานเป็น "May – Jul 2026" ส่วนตัวเลขใน bullet ยังไม่มี
+
+ยังเปิดอยู่: จะเพิ่ม Matplotlib และ Seaborn (ใช้วาดกราฟใน notebook) เข้ากลุ่ม Data ของ skill หรือไม่
 
 ด้านล่างคือข้อเสนอเดิม เก็บไว้เป็นบันทึก
 

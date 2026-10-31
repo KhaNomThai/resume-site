@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import avatar320 from "../assets/profile-320.webp";
 import avatar640 from "../assets/profile-640.webp";
 import NewTabHint from "../components/NewTabHint";
@@ -18,9 +19,13 @@ const LINE_BUTTON =
  * motion มีอย่างเดียว คือปากกาเน้นขีดผ่านหลักฐานสองจุดตอนโหลด (ไม่มี fade-in ของข้อความ)
  */
 export default function HeroSection() {
+  const inkRef = useInkFollowsPointer();
+
   return (
     <section id={TOP_ID} aria-labelledby="hero-heading" className="relative isolate pt-(--nav-height)">
-      <div aria-hidden="true" className="hero-grid -z-10 print:hidden" />
+      <div aria-hidden="true" className="hero-grid -z-10 print:hidden">
+        <div ref={inkRef} className="hero-ink" />
+      </div>
 
       <div className="page-container pb-16 pt-12 md:pb-24 md:pt-16 xl:pt-24">
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-16">
@@ -54,9 +59,10 @@ export default function HeroSection() {
               <a
                 href={CV_URL}
                 download={CV_FILENAME}
-                className="inline-flex h-11 items-center gap-2 rounded-control bg-pen px-4 type-label text-on-pen transition-colors duration-(--duration-fast) hover:bg-pen-hover"
+                className="group inline-flex h-11 items-center gap-2 rounded-control bg-pen px-4 type-label text-on-pen transition-colors duration-(--duration-fast) hover:bg-pen-hover"
               >
-                <DownloadIcon className="size-4" />
+                {/* ลูกศรดาวน์โหลดขยับลงนิดหนึ่งตอนชี้: บอกว่ากดแล้วได้ไฟล์ */}
+                <DownloadIcon className="size-4 transition-transform duration-(--duration-base) ease-out group-hover:translate-y-0.5 motion-reduce:transition-none" />
                 Download resume (PDF)
               </a>
               <a {...linkProps(githubUrl)} className={LINE_BUTTON}>
@@ -80,7 +86,9 @@ export default function HeroSection() {
           </div>
 
           {/* รูปอยู่ข้างขวาเฉพาะจอใหญ่: บนจอเล็กเดิมรูปอยู่บนสุดและดันชื่อลงไปถึง 35% ของจอ */}
-          <figure className="hidden lg:block">
+          {/* รูปติดเทปบนหน้าสมุดแบบรูปโพลารอยด์ (taped-photo, photo-tape ใน index.css) */}
+          <figure className="taped-photo relative hidden self-start rounded-card border border-rule bg-surface p-2 lg:block">
+            <span aria-hidden="true" className="photo-tape" />
             {/* <img> ที่ซ่อนด้วย CSS ยังถูกโหลดอยู่ดี → ใช้ <picture> ให้เลือกรูปจริงเฉพาะจอ lg (64rem) ขึ้นไป
                 จอเล็กได้ GIF โปร่งใสขนาด 1px ที่ฝังในหน้า ไม่ต้องโหลดอะไร และไม่แย่ง bandwidth กับ JS/ฟอนต์ */}
             <picture>
@@ -91,7 +99,7 @@ export default function HeroSection() {
                 width={240}
                 height={240}
                 fetchPriority="high"
-                className="aspect-square w-full rounded-card border border-rule object-cover"
+                className="aspect-square w-full rounded-tag object-cover"
               />
             </picture>
           </figure>
@@ -109,4 +117,45 @@ export default function HeroSection() {
       </div>
     </section>
   );
+}
+
+/**
+ * เส้นกราฟรอบเคอร์เซอร์กลายเป็นหมึกสีปากกา (hero-ink ใน index.css) เฉพาะเมาส์/trackpad และผู้ใช้ที่ไม่ได้ปิด motion
+ * เขียนค่าลง CSS variable ตรง ๆ ทีละเฟรม ไม่ผ่าน state จึงไม่ทำให้ React render ใหม่ทุกครั้งที่ขยับเมาส์
+ */
+function useInkFollowsPointer() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ink = ref.current;
+    const section = ink?.closest("section");
+    if (!ink || !section) return;
+    const allowed = window.matchMedia("(pointer: fine) and (prefers-reduced-motion: no-preference)");
+    let frame = 0;
+
+    const move = (e: PointerEvent) => {
+      if (!allowed.matches) return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const rect = ink.getBoundingClientRect();
+        ink.style.setProperty("--ink-x", `${e.clientX - rect.left}px`);
+        ink.style.setProperty("--ink-y", `${e.clientY - rect.top}px`);
+        ink.dataset.active = "";
+      });
+    };
+    const leave = () => {
+      cancelAnimationFrame(frame);
+      delete ink.dataset.active;
+    };
+
+    section.addEventListener("pointermove", move);
+    section.addEventListener("pointerleave", leave);
+    return () => {
+      cancelAnimationFrame(frame);
+      section.removeEventListener("pointermove", move);
+      section.removeEventListener("pointerleave", leave);
+    };
+  }, []);
+
+  return ref;
 }

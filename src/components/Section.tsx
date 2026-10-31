@@ -21,8 +21,27 @@ export default function Section({ id, intro, children }: Props) {
     <section id={id} aria-labelledby={headingId} className="border-t border-rule py-12 md:py-16 xl:py-24">
       <div className="page-container">
         <header className="mb-12">
-          <h2 id={headingId} className="type-headline text-ink outline-none">
+          {/* w-fit: เส้นขีดใต้ยาวเท่าชื่อหัวข้อ */}
+          <h2 id={headingId} className="relative w-fit type-headline text-ink outline-none">
             {title}
+            {/* เส้นปากกาแดงขีดใต้หัวข้อแบบมือขีด วาดตัวเองตอนเลื่อนมาเห็น (heading-scribble ใน index.css)
+                non-scaling-stroke: เส้นหนาเท่ากันทุกหัวข้อแม้ svg ถูกยืดตามความยาวชื่อ */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 200 12"
+              preserveAspectRatio="none"
+              className="pointer-events-none absolute -bottom-2 left-0 h-3 w-full overflow-visible"
+            >
+              <path
+                d="M2 8C40 3 78 11 118 6s62-2 80 1"
+                pathLength={1}
+                fill="none"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+                className="heading-scribble"
+              />
+            </svg>
           </h2>
           {intro && <p className="mt-3 max-w-measure-lead type-lead text-ink-muted">{intro}</p>}
         </header>

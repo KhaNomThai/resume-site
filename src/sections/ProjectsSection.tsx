@@ -82,7 +82,7 @@ export default function ProjectsSection() {
             const featured = i === 0 && tag === null;
             const collapsed = collapsible && !showAll && i >= MOBILE_PREVIEW;
             return (
-              <li key={project.id} className={`${featured ? "xl:col-span-2" : ""} ${collapsed ? "max-md:hidden print:block!" : ""}`}>
+              <li key={project.id} className={`reveal ${featured ? "xl:col-span-2" : ""} ${collapsed ? "max-md:hidden print:block!" : ""}`}>
                 <ProjectCard project={project} featured={featured} />
               </li>
             );
@@ -130,8 +130,9 @@ function ProjectCard({ project, featured }: { project: Project; featured: boolea
   const structured = Boolean(problem && approach);
   const meta = [category, context].filter(Boolean).join(", ");
 
+  // ชี้แล้วบัตรคำยกขึ้นจากกระดาษ: เงาคือ "ลอยอยู่เหนือหน้า" ตามกติกาเงาของระบบ
   return (
-    <article className="group relative flex h-full flex-col rounded-card border border-rule bg-surface p-6">
+    <article className="group relative flex h-full flex-col rounded-card border border-rule bg-surface p-6 transition-[translate,box-shadow,border-color] duration-(--duration-base) ease-out hover:-translate-y-1 hover:border-stroke hover:shadow-overlay motion-reduce:hover:translate-y-0">
       <div className="flex items-baseline justify-between gap-4 border-b border-margin pb-2">
         <h3 className="type-title text-ink">
           {/* "Stretched link": ::after คลุมทั้งการ์ด → คลิกได้ทั้งใบ แต่ accessible name = ชื่อโปรเจกต์อย่างเดียว */}

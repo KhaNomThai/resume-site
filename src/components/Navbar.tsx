@@ -58,6 +58,8 @@ export default function Navbar({ onOpenPalette }: { onOpenPalette: () => void })
         solid ? "border-rule bg-paper" : "border-transparent"
       }`}
     >
+      {/* แถบความคืบหน้าการอ่าน (scroll-progress ใน index.css) ตกแต่งเท่านั้น */}
+      <div aria-hidden="true" className="scroll-progress" />
       <div className="page-container flex h-(--nav-height) items-center justify-between gap-3">
         {/* lockup ตาม DESIGN_SYSTEM.md: logo 32px + ชื่อ serif 500 ขนาด 21px ห่าง space-3 */}
         <a href={`#${TOP_ID}`} onClick={closeMenu} className="flex shrink-0 items-center gap-3 rounded-control text-ink">

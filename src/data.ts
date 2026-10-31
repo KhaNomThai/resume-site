@@ -64,7 +64,7 @@ export const profile = {
   /** ต้องตรงกับ canonical / og:url ใน index.html */
   siteUrl: "https://kulachart-resume-site.vercel.app",
   summary:
-    "I build machine-learning systems and the full-stack apps around them — from a skin-cancer classifier benchmarked on 25,000+ images to the runner-status checker for SWU Run Together 2026. Data Science Intern at Botnoi Group (2026).",
+    "I build machine-learning systems and the full-stack apps around them — from a skin-cancer classifier benchmarked on 25,000+ images to a flood-monitoring command center that reads water depth from highway CCTV in real time. Data Science Intern at Botnoi Group (2026).",
   /**
    * วลีใน summary ที่ hero ขีดด้วยปากกาเน้น (หลักฐานที่ recruiter ควรเห็นก่อน) ไม่เกิน 2 วลีต่อจอ
    * ต้องพิมพ์ให้ตรงกับข้อความใน summary ทุกตัวอักษร — ใช้แค่บนเว็บ CV ไม่ได้ใช้

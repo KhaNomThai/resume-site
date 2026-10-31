@@ -31,7 +31,7 @@ function TimelineEntry({ item }: { item: TimelineItem }) {
   const current = item.period.includes("Present");
 
   return (
-    <li className="grid gap-2 border-b border-rule py-6 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-8">
+    <li className="reveal grid gap-2 border-b border-rule py-6 md:grid-cols-[11rem_minmax(0,1fr)] md:gap-8">
       <p className="type-small tabular-nums text-ink-muted">
         {item.period}
         {current && <span className="ml-2 type-label text-ink md:ml-0 md:block">Current</span>}

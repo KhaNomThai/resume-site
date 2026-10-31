@@ -122,9 +122,12 @@
   background-size: 0% 100%;
 }
 
+/* สีข้อความเริ่มจากสีหมึกรอบข้างแล้วค่อยเป็น on-marker พร้อมแถบเหลือง
+   ถ้าเป็น on-marker ตั้งแต่ต้น ข้อความในโหมดมืดจะหายไประหว่างรอ --swipe-delay (หมึกเข้มบนกระดาษมืด) */
 @keyframes mark-swipe {
   from {
     background-size: 0% 100%;
+    color: inherit;
   }
 }
 

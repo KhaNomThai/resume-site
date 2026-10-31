@@ -27,7 +27,7 @@ React 19 · TypeScript · Vite 7 · Tailwind CSS v4 with design tokens · Framer
 
 ## Getting started
 
-Requires Node.js 22.18 or later, because the generator scripts run TypeScript directly.
+Requires Node.js 22.18 or later, because the generator scripts run TypeScript directly (`.nvmrc` pins Node 22). GitHub Actions runs lint, `check:tokens` and build on every push and pull request.
 
 ```bash
 npm install

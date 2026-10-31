@@ -1,0 +1,21 @@
+# ด่านก่อนขึ้นเว็บจริง: Vercel deploy ทุก push เข้า main ทันที ถ้า workflow นี้แดงให้แก้ก่อน
+# check:tokens อยู่ในนี้เพราะ class ที่ token ปิดไว้ไม่ทำให้ lint/build พัง แต่ทำให้หน้าเว็บพัง
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run check:tokens
+      - run: npm run build
